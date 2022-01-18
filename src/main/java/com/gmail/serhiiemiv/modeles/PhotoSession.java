@@ -1,8 +1,6 @@
 package com.gmail.serhiiemiv.modeles;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @ToString
 @Entity
@@ -58,11 +58,11 @@ public class PhotoSession {
         if (this == o) return true;
         if (!(o instanceof PhotoSession)) return false;
         PhotoSession that = (PhotoSession) o;
-        return id == that.id;
+        return id == that.id && price == that.price && duration == that.duration && Objects.equals(name, that.name) && Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name, type, price, duration);
     }
 }

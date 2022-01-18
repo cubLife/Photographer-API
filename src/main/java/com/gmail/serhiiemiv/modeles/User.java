@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @ToString
 @Entity
@@ -21,11 +22,11 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Costumer costumer;
 
-    public User(String login, String password, Costumer costumer) {
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
-        this.costumer = costumer;
     }
+
 
     public void setLogin(String login) {
         this.login = login;

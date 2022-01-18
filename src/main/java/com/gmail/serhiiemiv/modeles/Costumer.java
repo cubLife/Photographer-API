@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @ToString
 @Entity
@@ -23,19 +25,20 @@ public class Costumer {
     private String email;
     @Column(nullable = false)
     private int phone;
-    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
-    private List<Order> orders;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "costumer_id", referencedColumnName = "id")
     private User user;
+    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
+    private List<Order> orders;
+    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
+    private List<CostumerFeedback> feedbacks;
 
-    public Costumer(String firstName, String lastName, String email, int phone, List<Order> orders, User user) {
+    public Costumer(String firstName, String lastName, String email, int phone, List<Order> orders) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.orders = orders;
-        this.user = user;
     }
 
     public void setFirstName(String firstName) {
@@ -67,11 +70,11 @@ public class Costumer {
         if (this == o) return true;
         if (!(o instanceof Costumer)) return false;
         Costumer costumer = (Costumer) o;
-        return id == costumer.id && phone == costumer.phone && Objects.equals(firstName, costumer.firstName) && Objects.equals(email, costumer.email);
+        return id == costumer.id && phone == costumer.phone && Objects.equals(firstName, costumer.firstName) && Objects.equals(lastName, costumer.lastName) && Objects.equals(email, costumer.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, email, phone);
+        return Objects.hash(id, firstName, lastName, email, phone);
     }
 }
