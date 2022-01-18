@@ -1,8 +1,6 @@
 package com.gmail.serhiiemiv.modeles;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @ToString
 @Entity
@@ -40,11 +40,11 @@ public class PhotoAlbum {
         if (this == o) return true;
         if (!(o instanceof PhotoAlbum)) return false;
         PhotoAlbum that = (PhotoAlbum) o;
-        return id == that.id;
+        return id == that.id && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name);
     }
 }

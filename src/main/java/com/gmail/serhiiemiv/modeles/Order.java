@@ -1,15 +1,14 @@
 package com.gmail.serhiiemiv.modeles;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @ToString
 @Entity
@@ -19,7 +18,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     @Column(nullable = false)
-    private Date date;
+    private LocalDateTime dateTime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_session_id", referencedColumnName = "id")
     private PhotoSession photoSession;
@@ -27,14 +26,14 @@ public class Order {
     @JoinColumn(name = "costumer_id", referencedColumnName = "id")
     private Costumer costumer;
 
-    public Order(Date date, PhotoSession photoSession, Costumer costumer) {
-        this.date = date;
+    public Order(LocalDateTime dateTime, PhotoSession photoSession, Costumer costumer) {
+        this.dateTime = dateTime;
         this.photoSession = photoSession;
         this.costumer = costumer;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public void setPhotoSession(PhotoSession photoSession) {
@@ -50,11 +49,11 @@ public class Order {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return id == order.id;
+        return id == order.id && Objects.equals(dateTime, order.dateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, dateTime);
     }
 }
