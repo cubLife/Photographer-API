@@ -1,17 +1,14 @@
 package com.gmail.serhiiemiv.modeles;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@ToString
 @Entity
 @Table(name = "photo_sessions")
 public class PhotoSession {
@@ -29,6 +26,9 @@ public class PhotoSession {
     @OneToMany(mappedBy = "photoSession", cascade = CascadeType.ALL)
     private List<Order> orders;
 
+    public PhotoSession() {
+    }
+
     public PhotoSession(String name, String type, int price, int duration, List<Order> orders) {
         this.name = name;
         this.type = type;
@@ -37,20 +37,52 @@ public class PhotoSession {
         this.orders = orders;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public void setPrice(int price) {
         this.price = price;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
@@ -64,5 +96,16 @@ public class PhotoSession {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, type, price, duration);
+    }
+
+    @Override
+    public String toString() {
+        return "PhotoSession{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                ", duration=" + duration +
+                '}';
     }
 }

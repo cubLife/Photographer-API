@@ -1,18 +1,12 @@
 package com.gmail.serhiiemiv.modeles;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Objects;
 
-@NoArgsConstructor
 @Builder
-@Getter
-@ToString
 @Entity
 @Table(name = "photos")
 public class Photo {
@@ -23,27 +17,62 @@ public class Photo {
     private Long size;
     @Lob
     @Column(nullable = false, columnDefinition = "BLOB")
-    private byte[] photo;
+    private byte[] image;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_album_id", referencedColumnName = "id")
     private PhotoAlbum photoAlbum;
 
-    public Photo(String name, Long size, byte[] photo) {
-        this.name = name;
-        this.size = size;
-        this.photo = photo;
+    public Photo() {
     }
 
-    public Photo(int id, String name, Long size, byte[] photo, PhotoAlbum photoAlbum) {
+    public Photo(String name, Long size, byte[] image) {
+        this.name = name;
+        this.size = size;
+        this.image = image;
+    }
+
+    public Photo(int id, String name, Long size, byte[] image, PhotoAlbum photoAlbum) {
         this.id = id;
         this.name = name;
         this.size = size;
-        this.photo = photo;
+        this.image = image;
         this.photoAlbum = photoAlbum;
     }
 
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public PhotoAlbum getPhotoAlbum() {
+        return photoAlbum;
     }
 
     public void setPhotoAlbum(PhotoAlbum photoAlbum) {
@@ -55,13 +84,24 @@ public class Photo {
         if (this == o) return true;
         if (!(o instanceof Photo)) return false;
         Photo photo1 = (Photo) o;
-        return id == photo1.id && Objects.equals(name, photo1.name) && Objects.equals(size, photo1.size) && Arrays.equals(photo, photo1.photo);
+        return id == photo1.id && Objects.equals(name, photo1.name) && Objects.equals(size, photo1.size) && Arrays.equals(image, photo1.image);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(id, name, size);
-        result = 31 * result + Arrays.hashCode(photo);
+        result = 31 * result + Arrays.hashCode(image);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", size=" + size +
+                ", image=" + Arrays.toString(image) +
+                ", photoAlbum=" + photoAlbum +
+                '}';
     }
 }

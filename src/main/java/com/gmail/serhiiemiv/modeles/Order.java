@@ -6,11 +6,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@ToString
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -26,18 +23,41 @@ public class Order {
     @JoinColumn(name = "costumer_id", referencedColumnName = "id")
     private Costumer costumer;
 
+    public Order() {
+    }
+
     public Order(LocalDateTime dateTime, PhotoSession photoSession, Costumer costumer) {
         this.dateTime = dateTime;
         this.photoSession = photoSession;
         this.costumer = costumer;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
+    public PhotoSession getPhotoSession() {
+        return photoSession;
+    }
+
     public void setPhotoSession(PhotoSession photoSession) {
         this.photoSession = photoSession;
+    }
+
+    public Costumer getCostumer() {
+        return costumer;
     }
 
     public void setCostumer(Costumer costumer) {
@@ -55,5 +75,15 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(id, dateTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", dateTime=" + dateTime +
+                ", photoSession=" + photoSession +
+                ", costumer=" + costumer +
+                '}';
     }
 }

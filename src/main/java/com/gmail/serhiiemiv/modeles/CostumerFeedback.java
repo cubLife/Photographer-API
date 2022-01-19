@@ -6,11 +6,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@ToString
 @Entity
 @Table(name = "feedbacks")
 public class CostumerFeedback {
@@ -28,6 +25,9 @@ public class CostumerFeedback {
     @JoinColumn(name = "costumer_id", referencedColumnName = "id")
     private Costumer costumer;
 
+    public CostumerFeedback() {
+    }
+
     public CostumerFeedback(LocalDateTime dateTime, String feedback, Grade grade, Costumer costumer) {
         this.dateTime = dateTime;
         this.feedback = feedback;
@@ -43,16 +43,52 @@ public class CostumerFeedback {
         this.costumer = costumer;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getFeedback() {
+        return feedback;
     }
 
     public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
 
+    public Grade getGrade() {
+        return grade;
+    }
+
     public void setGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public boolean isChanged() {
+        return isChanged;
+    }
+
+    public void setChanged(boolean changed) {
+        isChanged = changed;
+    }
+
+    public Costumer getCostumer() {
+        return costumer;
+    }
+
+    public void setCostumer(Costumer costumer) {
+        this.costumer = costumer;
     }
 
     @Override
@@ -66,5 +102,17 @@ public class CostumerFeedback {
     @Override
     public int hashCode() {
         return Objects.hash(id, dateTime, feedback, grade, isChanged);
+    }
+
+    @Override
+    public String toString() {
+        return "CostumerFeedback{" +
+                "id=" + id +
+                ", dateTime=" + dateTime +
+                ", feedback='" + feedback + '\'' +
+                ", grade=" + grade +
+                ", isChanged=" + isChanged +
+                ", costumer=" + costumer +
+                '}';
     }
 }
