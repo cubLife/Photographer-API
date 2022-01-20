@@ -6,11 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Getter
-@ToString
 @Entity
 @Table(name = "costumers")
 public class Costumer {
@@ -33,6 +29,21 @@ public class Costumer {
     @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
     private List<CostumerFeedback> feedbacks;
 
+    public Costumer() {
+    }
+
+    public Costumer(int id, String firstName, String lastName, String email, int phone, User user,
+                    List<Order> orders, List<CostumerFeedback> feedbacks) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.user = user;
+        this.orders = orders;
+        this.feedbacks = feedbacks;
+    }
+
     public Costumer(String firstName, String lastName, String email, int phone, List<Order> orders) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,28 +52,68 @@ public class Costumer {
         this.orders = orders;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getPhone() {
+        return phone;
     }
 
     public void setPhone(int phone) {
         this.phone = phone;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public User getUser() {
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<CostumerFeedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<CostumerFeedback> feedbacks) {
+        this.feedbacks = feedbacks;
     }
 
     @Override
@@ -76,5 +127,17 @@ public class Costumer {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, email, phone);
+    }
+
+    @Override
+    public String toString() {
+        return "Costumer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                ", user=" + user +
+                '}';
     }
 }

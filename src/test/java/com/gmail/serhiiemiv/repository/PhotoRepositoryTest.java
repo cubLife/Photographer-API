@@ -18,7 +18,7 @@ class PhotoRepositoryTest {
     @Test
     void shouldSavePhoto() {
         photoRepository.save(new Photo(TEST, 1L, new byte[0]));
-        Photo expected = Photo.builder().id(1).name(TEST).size(1L).photo(new byte[0]).build();
+        Photo expected = Photo.builder().id(1).name(TEST).size(1L).image(new byte[0]).build();
         Photo actual = photoRepository.getById(1);
         assertEquals(expected, actual);
 
@@ -27,7 +27,7 @@ class PhotoRepositoryTest {
     @Test
     void shouldFindPhotoById() {
         generateTestDAta();
-        Photo expected = Photo.builder().id(3).name(TEST).size(1L).photo(new byte[3]).build();
+        Photo expected = Photo.builder().id(3).name(TEST).size(1L).image(new byte[3]).build();
         Photo actual = photoRepository.getById(3);
         assertEquals(expected, actual);
     }
