@@ -1,4 +1,4 @@
-package com.gmail.serhiiemiv.tdo;
+package com.gmail.serhiiemiv.dto;
 
 import com.gmail.serhiiemiv.modeles.Grade;
 import lombok.AllArgsConstructor;
