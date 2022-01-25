@@ -1,15 +1,16 @@
-package com.gmail.serhiiemiv.tdo;
+package com.gmail.serhiiemiv.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTdo {
+public class PhotoAlbumTdo {
     private int id;
-    private String login;
-    private String password;
-    private int costumerId;
+    private String name;
+    private List<Integer> photosId;
 }

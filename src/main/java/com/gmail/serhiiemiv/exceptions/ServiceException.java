@@ -2,6 +2,12 @@ package com.gmail.serhiiemiv.exceptions;
 
 public class ServiceException extends RuntimeException {
 
+    public ServiceException() {
+    }
+
+    public ServiceException(String message) {
+    }
+
     public ServiceException(Throwable cause) {
         super(cause);
     }
@@ -10,6 +16,4 @@ public class ServiceException extends RuntimeException {
         super(message, cause);
     }
 
-    public ServiceException() {
-    }
 }

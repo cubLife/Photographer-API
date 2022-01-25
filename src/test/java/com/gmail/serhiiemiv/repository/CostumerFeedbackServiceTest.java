@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class CostumerFeedbackRepositoryTest {
+class CostumerFeedbackServiceTest {
     @Autowired
     private CostumerFeedbackRepository costumerFeedbackRepository;
     @Autowired

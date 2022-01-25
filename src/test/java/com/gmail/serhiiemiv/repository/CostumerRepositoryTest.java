@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -33,8 +35,10 @@ class CostumerRepositoryTest {
     @Test
     void shouldFIndCostumerById(){
         generateTestData();
+        Optional<Costumer> costumer = costumerRepository.findById(3);
+        assertTrue(costumer.isPresent());
         int expected = 3;
-        int actual = costumerRepository.getById(3).getId();
+        int actual = costumer.get().getId();
         assertEquals(expected, actual);
     }
 

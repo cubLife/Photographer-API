@@ -1,8 +1,5 @@
-package com.gmail.serhiiemiv.tdo;
+package com.gmail.serhiiemiv.dto;
 
-import com.gmail.serhiiemiv.modeles.CostumerFeedback;
-import com.gmail.serhiiemiv.modeles.Order;
-import com.gmail.serhiiemiv.modeles.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
