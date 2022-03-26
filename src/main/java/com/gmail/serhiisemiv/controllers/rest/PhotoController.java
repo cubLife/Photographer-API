@@ -29,6 +29,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "api/photos")
+//@CrossOrigin(origins = {"http://localhost:3000/"})
 public class PhotoController {
     private final PhotoService photoService;
     private final PhotoAlbumService photoAlbumService;
@@ -68,6 +69,7 @@ public class PhotoController {
 
     @GetMapping(value = "/images/{photo-id}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
     public Resource getImageById(@PathVariable("photo-id") int photoId) {
         Photo photo = photoService.findPhotoById(photoId);
         return new ByteArrayResource(photo.getImage());
@@ -75,6 +77,7 @@ public class PhotoController {
 
     @GetMapping(value = "/list-images")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
     public List<Resource> getAllImages() {
         return photoService.findAllPhotos().stream().map(Photo::getImage).map(ByteArrayResource::new)
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -82,6 +85,7 @@ public class PhotoController {
 
     @GetMapping(value = "/{photo-id}")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
     public EntityModel<PhotoDto> findPhotoById(@PathVariable("photo-id") int photoId) {
         Photo photo = photoService.findPhotoById(photoId);
         PhotoDto photoDto = mapper.toDto(photo);
@@ -90,6 +94,7 @@ public class PhotoController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
     public CollectionModel<EntityModel<PhotoDto>> findAllPhotos() {
         List<PhotoDto> photosDto = mapper.listToDto(photoService.findAllPhotos());
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);
@@ -98,6 +103,7 @@ public class PhotoController {
 
     @GetMapping("/photo-album/{photo-album-id}")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
     public CollectionModel<EntityModel<PhotoDto>> findAllByPhotoAlbum(@PathVariable("photo-album-id") int albumId){
         List<PhotoDto> photosDto = mapper.listToDto(photoService.findAllByAlbumId(albumId));
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);

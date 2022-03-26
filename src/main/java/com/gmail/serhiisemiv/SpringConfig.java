@@ -20,15 +20,6 @@ public class SpringConfig {
         return new ModelMapper();
     }
 
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.gmail.serhiisemiv.controllers.rest"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
-    }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("Photographer API Documentation").
