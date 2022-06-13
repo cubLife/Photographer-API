@@ -6,6 +6,8 @@ import com.gmail.serhiisemiv.repository.PhotoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,9 +93,22 @@ public class PhotoService {
         }
     }
 
+    public Resource findFirstByAlbumId(int albumId){
+        info.info("Starting returning first image with album id {}",albumId);
+        try {
+            Photo photo = photoRepository.findFirstByPhotoAlbum_Id(albumId);
+            debug.debug("first image with album id is returned id {}", albumId);
+            return new ByteArrayResource(photo.getImage());
+        }catch (NullPointerException e){
+            error.error("Can't find any images with photo album id - "+albumId + e.getMessage(), e);
+            throw new ServiceException("Can't find any images");
+        }
+    }
+
     public void deletePhotoById(int id) {
         info.info("Starting delete photo with id - {}", id);
         try {
+
             photoRepository.deleteById(id);
             debug.debug("Photo was deleted id - {}", id);
         } catch (NoSuchElementException e) {

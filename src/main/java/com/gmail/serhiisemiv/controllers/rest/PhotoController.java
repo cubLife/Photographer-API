@@ -16,6 +16,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,9 +49,10 @@ public class PhotoController {
 
     @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public PhotoDto savePhoto(@RequestParam MultipartFile file) {
+    public PhotoDto savePhoto(@RequestParam MultipartFile file, @RequestParam int photoAlbumId) {
         info.info("Starting creating new photo");
         Photo photo = photoService.createNewPhoto(file);
+        photo.setPhotoAlbum(photoAlbumService.findPhotoAlbumById(photoAlbumId));
         info.info("New photo is created");
         photoService.savePhoto(photo);
         return mapper.toDto(photo);
@@ -75,7 +77,7 @@ public class PhotoController {
         return new ByteArrayResource(photo.getImage());
     }
 
-    @GetMapping(value = "/list-images")
+    @GetMapping(value = "/list-images", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = {"http://localhost:3000/"})
     public List<Resource> getAllImages() {
@@ -103,11 +105,20 @@ public class PhotoController {
 
     @GetMapping("/photo-album/{photo-album-id}")
     @ResponseStatus(HttpStatus.OK)
+    @Transactional(readOnly=true)
     @CrossOrigin(origins = {"http://localhost:3000/"})
     public CollectionModel<EntityModel<PhotoDto>> findAllByPhotoAlbum(@PathVariable("photo-album-id") int albumId){
         List<PhotoDto> photosDto = mapper.listToDto(photoService.findAllByAlbumId(albumId));
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoController.class).findAllByPhotoAlbum(albumId)).withSelfRel());
+    }
+
+    @GetMapping(value = "first-image/photo-album/{photo-album-id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional(readOnly=true)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
+    public Resource getFirstImageByAlbumId(@PathVariable("photo-album-id") int albumId){
+        return photoService.findFirstByAlbumId(albumId);
     }
 
     @DeleteMapping("/{id}")

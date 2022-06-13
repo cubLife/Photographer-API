@@ -1,8 +1,10 @@
 package com.gmail.serhiisemiv.modeles;
 
 import lombok.Builder;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -16,10 +18,10 @@ public class Photo {
     private String name;
     private Long size;
     @Lob
-    @Column(nullable = false, columnDefinition = "BLOB")
+    @Column(nullable = false)
     private byte[] image;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "photo_album_id", referencedColumnName = "id")
+    @JoinColumn(name = "photo_album_id")
     private PhotoAlbum photoAlbum;
 
     public Photo() {

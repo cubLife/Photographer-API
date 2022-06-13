@@ -74,7 +74,7 @@ public class CostumerFeedbackService {
             debug.debug("Costumer feedback was deleted id - {}", id);
         } catch (NoSuchElementException e) {
             error.error("Can't remove costumer with id - " + id, e);
-            throw new ServiceException("Can't delete costumer feedback with id");
+            throw new ServiceException("Can't delete costumer feedback with id - "+id);
         }
     }
 

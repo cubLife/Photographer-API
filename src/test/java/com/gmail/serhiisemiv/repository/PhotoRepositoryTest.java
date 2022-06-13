@@ -73,6 +73,14 @@ class PhotoRepositoryTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void findFirstByPhotoAlbum_Id() {
+        generateTestDAta();
+        int expected =1;
+        int actual = photoRepository.findFirstByPhotoAlbum_Id(1).getId();
+        assertEquals(expected, actual);
+    }
+
     private void generateTestDAta() {
         photoAlbumRepository.save(new PhotoAlbum());
         photoRepository.save(Photo.builder().name(TEST).size(1L).image(new byte[3])
@@ -81,4 +89,5 @@ class PhotoRepositoryTest {
             photoRepository.save(Photo.builder().name(TEST).size(1L).image(new byte[3]).build());
         }
     }
+
 }

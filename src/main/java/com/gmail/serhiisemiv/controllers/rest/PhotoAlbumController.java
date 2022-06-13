@@ -23,6 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController()
 @RequestMapping(value = "api/photo-albums")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class PhotoAlbumController {
     private final PhotoAlbumService photoAlbumService;
     private final PhotoAlbumDtoModelAssembler modelAssembler;
@@ -37,7 +38,7 @@ public class PhotoAlbumController {
         this.mapper = mapper;
     }
 
-    @PostMapping(produces = "application/json")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public PhotoAlbumDto savePhotoAlbum(@RequestBody PhotoAlbumDto photoAlbumDto) {
         PhotoAlbum photoAlbum = new PhotoAlbum();
@@ -46,20 +47,22 @@ public class PhotoAlbumController {
         return mapper.toDto(photoAlbum);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EntityModel<PhotoAlbumDto> findById(@PathVariable int id) {
         PhotoAlbum photoAlbum = photoAlbumService.findPhotoAlbumById(id);
         return modelAssembler.toModel(mapper.toDto(photoAlbum));
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list" )
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<PhotoAlbumDto>> findAll() {
         List<PhotoAlbumDto> photoAlbumDtoList = mapper.listToDto(photoAlbumService.findAllPhotoAlbums());
         List<EntityModel<PhotoAlbumDto>> entityModels = getEntityModels(photoAlbumDtoList);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoAlbumController.class).findAll()).withSelfRel());
     }
+
 
     @NotNull
     private List<EntityModel<PhotoAlbumDto>> getEntityModels(List<PhotoAlbumDto> photoAlbumDtoList) {

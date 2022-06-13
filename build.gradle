@@ -15,6 +15,7 @@ configurations {
 	}
 }
 
+
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
@@ -44,14 +45,15 @@ dependencies {
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.2.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.6.2'
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.2'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
-	implementation group: 'io.springfox', name: 'springfox-bean-validators', version: '3.0.0'
-// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
-// https://mvnrepository.com/artifact/org.postgresql/postgresql
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.6.6'
+ //https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	//implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.0'
+	//implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws-jdbc', version: '2.2.6.RELEASE'
+	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.17'
+
 
 }
 
