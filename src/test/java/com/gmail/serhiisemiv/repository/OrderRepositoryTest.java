@@ -67,12 +67,9 @@ class OrderRepositoryTest {
     }
 
     private void generateTestData() {
-        User user = new User(TEST, TEST);
-        userRepository.save(user);
-        costumerRepository.save( Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone(0).email(TEST).user(user).build());
-        costumerRepository.save( Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone(0).email(TEST).user(user).build());
+        Costumer costumer = Costumer.builder().firstName(TEST).lastName(TEST).email(TEST).login(TEST).password(TEST).phone(0).build();
+        costumerRepository.save(costumer);
+        costumerRepository.save(costumer);
         PhotoSession photoSession = PhotoSession.builder().duration(60).name(TEST).price(0).type(TEST).build();
         photoSessionRepository.save(photoSession);
         for (int i = 0; i < 5; i++) {

@@ -25,16 +25,20 @@ public class PhotoSession {
     private int duration;
     @OneToMany(mappedBy = "photoSession", cascade = CascadeType.ALL)
     private List<Order> orders;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photographer_id")
+    private Photographer photographer;
 
     public PhotoSession() {
     }
 
-    public PhotoSession(String name, String type, int price, int duration, List<Order> orders) {
+    public PhotoSession(String name, String type, int price, int duration, List<Order> orders, Photographer photographer) {
         this.name = name;
         this.type = type;
         this.price = price;
         this.duration = duration;
         this.orders = orders;
+        this.photographer = photographer;
     }
 
     public int getId() {
@@ -83,6 +87,14 @@ public class PhotoSession {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public Photographer getPhotographer() {
+        return photographer;
+    }
+
+    public void setPhotographer(Photographer photographer) {
+        this.photographer = photographer;
     }
 
     @Override

@@ -20,7 +20,7 @@ class UserRepositoryTest {
     @Test
     void shouldSaveUser() {
         generateTestData();
-        User expected = new User(1, TEST, TEST, null);
+        User expected = new User(TEST, TEST,TEST,TEST,TEST,0);
         User actual = userRepository.findAll().get(0);
         assertEquals(expected, actual);
     }
@@ -54,7 +54,7 @@ class UserRepositoryTest {
 
     private void generateTestData() {
         for (int i = 0; i < 5; i++) {
-            User user = new User(TEST, TEST);
+            User user = new User(TEST, TEST,TEST,TEST,TEST,0);
             userRepository.save(user);
         }
     }
