@@ -1,6 +1,5 @@
 package com.gmail.serhiisemiv.modeles;
 
-import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;

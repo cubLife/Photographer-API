@@ -22,11 +22,8 @@ class CostumerRepositoryTest {
 
     @Test
     void shouldSavaCostumer(){
-        User user = new User(TEST,TEST);
-        userRepository.save(user);
         Costumer expected = Costumer.builder().firstName(TEST).lastName(TEST)
                 .phone(0).email(TEST).build();
-        expected.setUser(user);
         costumerRepository.save(expected);
         Costumer actual =costumerRepository.findAll().get(0);
         assertEquals(expected, actual);
@@ -60,12 +57,9 @@ class CostumerRepositoryTest {
     }
 
     private void generateTestData(){
-        User user = new User(TEST,TEST);
-        userRepository.save(user);
         for (int i=0; i<5; i++) {
             Costumer costumer = Costumer.builder().firstName(TEST).lastName(TEST)
                     .phone(0).email(TEST).build();
-            costumer.setUser(user);
             costumerRepository.save(costumer);
         }
     }

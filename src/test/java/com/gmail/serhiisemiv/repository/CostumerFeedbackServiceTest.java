@@ -60,11 +60,8 @@ class CostumerFeedbackServiceTest {
     }
 
     private void generateTestData() {
-        User user = new User(TEST, TEST);
-        userRepository.save(user);
         Costumer costumer = Costumer.builder().firstName(TEST).lastName(TEST)
                 .phone(0).email(TEST).build();
-        costumer.setUser(user);
         costumerRepository.save(costumer);
         for (int i = 0; i < 5; i++) {
             CostumerFeedback costumerFeedback = CostumerFeedback.builder().feedback(TEST)
