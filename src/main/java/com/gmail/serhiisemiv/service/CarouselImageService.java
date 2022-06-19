@@ -78,7 +78,7 @@ public class CarouselImageService {
 
     public CarouselImage createNewCarouselImage(MultipartFile file) throws IOException {
         CarouselImage carouselImage = new CarouselImage();
-        carouselImage.setImage(file.getBytes());
+        carouselImage.setPicture(file.getBytes());
         return carouselImage;
     }
 

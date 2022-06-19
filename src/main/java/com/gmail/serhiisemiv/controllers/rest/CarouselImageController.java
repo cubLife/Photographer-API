@@ -51,7 +51,7 @@ public class CarouselImageController {
         CarouselImage carouselImage = carouselImageService.createNewCarouselImage(file);
         info.info("New carousel image is created");
         carouselImageService.addCarouselImage(carouselImage);
-        return new ByteArrayResource(carouselImage.getImage());
+        return new ByteArrayResource(carouselImage.getPicture());
     }
 
     @GetMapping(value = "/{id}")
@@ -69,7 +69,7 @@ public class CarouselImageController {
     @CrossOrigin(origins = {"http://localhost:3000/"})
     public Resource getBytesImageById(@PathVariable("image-id") int id) {
         CarouselImage carouselImage = carouselImageService.findCarouselImageById(id);
-        return new ByteArrayResource(carouselImage.getImage());
+        return new ByteArrayResource(carouselImage.getPicture());
     }
 
     @GetMapping("/list")

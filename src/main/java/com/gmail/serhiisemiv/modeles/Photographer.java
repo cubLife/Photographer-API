@@ -9,9 +9,10 @@ import java.util.List;
 @Entity
 @Table(name = "photographers")
 public class Photographer extends User {
-    @Lob
-    private byte[] avatarImage;
     private String aboutMyself;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "avatar_image")
+    private AvatarImage avatarImage;
     @OneToMany(mappedBy = "photographer", cascade = CascadeType.ALL)
     private List<SocialNetwork> socialNetNetworks;
     @OneToMany(mappedBy = "photographer", cascade = CascadeType.ALL)
@@ -23,23 +24,15 @@ public class Photographer extends User {
     }
 
     private Photographer(int id, String login, String password, String firstName, String lastName, String email, int phone
-            , byte[] avatarImage, String aboutMyself, List<SocialNetwork> socialNetNetworks, List<PhotoSession> photoSessions
+            ,String aboutMyself, List<SocialNetwork> socialNetNetworks, List<PhotoSession> photoSessions
             , List<PhotoAlbum> photoAlbums) {
         super(id, login, password, firstName, lastName, email, phone);
-        this.avatarImage = avatarImage;
         this.aboutMyself = aboutMyself;
         this.socialNetNetworks = socialNetNetworks;
         this.photoSessions = photoSessions;
         this.photoAlbums = photoAlbums;
     }
 
-    public byte[] getAvatarImage() {
-        return avatarImage;
-    }
-
-    public void setAvatarImage(byte[] avatarImage) {
-        this.avatarImage = avatarImage;
-    }
 
     public String getAboutMyself() {
         return aboutMyself;

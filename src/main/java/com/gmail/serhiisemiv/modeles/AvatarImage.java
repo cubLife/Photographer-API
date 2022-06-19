@@ -1,15 +1,15 @@
 package com.gmail.serhiisemiv.modeles;
-
-import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "carousel_image")
-public class CarouselImage  extends Image {
+@Table(name = "avatar_images")
+public class AvatarImage extends Image{
+    @OneToOne(mappedBy = "avatarImage")
+    private Photographer photographer;
 
-    public CarouselImage() {
-        super();
+    public AvatarImage() {
     }
 
     @Override

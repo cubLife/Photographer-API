@@ -23,12 +23,12 @@ public class User {
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private int phone;
+    private long phone;
 
     public User() {
     }
 
-    public User(String login, String password, String firstName, String lastName, String email, int phone) {
+    public User(String login, String password, String firstName, String lastName, String email, long phone) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -37,7 +37,7 @@ public class User {
         this.phone = phone;
     }
 
-    public User(int id, String login, String password, String firstName, String lastName, String email, int phone) {
+    public User(int id, String login, String password, String firstName, String lastName, String email, long phone) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -95,11 +95,11 @@ public class User {
         this.email = email;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 

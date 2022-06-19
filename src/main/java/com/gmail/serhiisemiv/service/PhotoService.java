@@ -36,7 +36,7 @@ public class PhotoService {
         try {
             info.info("Start saving new photo {}", photo.getName());
             photoRepository.save(photo);
-            debug.debug("Photo is saved{}", photo.getImage());
+            debug.debug("Photo is saved{}", photo.getPicture());
         } catch (NumberFormatException e) {
             error.error("Cant save photo  - " + photo.getName(), e);
             throw new ServiceException("Cant save  photo");
@@ -98,7 +98,7 @@ public class PhotoService {
         try {
             Photo photo = photoRepository.findFirstByPhotoAlbum_Id(albumId);
             debug.debug("first image with album id is returned id {}", albumId);
-            return new ByteArrayResource(photo.getImage());
+            return new ByteArrayResource(photo.getPicture());
         }catch (NullPointerException e){
             error.error("Can't find any images with photo album id - "+albumId + e.getMessage(), e);
             throw new ServiceException("Can't find any images");
@@ -122,7 +122,7 @@ public class PhotoService {
         try {
             photo.setName(file.getOriginalFilename());
             photo.setSize(file.getSize());
-            photo.setImage(file.getBytes());
+            photo.setPicture(file.getBytes());
         } catch (IOException e) {
             error.error("Can't create photo. " + e.getMessage(), e);
         }

@@ -74,14 +74,14 @@ public class PhotoController {
     @CrossOrigin(origins = {"http://localhost:3000/"})
     public Resource getImageById(@PathVariable("photo-id") int photoId) {
         Photo photo = photoService.findPhotoById(photoId);
-        return new ByteArrayResource(photo.getImage());
+        return new ByteArrayResource(photo.getPicture());
     }
 
     @GetMapping(value = "/list-images", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = {"http://localhost:3000/"})
     public List<Resource> getAllImages() {
-        return photoService.findAllPhotos().stream().map(Photo::getImage).map(ByteArrayResource::new)
+        return photoService.findAllPhotos().stream().map(Photo::getPicture).map(ByteArrayResource::new)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
