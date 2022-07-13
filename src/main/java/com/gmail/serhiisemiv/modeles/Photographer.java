@@ -10,8 +10,7 @@ import java.util.List;
 @Table(name = "photographers")
 public class Photographer extends User {
     private String aboutMyself;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "avatar_image")
+    @OneToOne(mappedBy = "photographer")
     private AvatarImage avatarImage;
     @OneToMany(mappedBy = "photographer", cascade = CascadeType.ALL)
     private List<SocialNetwork> socialNetNetworks;
@@ -23,7 +22,7 @@ public class Photographer extends User {
     public Photographer() {
     }
 
-    private Photographer(int id, String login, String password, String firstName, String lastName, String email, int phone
+    private Photographer(int id, String login, String password, String firstName, String lastName, String email, String phone
             ,String aboutMyself, List<SocialNetwork> socialNetNetworks, List<PhotoSession> photoSessions
             , List<PhotoAlbum> photoAlbums) {
         super(id, login, password, firstName, lastName, email, phone);
@@ -64,6 +63,14 @@ public class Photographer extends User {
 
     public void setPhotoAlbums(List<PhotoAlbum> photoAlbums) {
         this.photoAlbums = photoAlbums;
+    }
+
+    public AvatarImage getAvatarImage() {
+        return avatarImage;
+    }
+
+    public void setAvatarImage(AvatarImage avatarImage) {
+        this.avatarImage = avatarImage;
     }
 
     @Override

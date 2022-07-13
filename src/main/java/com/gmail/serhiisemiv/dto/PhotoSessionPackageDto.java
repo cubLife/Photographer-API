@@ -1,15 +1,18 @@
 package com.gmail.serhiisemiv.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhotoSessionDto {
+@Builder
+public class PhotoSessionPackageDto {
     private int id;
     private String name;
+    private int numberPhotos;
+    private int price;
+    private int duration;
 }

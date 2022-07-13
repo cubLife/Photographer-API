@@ -50,14 +50,11 @@ public class PhotoSessionController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
     public CollectionModel<EntityModel<PhotoSessionDto>> getAll() {
         List<PhotoSession> photoSessions = photoSessionService.findAllPhotoSessions();
         List<EntityModel<PhotoSessionDto>> entityModels = getEntityModels(photoSessions);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoSessionController.class).getAll()).withSelfRel());
-    }
-
-    private List<EntityModel<PhotoSessionDto>> getEntityModels(@NotNull List<PhotoSession> photoSessions) {
-        return photoSessions.stream().map(mapper::toDto).map(modelAssembler::toModel).collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")
@@ -65,5 +62,9 @@ public class PhotoSessionController {
     public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id){
         photoSessionService.deletePhotoSessionById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private List<EntityModel<PhotoSessionDto>> getEntityModels(@NotNull List<PhotoSession> photoSessions) {
+        return photoSessions.stream().map(mapper::toDto).map(modelAssembler::toModel).collect(Collectors.toList());
     }
 }

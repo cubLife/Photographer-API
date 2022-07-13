@@ -18,7 +18,7 @@ public class Costumer  extends User{
     public Costumer() {
     }
 
-    public Costumer(int id, String login, String password, String firstName, String lastName, String email, int phone, List<Order> orders, List<CostumerFeedback> feedbacks) {
+    public Costumer(int id, String login, String password, String firstName, String lastName, String email, String phone, List<Order> orders, List<CostumerFeedback> feedbacks) {
         super(id, login, password, firstName, lastName, email, phone);
         this.orders = orders;
         this.feedbacks = feedbacks;

@@ -1,15 +1,22 @@
 package com.gmail.serhiisemiv.modeles;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "avatar_images")
 public class AvatarImage extends Image{
-    @OneToOne(mappedBy = "avatarImage")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
 
     public AvatarImage() {
+    }
+
+    public Photographer getPhotographer() {
+        return photographer;
+    }
+
+    public void setPhotographer(Photographer photographer) {
+        this.photographer = photographer;
     }
 
     @Override

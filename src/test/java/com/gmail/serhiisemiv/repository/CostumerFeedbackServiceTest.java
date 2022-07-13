@@ -27,7 +27,7 @@ class CostumerFeedbackServiceTest {
         generateTestData();
         CostumerFeedback expected = CostumerFeedback.builder().id(1).feedback(TEST)
                 .creationDate(100L)
-                .grade(Grade.POSITIVE).isChanged(false).build();
+                .grade(5).isChanged(false).build();
         CostumerFeedback actual = costumerFeedbackRepository.findAll().get(0);
         assertEquals(expected, actual);
 
@@ -38,7 +38,7 @@ class CostumerFeedbackServiceTest {
         generateTestData();
         CostumerFeedback expected = CostumerFeedback.builder().id(1).feedback(TEST)
                 .creationDate(100L)
-                .grade(Grade.POSITIVE).isChanged(false).build();
+                .grade(5).isChanged(false).build();
         CostumerFeedback acrual = costumerFeedbackRepository.getById(1);
         assertEquals(expected, acrual);
     }
@@ -61,12 +61,12 @@ class CostumerFeedbackServiceTest {
 
     private void generateTestData() {
         Costumer costumer = Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone(0).email(TEST).build();
+                .phone("0").email(TEST).build();
         costumerRepository.save(costumer);
         for (int i = 0; i < 5; i++) {
             CostumerFeedback costumerFeedback = CostumerFeedback.builder().feedback(TEST)
                     .creationDate(100L)
-                    .costumer(costumer).grade(Grade.POSITIVE).isChanged(false).build();
+                    .costumer(costumer).grade(5).isChanged(false).build();
             costumerFeedbackRepository.save(costumerFeedback);
         }
     }

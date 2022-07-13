@@ -12,9 +12,15 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -37,7 +43,7 @@ public class CostumerController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CostumerDto saveCostumer(@RequestBody CostumerDto costumerDto) {
+    public CostumerDto saveCostumer(@RequestBody @Valid CostumerDto costumerDto) {
         info.info("Starting create new costumer {}", costumerDto);
         Costumer costumer = mapper.fromDto(costumerDto);
         info.info("Costumer is created {}", costumer);
@@ -47,6 +53,7 @@ public class CostumerController {
 
     @GetMapping("/{costumer-id}")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/"})
     public EntityModel<CostumerDto> findById(@PathVariable("costumer-id") int costumerId){
        Costumer costumer = costumerService.findCostumerById(costumerId);
         return modelAssembler.toModel(mapper.toDto(costumer));
@@ -65,5 +72,18 @@ public class CostumerController {
     public ResponseEntity<HttpStatus> deletePhotoById(@RequestParam("id") int id) {
         costumerService.deleteCostumerById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

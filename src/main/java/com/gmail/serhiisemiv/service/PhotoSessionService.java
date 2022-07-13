@@ -77,9 +77,6 @@ public class PhotoSessionService {
     public PhotoSession createNewPhotoSession(PhotoSessionDto photoSessionDto){
         PhotoSession photoSession = new PhotoSession();
         photoSession.setName(photoSessionDto.getName());
-        photoSession.setPrice(photoSessionDto.getPrice());
-        photoSession.setType(photoSessionDto.getType());
-        photoSession.setDuration(photoSessionDto.getDuration());
         return photoSession;
     }
 }

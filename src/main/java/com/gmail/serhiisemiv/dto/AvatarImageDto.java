@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AvatarImageDto {
     int id;
+    int photographerId;
 }

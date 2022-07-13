@@ -1,5 +1,9 @@
 package com.gmail.serhiisemiv.modeles;
 
 public enum Grade {
-    POSITIVE, NEGATIVE, NEUTRAL
+    NEGATIVE(1),
+    ;
+
+    Grade(int i) {
+    }
 }

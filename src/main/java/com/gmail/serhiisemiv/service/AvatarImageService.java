@@ -38,11 +38,22 @@ public class AvatarImageService {
         }
     }
 
-    public AvatarImage findAvatarImageById(int id) {
-        info.info("Start returned avatar image with id - {}", id);
-        Optional<AvatarImage> avatarImage = avatarImageRepository.findById(id);
-        error.error("Avatar image is not present", new ServiceException("Can't find avatar image with id - " + id));
+    public AvatarImage findByPhotographerId(int id){
+        info.info("Start to returning avatar image by photographer id {}", id);
+        Optional<AvatarImage> avatarImage = avatarImageRepository.findByPhotographer_Id(id);
         if (avatarImage.isEmpty()) {
+            error.error("Avatar image is not present", new ServiceException("Can't find avatar image photographer id - " + id));
+            throw new ServiceException("Can't find avatar image with photographer id  - " + id);
+        }
+        debug.debug("Avatar image was returned - {}", avatarImage.get());
+        return avatarImage.get();
+    }
+
+    public AvatarImage findAvatarImageById(int id) {
+        info.info("Start to returning avatar image with id - {}", id);
+        Optional<AvatarImage> avatarImage = avatarImageRepository.findById(id);
+        if (avatarImage.isEmpty()) {
+            error.error("Avatar image is not present", new ServiceException("Can't find avatar image with id - " + id));
             throw new ServiceException("Can't find avatar image with id - " + id);
         }
         debug.debug("Avatar image was returned - {}", avatarImage.get());

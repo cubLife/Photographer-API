@@ -112,7 +112,6 @@ public class PhotoController {
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoController.class).findAllByPhotoAlbum(albumId)).withSelfRel());
     }
-
     @GetMapping(value = "first-image/photo-album/{photo-album-id}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Transactional(readOnly=true)

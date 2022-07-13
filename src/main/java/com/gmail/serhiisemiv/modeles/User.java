@@ -12,9 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable = false)
     private String login;
-    @Column(nullable = false)
     private String password;
     @Column(nullable = false)
     private String firstName;
@@ -23,12 +21,12 @@ public class User {
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private long phone;
+    private String phone;
 
     public User() {
     }
 
-    public User(String login, String password, String firstName, String lastName, String email, long phone) {
+    public User(String login, String password, String firstName, String lastName, String email, String phone) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -37,7 +35,7 @@ public class User {
         this.phone = phone;
     }
 
-    public User(int id, String login, String password, String firstName, String lastName, String email, long phone) {
+    public User(int id, String login, String password, String firstName, String lastName, String email, String phone) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -95,11 +93,11 @@ public class User {
         this.email = email;
     }
 
-    public long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

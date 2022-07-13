@@ -12,9 +12,14 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -38,8 +43,8 @@ public class OrderController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto saveOrder(@RequestBody OrderDto orderDto) {
-        photoSessionService.savePhotoSession(PhotoSession.builder().type("Test").name("Test").type("Test").price(2).duration(2).build());
+    @CrossOrigin(origins = {"http://localhost:3000/"})
+    public OrderDto saveOrder(@RequestBody @Valid OrderDto orderDto) {
         Order order = orderService.createNewOrder(orderDto);
         orderService.saveOrder(order);
         return mapper.toDto(order);
@@ -69,5 +74,18 @@ public class OrderController {
     public ResponseEntity<HttpStatus> deleteOrderById(@PathVariable("order-id") int id) {
         orderService.deleteOrderById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, Object> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, Object> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

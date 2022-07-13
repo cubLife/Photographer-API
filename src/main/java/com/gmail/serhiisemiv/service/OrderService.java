@@ -2,7 +2,10 @@ package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.dto.OrderDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
+import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.Order;
+import com.gmail.serhiisemiv.modeles.PhotoSession;
+import com.gmail.serhiisemiv.modeles.PhotoSessionPackage;
 import com.gmail.serhiisemiv.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +22,17 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CostumerService costumerService;
     private final PhotoSessionService photoSessionService;
+    private final PhotoSessionPackageService packageService;
     private final Logger error = LoggerFactory.getLogger(this.getClass());
     private final Logger debug = LoggerFactory.getLogger(this.getClass());
     private final Logger info = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, CostumerService costumerService, PhotoSessionService photoSessionService) {
+    public OrderService(OrderRepository orderRepository, CostumerService costumerService, PhotoSessionService photoSessionService, PhotoSessionPackageService packageService) {
         this.orderRepository = orderRepository;
         this.costumerService = costumerService;
         this.photoSessionService = photoSessionService;
+        this.packageService = packageService;
     }
 
     public void saveOrder(Order order) {
@@ -93,9 +98,30 @@ public class OrderService {
 
     public Order createNewOrder(OrderDto orderDto){
         Order order = new Order();
-        order.setCostumer(costumerService.findCostumerById(orderDto.getCostumerId()));
-        order.setPhotoSession(photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId()));
+        Costumer costumer;
+        PhotoSession photoSession = photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId());
+        PhotoSessionPackage photoSessionPackage = packageService.findPhotoSessionPackageById(orderDto.getPhotoSessionPackageId());
+        boolean isExist= costumerService.existsCostumerByEmail(orderDto.getEmail());
+        if(!isExist){
+            costumer= createNewCostumer(orderDto);
+            costumerService.saveCostumer(costumer);
+        }else {
+            costumer=costumerService.findCostumerByEmail(orderDto.getEmail());
+        }
+        order.setCostumer(costumer);
+        order.setPhotoSession(photoSession);
+        order.setPhotoSessionPackage(photoSessionPackage);
         order.setCreationDate(new Date().getTime());
+        order.setPhotoSessionDate(orderDto.getPhotoSessionDate());
         return order;
+    }
+
+    private Costumer createNewCostumer(OrderDto orderDto){
+        Costumer costumer = new Costumer();
+        costumer.setFirstName(orderDto.getFirstName());
+        costumer.setLastName(orderDto.getLastName());
+        costumer.setEmail(orderDto.getEmail());
+        costumer.setPhone(orderDto.getPhone());
+        return costumer;
     }
 }

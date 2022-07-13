@@ -20,7 +20,7 @@ class PhotoSessionRepositoryTest {
     @Test
     void shouldSavePhotoSession() {
         generateTestData();
-        PhotoSession expected = PhotoSession.builder().id(1).duration(60).name(TEST).price(0).type(TEST).build();
+        PhotoSession expected = PhotoSession.builder().id(1).name(TEST).build();
         PhotoSession actual = photoSessionRepository.findAll().get(0);
         assertEquals(expected, actual);
     }
@@ -54,7 +54,7 @@ class PhotoSessionRepositoryTest {
 
     private void generateTestData() {
         for (int i = 0; i < 5; i++) {
-            PhotoSession photoSession = PhotoSession.builder().duration(60).name(TEST).price(0).type(TEST).build();
+            PhotoSession photoSession = PhotoSession.builder().name(TEST).build();
             photoSessionRepository.save(photoSession);
         }
     }

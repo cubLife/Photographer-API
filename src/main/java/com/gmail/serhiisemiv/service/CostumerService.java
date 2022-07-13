@@ -44,7 +44,18 @@ public class CostumerService {
         Optional<Costumer> costumer = costumerRepository.findById(id);
         if (costumer.isEmpty()) {
             error.error("Costumer is not present", new ServiceException("Can't find costumer with id - " + id));
-            throw new ServiceException("Can't find costumer with id");
+            throw new ServiceException("Can't find costumer with id - "+id);
+        }
+        debug.debug("Costumer was returned - {}", costumer.get());
+        return costumer.get();
+    }
+
+    public Costumer findCostumerByEmail(String email) {
+        info.info("Start returned costumer with email - {}", email);
+        Optional<Costumer> costumer = costumerRepository.findCostumerByEmail(email);
+        if (costumer.isEmpty()) {
+            error.error("Costumer is not present", new ServiceException("Can't find costumer with email - " + email));
+            throw new ServiceException("Can't find costumer with email - "+email);
         }
         debug.debug("Costumer was returned - {}", costumer.get());
         return costumer.get();
@@ -60,6 +71,11 @@ public class CostumerService {
             error.error("Can't find any costumers - " + e.getMessage(), e);
             throw new ServiceException("Can't find any costumers");
         }
+    }
+
+    public boolean existsCostumerByEmail(String email){
+        info.info("Checking if exists costumer by email");
+        return costumerRepository.existsCostumerByEmail(email);
     }
 
     public void deleteCostumerById(int id) {

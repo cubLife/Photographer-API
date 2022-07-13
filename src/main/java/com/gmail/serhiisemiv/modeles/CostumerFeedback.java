@@ -18,7 +18,7 @@ public class CostumerFeedback {
     @Column(nullable = false)
     private String feedback;
     @Column(nullable = false)
-    private Grade grade;
+    private int grade;
     private boolean isChanged;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "costumer_id", referencedColumnName = "id")
@@ -27,14 +27,14 @@ public class CostumerFeedback {
     public CostumerFeedback() {
     }
 
-    public CostumerFeedback(Long creationDate, String feedback, Grade grade, Costumer costumer) {
+    public CostumerFeedback(Long creationDate, String feedback, int grade, Costumer costumer) {
         this.creationDate = creationDate;
         this.feedback = feedback;
         this.grade = grade;
         this.costumer = costumer;
     }
 
-    public CostumerFeedback(int id, Long creationDate, String feedback, Grade grade, Costumer costumer) {
+    public CostumerFeedback(int id, Long creationDate, String feedback, int grade, Costumer costumer) {
         this.id = id;
         this.creationDate = creationDate;
         this.feedback = feedback;
@@ -66,11 +66,11 @@ public class CostumerFeedback {
         this.feedback = feedback;
     }
 
-    public Grade getGrade() {
+    public int getGrade() {
         return grade;
     }
 
-    public void setGrade(Grade grade) {
+    public void setGrade(int grade) {
         this.grade = grade;
     }
 
