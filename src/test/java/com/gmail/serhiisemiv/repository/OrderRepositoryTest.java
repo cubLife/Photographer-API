@@ -77,8 +77,8 @@ class OrderRepositoryTest {
         PhotoSessionPackage sessionPackage = new PhotoSessionPackage(TEST, 15, 400, 60);
         photoSessionPackageRepository.save(sessionPackage);
         for (int i = 0; i < 5; i++) {
-            orderRepository.save(new Order(100L, 200L, photoSession, costumerRepository.findById(1).get(), photoSessionPackageRepository.findById(1).get()));
-            orderRepository.save(new Order(100L, 200L, photoSession, costumerRepository.findById(2).get(), photoSessionPackageRepository.findById(1).get()));
+            orderRepository.save(new Order(100L, 200L,true, photoSession, costumerRepository.findById(1).get(), photoSessionPackageRepository.findById(1).get()));
+            orderRepository.save(new Order(100L, 200L,true, photoSession, costumerRepository.findById(2).get(), photoSessionPackageRepository.findById(1).get()));
         }
     }
 }

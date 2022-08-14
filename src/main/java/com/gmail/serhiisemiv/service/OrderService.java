@@ -112,6 +112,7 @@ public class OrderService {
         order.setPhotoSession(photoSession);
         order.setPhotoSessionPackage(photoSessionPackage);
         order.setCreationDate(new Date().getTime());
+        order.setComplete(false);
         order.setPhotoSessionDate(orderDto.getPhotoSessionDate());
         return order;
     }

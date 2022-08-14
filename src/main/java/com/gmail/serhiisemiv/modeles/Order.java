@@ -17,6 +17,8 @@ public class Order {
     private long creationDate;
     @Column(nullable = false)
     private long photoSessionDate;
+    @Column(nullable = false)
+    private boolean isComplete;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_session_id", referencedColumnName = "id")
     private PhotoSession photoSession;
@@ -30,9 +32,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long creationDate, Long photoSessionDate, PhotoSession photoSession, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
+    public Order(Long creationDate, Long photoSessionDate, boolean isComplete, PhotoSession photoSession, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
         this.creationDate = creationDate;
         this.photoSessionDate=photoSessionDate;
+        this.isComplete = isComplete;
         this.photoSession = photoSession;
         this.costumer = costumer;
         this.photoSessionPackage=photoSessionPackage;
@@ -62,8 +65,17 @@ public class Order {
         this.photoSessionDate = photoSessionDate;
     }
 
+
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
     }
 
     public PhotoSession getPhotoSession() {
@@ -110,6 +122,7 @@ public class Order {
                 ", creationDate=" + creationDate +
                 ", photoSessionDate=" + photoSessionDate +
                 ", photoSession=" + photoSession +
+                ", isComplete=" + isComplete +
                 ", photoSessionPackage=" + photoSessionPackage +
                 ", costumer=" + costumer +
                 '}';

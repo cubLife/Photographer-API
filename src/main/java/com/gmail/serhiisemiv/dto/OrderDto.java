@@ -23,6 +23,7 @@ public class OrderDto {
     @Pattern(regexp = "^\\+(?:[0-9]●?){10}[0-9]$", message = "Please type valid phone number. For example +48123456789")
     private String costumerPhone;
     private long creationDate;
+    private boolean isComplete;
     private long photoSessionDate;
     private int photoSessionId;
     private String photoSessionName;
