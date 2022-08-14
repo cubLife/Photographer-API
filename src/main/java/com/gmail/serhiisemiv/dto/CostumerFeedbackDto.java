@@ -16,10 +16,10 @@ public class CostumerFeedbackDto {
     private int id;
     @NotBlank(message = "Email can't be empty")
     @Email(message = "Email should be valid. For example - sample@gmail.com")
-    String email;
+    String costumerEmail;
+    String costumerFirstName;
     private Long creationDate;
     @NotBlank(message = "Feedback can't be empty")
-    @Size(min = 30, message = "Feedback too small")
     private String feedback;
     private int grade;
     private boolean isChanged;

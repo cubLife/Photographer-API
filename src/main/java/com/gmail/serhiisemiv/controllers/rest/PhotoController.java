@@ -3,6 +3,7 @@ package com.gmail.serhiisemiv.controllers.rest;
 import com.gmail.serhiisemiv.dto.PhotoDto;
 import com.gmail.serhiisemiv.dto.mappers.PhotoMapper;
 import com.gmail.serhiisemiv.modelAsemblers.PhotoDtoModelAssembler;
+import com.gmail.serhiisemiv.modeles.Image;
 import com.gmail.serhiisemiv.modeles.Photo;
 import com.gmail.serhiisemiv.service.PhotoAlbumService;
 import com.gmail.serhiisemiv.service.PhotoService;
@@ -20,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +41,7 @@ public class PhotoController {
     private final PhotoMapper mapper;
     private final Logger info = LoggerFactory.getLogger(this.getClass());
     private final Logger error = LoggerFactory.getLogger(this.getClass());
+    private final Logger debug = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public PhotoController(PhotoService photoService, PhotoAlbumService photoAlbumService, PhotoDtoModelAssembler photoDtoModelAssembler, PhotoMapper mapper) {
@@ -48,6 +52,7 @@ public class PhotoController {
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     @ResponseStatus(HttpStatus.CREATED)
     public PhotoDto savePhoto(@RequestParam MultipartFile file, @RequestParam int photoAlbumId) {
         info.info("Starting creating new photo");
@@ -98,7 +103,9 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = {"http://localhost:3000/"})
     public CollectionModel<EntityModel<PhotoDto>> findAllPhotos() {
-        List<PhotoDto> photosDto = mapper.listToDto(photoService.findAllPhotos());
+        List<Photo> photos= photoService.findAllPhotos();
+        photos.sort(Comparator.comparingInt(Image::getId));
+        List<PhotoDto> photosDto = mapper.listToDto(photos);
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoController.class).findAllPhotos()).withSelfRel());
     }
@@ -106,9 +113,11 @@ public class PhotoController {
     @GetMapping("/photo-album/{photo-album-id}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional(readOnly=true)
-    @CrossOrigin(origins = {"http://localhost:3000/"})
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public CollectionModel<EntityModel<PhotoDto>> findAllByPhotoAlbum(@PathVariable("photo-album-id") int albumId){
-        List<PhotoDto> photosDto = mapper.listToDto(photoService.findAllByAlbumId(albumId));
+        List<Photo> photos= photoService.findAllByAlbumId(albumId);
+        photos.sort(Comparator.comparingInt(Image::getId));
+        List<PhotoDto> photosDto = mapper.listToDto(photos);
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoController.class).findAllByPhotoAlbum(albumId)).withSelfRel());
     }
@@ -120,7 +129,25 @@ public class PhotoController {
         return photoService.findFirstByAlbumId(albumId);
     }
 
+    @PutMapping(value = "/{id}",  consumes = {"multipart/form-data"})
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    public void replacePhoto(@RequestBody MultipartFile file, @PathVariable("id") int id){
+       Photo photo= photoService.findPhotoById(id);
+        try {
+            photo.setName(file.getOriginalFilename());
+            photo.setSize(file.getSize());
+            photo.setPicture(file.getBytes());
+        } catch (IOException e) {
+            error.error("Can't create photo. " + e.getMessage(), e);
+        }
+        debug.debug("Starting save replaced photo");
+        photoService.savePhoto(photo);
+        info.info("Photo is saved");
+    }
+
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<HttpStatus> deletePhotoById(@PathVariable("id") int id) {
         photoService.deletePhotoById(id);

@@ -61,6 +61,7 @@ public class CostumerController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public CollectionModel<EntityModel<CostumerDto>> findAll(){
         List<CostumerDto> dtoList = mapper.listToDto(costumerService.findAllCostumers());
         List<EntityModel<CostumerDto>> entityModels = dtoList.stream().map(modelAssembler::toModel).collect(Collectors.toList());

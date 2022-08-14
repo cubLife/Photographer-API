@@ -1,6 +1,7 @@
 package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.dto.PhotoSessionDto;
+import com.gmail.serhiisemiv.dto.PhotoSessionPackageDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.modeles.PhotoSessionPackage;
@@ -63,6 +64,15 @@ public class PhotoSessionPackageService {
         }
     }
 
+    public void editPhotoSessionPackageById(int id, PhotoSessionPackageDto sessionPackageDto) {
+        PhotoSessionPackage sessionPackage = this.findPhotoSessionPackageById(id);
+        info.info("Starting edit Photo session Package with id - {}", id);
+        edit(sessionPackage, sessionPackageDto);
+        info.info("Photo Session package edited - {} ", id);
+        this.savePhotoSessionPackage(sessionPackage);
+
+    }
+
     public void deletePhotoSessionPackageById(int id) {
         info.info("Starting delete photo session package with id - {}", id);
         try {
@@ -71,6 +81,22 @@ public class PhotoSessionPackageService {
         } catch (NoSuchElementException e) {
             error.error("Can't remove photo session package with id - " + id, e);
             throw new ServiceException("Can't delete photo session package with id");
+        }
+    }
+
+    private void edit(PhotoSessionPackage sessionPackage, PhotoSessionPackageDto sessionPackageDto) {
+        System.out.println("from service=" + sessionPackageDto.getName());
+        if ( sessionPackageDto.getName() != null && !sessionPackageDto.getName().isEmpty()) {
+            sessionPackage.setName(sessionPackageDto.getName());
+        }
+        if (sessionPackageDto.getNumberPhotos() > 0) {
+            sessionPackage.setNumberPhotos(sessionPackageDto.getNumberPhotos());
+        }
+        if (sessionPackageDto.getPrice() > 0) {
+            sessionPackage.setPrice(sessionPackageDto.getPrice());
+        }
+        if (sessionPackageDto.getDuration() > 0) {
+            sessionPackage.setDuration(sessionPackageDto.getDuration());
         }
     }
 }

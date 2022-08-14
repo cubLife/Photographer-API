@@ -105,6 +105,7 @@ public class PhotoService {
         }
     }
 
+
     public void deletePhotoById(int id) {
         info.info("Starting delete photo with id - {}", id);
         try {

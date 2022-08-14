@@ -10,9 +10,14 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -33,8 +38,9 @@ public class PhotoSessionPackageController {
     }
 
     @PostMapping()
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     @ResponseStatus(HttpStatus.CREATED)
-    public PhotoSessionPackageDto savePhotoSession(@RequestBody PhotoSessionPackageDto photoSessionPackageDto) {
+    public PhotoSessionPackageDto savePhotoSession(@RequestBody @Valid PhotoSessionPackageDto photoSessionPackageDto) {
         PhotoSessionPackage photoSessionPackage = createNewPhotoSessionPackage(photoSessionPackageDto);
         packageService.savePhotoSessionPackage(photoSessionPackage);
         return mapper.toDto(photoSessionPackage);
@@ -49,7 +55,7 @@ public class PhotoSessionPackageController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/"})
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public CollectionModel<EntityModel<PhotoSessionPackageDto>> getAll() {
         List<PhotoSessionPackage> photoSessionPackages = packageService.findAllPhotoSessionPackages();
         List<EntityModel<PhotoSessionPackageDto>> entityModels = getEntityModels(photoSessionPackages);
@@ -60,8 +66,17 @@ public class PhotoSessionPackageController {
         return photoSessionPackages.stream().map(mapper::toDto).map(modelAssembler::toModel).collect(Collectors.toList());
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    public void editPhotoSessionPackageById(@RequestBody PhotoSessionPackageDto sessionPackageDto, @PathVariable int id){
+        System.out.println("Name - "+sessionPackageDto.getName());
+        packageService.editPhotoSessionPackageById(id, sessionPackageDto);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id){
         packageService.deletePhotoSessionPackageById(id);
         return ResponseEntity.noContent().build();
@@ -74,5 +89,18 @@ public class PhotoSessionPackageController {
         sessionPackage.setNumberPhotos(photoSessionPackageDto.getNumberPhotos());
         sessionPackage.setPrice(photoSessionPackageDto.getPrice());
         return sessionPackage;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, Object> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, Object> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

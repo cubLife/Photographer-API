@@ -101,12 +101,12 @@ public class OrderService {
         Costumer costumer;
         PhotoSession photoSession = photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId());
         PhotoSessionPackage photoSessionPackage = packageService.findPhotoSessionPackageById(orderDto.getPhotoSessionPackageId());
-        boolean isExist= costumerService.existsCostumerByEmail(orderDto.getEmail());
+        boolean isExist= costumerService.existsCostumerByEmail(orderDto.getCostumerEmail());
         if(!isExist){
             costumer= createNewCostumer(orderDto);
             costumerService.saveCostumer(costumer);
         }else {
-            costumer=costumerService.findCostumerByEmail(orderDto.getEmail());
+            costumer=costumerService.findCostumerByEmail(orderDto.getCostumerEmail());
         }
         order.setCostumer(costumer);
         order.setPhotoSession(photoSession);
@@ -118,10 +118,10 @@ public class OrderService {
 
     private Costumer createNewCostumer(OrderDto orderDto){
         Costumer costumer = new Costumer();
-        costumer.setFirstName(orderDto.getFirstName());
-        costumer.setLastName(orderDto.getLastName());
-        costumer.setEmail(orderDto.getEmail());
-        costumer.setPhone(orderDto.getPhone());
+        costumer.setFirstName(orderDto.getCostumerFirstName());
+        costumer.setLastName(orderDto.getCostumerLastName());
+        costumer.setEmail(orderDto.getCostumerEmail());
+        costumer.setPhone(orderDto.getCostumerPhone());
         return costumer;
     }
 }

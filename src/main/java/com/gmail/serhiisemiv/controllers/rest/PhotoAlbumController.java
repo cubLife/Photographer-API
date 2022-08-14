@@ -13,9 +13,14 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -23,7 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController()
 @RequestMapping(value = "api/photo-albums")
-//@CrossOrigin(origins = "http://localhost:3000")
+
 public class PhotoAlbumController {
     private final PhotoAlbumService photoAlbumService;
     private final PhotoAlbumDtoModelAssembler modelAssembler;
@@ -40,7 +45,8 @@ public class PhotoAlbumController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public PhotoAlbumDto savePhotoAlbum(@RequestBody PhotoAlbumDto photoAlbumDto) {
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    public PhotoAlbumDto savePhotoAlbum(@RequestBody @Valid PhotoAlbumDto photoAlbumDto) {
         PhotoAlbum photoAlbum = new PhotoAlbum();
         photoAlbum.setName(photoAlbumDto.getName());
         photoAlbumService.savePhotoAlbum(photoAlbum);
@@ -48,6 +54,7 @@ public class PhotoAlbumController {
     }
 
     @GetMapping(value = "/{id}")
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     @ResponseStatus(HttpStatus.OK)
     public EntityModel<PhotoAlbumDto> findById(@PathVariable int id) {
         PhotoAlbum photoAlbum = photoAlbumService.findPhotoAlbumById(id);
@@ -55,7 +62,7 @@ public class PhotoAlbumController {
     }
 
     @GetMapping("/list" )
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<PhotoAlbumDto>> findAll() {
         List<PhotoAlbumDto> photoAlbumDtoList = mapper.listToDto(photoAlbumService.findAllPhotoAlbums());
@@ -63,6 +70,13 @@ public class PhotoAlbumController {
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoAlbumController.class).findAll()).withSelfRel());
     }
 
+    @DeleteMapping("/{id}")
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable int id){
+        photoAlbumService.deletePhotoAlbumById(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @NotNull
     private List<EntityModel<PhotoAlbumDto>> getEntityModels(List<PhotoAlbumDto> photoAlbumDtoList) {
@@ -70,10 +84,16 @@ public class PhotoAlbumController {
                 .map(modelAssembler::toModel).collect(Collectors.toList());
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable int id){
-        photoAlbumService.deletePhotoAlbumById(id);
-        return ResponseEntity.noContent().build();
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, Object> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, Object> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

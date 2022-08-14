@@ -18,6 +18,8 @@ public class CostumerFeedbackMapper {
 
         propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getId, CostumerFeedbackDto::setId));
         propertyMapperToDto.addMappings(mapper -> mapper.map(feedback -> feedback.getCostumer().getId(),CostumerFeedbackDto::setCostumerId));
+        propertyMapperToDto.addMappings(mapper -> mapper.map(feedback -> feedback.getCostumer().getEmail(),CostumerFeedbackDto::setCostumerEmail));
+        propertyMapperToDto.addMappings(mapper -> mapper.map(feedback -> feedback.getCostumer().getFirstName(),CostumerFeedbackDto::setCostumerFirstName));
         propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getCreationDate, CostumerFeedbackDto::setCreationDate));
         propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::isChanged, CostumerFeedbackDto::setChanged));
         propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getGrade, CostumerFeedbackDto::setGrade));

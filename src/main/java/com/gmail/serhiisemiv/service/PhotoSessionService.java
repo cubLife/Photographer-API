@@ -31,7 +31,7 @@ public class PhotoSessionService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photo session{}", photoSession);
+            info.info("Start saving photo session{}", photoSession);
             photoSessionRepository.save(photoSession);
             debug.debug("Photo session is saved{}", photoSession);
         } catch (NumberFormatException e) {
@@ -61,6 +61,14 @@ public class PhotoSessionService {
             error.error("Can't find any photo sessions - " + e.getMessage(), e);
             throw new ServiceException("Can't find any photos sessions");
         }
+    }
+
+    public void editPhotoSession(int id, PhotoSessionDto photoSessionDto){
+        PhotoSession photoSession = this.findPhotoSessionById(id);
+        info.info("Starting edit Photo session with id - {}",id );
+        photoSession.setName(photoSessionDto.getName());
+        this.savePhotoSession(photoSession);
+        info.info("Photo Session edited - {} ",id );
     }
 
     public void deletePhotoSessionById(int id) {

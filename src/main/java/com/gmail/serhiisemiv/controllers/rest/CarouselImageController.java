@@ -5,6 +5,7 @@ import com.gmail.serhiisemiv.dto.PhotoDto;
 import com.gmail.serhiisemiv.dto.mappers.CarouselImageMapper;
 import com.gmail.serhiisemiv.modelAsemblers.CarouselImageModelAssembler;
 import com.gmail.serhiisemiv.modeles.CarouselImage;
+import com.gmail.serhiisemiv.modeles.Photo;
 import com.gmail.serhiisemiv.service.CarouselImageService;
 import javassist.bytecode.ByteArray;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class CarouselImageController {
     private final CarouselImageModelAssembler modelAssembler;
     private final CarouselImageMapper mapper;
     private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger(this.getClass());
+    private final Logger debug = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public CarouselImageController(CarouselImageService carouselImageService, CarouselImageModelAssembler modelAssembler, CarouselImageMapper carouselImageMapper) {
@@ -46,6 +49,7 @@ public class CarouselImageController {
 
     @PostMapping(consumes = {"multipart/form-data"}, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/" })
     public Resource saveCarouselImage(@RequestParam MultipartFile file) throws IOException {
         info.info("Starting creating new carousel image");
         CarouselImage carouselImage = carouselImageService.createNewCarouselImage(file);
@@ -66,7 +70,7 @@ public class CarouselImageController {
     @GetMapping(value = "/image/{image-id}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional(readOnly = true)
-    @CrossOrigin(origins = {"http://localhost:3000/"})
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public Resource getBytesImageById(@PathVariable("image-id") int id) {
         CarouselImage carouselImage = carouselImageService.findCarouselImageById(id);
         return new ByteArrayResource(carouselImage.getPicture());
@@ -74,15 +78,32 @@ public class CarouselImageController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/"})
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public CollectionModel<EntityModel<CarouselImageDto>> findAllCarouselImages() {
         List<CarouselImageDto> carouselImageDto = mapper.listToDto(carouselImageService.findAllCarouselImages());
         List<EntityModel<CarouselImageDto>> entityModels = getEntityModels(carouselImageDto);
         return CollectionModel.of(entityModels, linkTo(methodOn(CarouselImageController.class).findAllCarouselImages()).withSelfRel());
     }
 
+    @PutMapping(value = "/{id}",  consumes = {"multipart/form-data"})
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    public void replacePhoto(@RequestBody MultipartFile file, @PathVariable("id") int id){
+        CarouselImage carouselImage= carouselImageService.findCarouselImageById(id);
+        try {
+            carouselImage.setPicture(file.getBytes());
+        } catch (IOException e) {
+            error.error("Can't edit carousel image. " + e.getMessage(), e);
+        }
+        debug.debug("Starting save replaced carousel image");
+        carouselImageService.addCarouselImage(carouselImage);
+        info.info("Carousel image is saved");
+    }
+
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/" })
     public ResponseEntity<HttpStatus> deletePhotoById(@PathVariable("id") int id) {
         carouselImageService.deleteCarouselImageById(id);
         return ResponseEntity.noContent().build();

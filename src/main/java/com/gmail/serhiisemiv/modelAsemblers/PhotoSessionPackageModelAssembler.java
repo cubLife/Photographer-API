@@ -17,7 +17,7 @@ public class PhotoSessionPackageModelAssembler implements RepresentationModelAss
     @Override
     public EntityModel<PhotoSessionPackageDto> toModel(PhotoSessionPackageDto photoSessionPackageDto) {
         return EntityModel.of(photoSessionPackageDto,
-                linkTo(methodOn(PhotoSessionController.class).getById(photoSessionPackageDto.getId())).withSelfRel(),
+                linkTo(methodOn(PhotoSessionPackageController.class).getById(photoSessionPackageDto.getId())).withSelfRel(),
                 linkTo(methodOn(PhotoSessionPackageController.class).getAll()).withRel("photoSessionPackages"));
     }
 }
