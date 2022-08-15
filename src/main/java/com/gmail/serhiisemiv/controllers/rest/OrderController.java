@@ -24,6 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
 @RequestMapping(value = "api/orders")
 public class OrderController {
     private final OrderService orderService;
@@ -39,7 +40,6 @@ public class OrderController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public OrderDto saveOrder(@RequestBody @Valid OrderDto orderDto) {
         Order order = orderService.createNewOrder(orderDto);
         orderService.saveOrder(order);
@@ -55,7 +55,6 @@ public class OrderController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public CollectionModel<EntityModel<OrderDto>> getAllOrders() {
         List<Order> orders = orderService.findAllOrders();
         List<EntityModel<OrderDto>> orderDtoModels = getEntityModels(orders);

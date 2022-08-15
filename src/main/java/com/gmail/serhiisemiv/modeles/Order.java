@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.modeles;
 
+import com.gmail.serhiisemiv.OrderStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Order {
     @Column(nullable = false)
     private long photoSessionDate;
     @Column(nullable = false)
-    private boolean isComplete;
+    private OrderStatus orderStatus;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_session_id", referencedColumnName = "id")
     private PhotoSession photoSession;
@@ -32,10 +33,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long creationDate, Long photoSessionDate, boolean isComplete, PhotoSession photoSession, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
+    public Order(Long creationDate, Long photoSessionDate, OrderStatus orderStatus, PhotoSession photoSession, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
         this.creationDate = creationDate;
         this.photoSessionDate=photoSessionDate;
-        this.isComplete = isComplete;
+        this.orderStatus = orderStatus;
         this.photoSession = photoSession;
         this.costumer = costumer;
         this.photoSessionPackage=photoSessionPackage;
@@ -70,12 +71,12 @@ public class Order {
         this.creationDate = creationDate;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setComplete(boolean complete) {
-        isComplete = complete;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public PhotoSession getPhotoSession() {
@@ -122,7 +123,7 @@ public class Order {
                 ", creationDate=" + creationDate +
                 ", photoSessionDate=" + photoSessionDate +
                 ", photoSession=" + photoSession +
-                ", isComplete=" + isComplete +
+                ", isComplete=" + orderStatus.toString() +
                 ", photoSessionPackage=" + photoSessionPackage +
                 ", costumer=" + costumer +
                 '}';

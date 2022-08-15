@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.repository;
 
+import com.gmail.serhiisemiv.OrderStatus;
 import com.gmail.serhiisemiv.modeles.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +78,8 @@ class OrderRepositoryTest {
         PhotoSessionPackage sessionPackage = new PhotoSessionPackage(TEST, 15, 400, 60);
         photoSessionPackageRepository.save(sessionPackage);
         for (int i = 0; i < 5; i++) {
-            orderRepository.save(new Order(100L, 200L,true, photoSession, costumerRepository.findById(1).get(), photoSessionPackageRepository.findById(1).get()));
-            orderRepository.save(new Order(100L, 200L,true, photoSession, costumerRepository.findById(2).get(), photoSessionPackageRepository.findById(1).get()));
+            orderRepository.save(new Order(100L, 200L, OrderStatus.NEW, photoSession, costumerRepository.findById(1).get(), photoSessionPackageRepository.findById(1).get()));
+            orderRepository.save(new Order(100L, 200L,OrderStatus.NEW, photoSession, costumerRepository.findById(2).get(), photoSessionPackageRepository.findById(1).get()));
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.dto;
 
+import com.gmail.serhiisemiv.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class OrderDto {
     @Pattern(regexp = "^\\+(?:[0-9]●?){10}[0-9]$", message = "Please type valid phone number. For example +48123456789")
     private String costumerPhone;
     private long creationDate;
-    private boolean isComplete;
+    private String orderStatus;
     private long photoSessionDate;
     private int photoSessionId;
     private String photoSessionName;
@@ -31,4 +32,5 @@ public class OrderDto {
     @Min(value = 1, message = "Choose photo session package")
     private int photoSessionPackageId;
     private String photoSessionPackageName;
+
 }
