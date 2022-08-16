@@ -3,6 +3,7 @@ package com.gmail.serhiisemiv.controllers.rest;
 import com.gmail.serhiisemiv.dto.AvatarImageDto;
 import com.gmail.serhiisemiv.dto.mappers.AvatarImageMapper;
 import com.gmail.serhiisemiv.modeles.AvatarImage;
+import com.gmail.serhiisemiv.modeles.Photo;
 import com.gmail.serhiisemiv.modeles.Photographer;
 import com.gmail.serhiisemiv.service.AvatarImageService;
 import com.gmail.serhiisemiv.service.PhotographerService;
@@ -29,6 +30,8 @@ public class AvatarImageController {
     private final PhotographerService photographerService;
     private final AvatarImageMapper mapper;
     private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger(this.getClass());
+    private final Logger debug = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public AvatarImageController(AvatarImageService avatarImageService, PhotographerService photographerService, AvatarImageMapper mapper) {
@@ -45,7 +48,7 @@ public class AvatarImageController {
         AvatarImage avatarImage = new AvatarImage();
         avatarImage.setPhotographer(photographer);
         avatarImage.setPicture(file.getBytes());
-        avatarImageService.addAvatarImage(avatarImage);
+        avatarImageService.saveAvatarImage(avatarImage);
         System.out.println(avatarImage);
         AvatarImageDto avatarImageDto = mapper.toDto(avatarImage);
         System.out.println(avatarImageDto);
@@ -67,5 +70,21 @@ public class AvatarImageController {
     public Resource getAvatarImagePicture(@PathVariable("id") int id){
         AvatarImage avatarImage = avatarImageService.findByPhotographerId(id);
         return new ByteArrayResource(avatarImage.getPicture());
+    }
+
+    @PutMapping(value = "/{id}",  consumes = {"multipart/form-data"})
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @Transactional
+    public void changeAvatar(@RequestBody MultipartFile file, @PathVariable("id") int id){
+        AvatarImage avatarImage = avatarImageService.findByPhotographerId(id);
+        try {
+            avatarImage.setPicture(file.getBytes());
+        } catch (IOException e) {
+            error.error("Can't replace photo. " + e.getMessage(), e);
+        }
+        debug.debug("Starting save replaced photo");
+        avatarImageService.saveAvatarImage(avatarImage);
+        info.info("Photo is saved");
     }
 }

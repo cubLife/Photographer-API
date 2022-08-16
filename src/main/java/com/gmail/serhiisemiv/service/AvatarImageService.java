@@ -23,7 +23,7 @@ public class AvatarImageService {
         this.avatarImageRepository = avatarImageRepository;
     }
 
-    public void addAvatarImage(AvatarImage avatarImage) {
+    public void saveAvatarImage(AvatarImage avatarImage) {
         if (avatarImage == null) {
             error.error("Input parameter was null", new IllegalArgumentException("Input parameter can't be null"));
             throw new IllegalArgumentException("Input parameter can't be null");
