@@ -85,7 +85,6 @@ public class PhotoSessionPackageService {
     }
 
     private void edit(PhotoSessionPackage sessionPackage, PhotoSessionPackageDto sessionPackageDto) {
-        System.out.println("from service=" + sessionPackageDto.getName());
         if ( sessionPackageDto.getName() != null && !sessionPackageDto.getName().isEmpty()) {
             sessionPackage.setName(sessionPackageDto.getName());
         }

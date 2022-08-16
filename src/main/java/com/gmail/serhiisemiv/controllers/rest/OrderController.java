@@ -24,7 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 @RequestMapping(value = "api/orders")
 public class OrderController {
     private final OrderService orderService;
@@ -71,6 +71,13 @@ public class OrderController {
         orderService.deleteOrderById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void editOrder(@RequestBody OrderDto orderDto, @PathVariable int id) {
+        orderService.editOrder(orderDto, id);
+    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

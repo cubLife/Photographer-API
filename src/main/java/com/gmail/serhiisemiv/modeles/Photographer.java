@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "photographers")
 public class Photographer extends User {
+    @Lob
     private String aboutMyself;
     @OneToOne(mappedBy = "photographer")
     private AvatarImage avatarImage;

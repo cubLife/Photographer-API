@@ -41,7 +41,7 @@ public class PhotographerController {
 
     @GetMapping("/{photographer-id}")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/"})
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public EntityModel<PhotographerDto> findById(@PathVariable("photographer-id") int id) {
         Photographer photographer = photographerService.findPhotographerById(id);
         return modelAssembler.toModel(mapper.toDto(photographer));

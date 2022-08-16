@@ -13,7 +13,6 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +52,7 @@ public class CostumerController {
 
     @GetMapping("/{costumer-id}")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/"})
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public EntityModel<CostumerDto> findById(@PathVariable("costumer-id") int costumerId){
        Costumer costumer = costumerService.findCostumerById(costumerId);
         return modelAssembler.toModel(mapper.toDto(costumer));
@@ -70,6 +69,7 @@ public class CostumerController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public ResponseEntity<HttpStatus> deletePhotoById(@RequestParam("id") int id) {
         costumerService.deleteCostumerById(id);
         return ResponseEntity.noContent().build();

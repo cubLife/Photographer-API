@@ -25,6 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
 @RequestMapping("api/feedbacks")
 public class CostumerFeedbackController {
     private final CostumerFeedbackService feedbackService;
@@ -40,7 +41,6 @@ public class CostumerFeedbackController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public CostumerFeedbackDto saveCostumerFeedback(@RequestBody @Valid CostumerFeedbackDto feedbackDto){
         CostumerFeedback feedback = feedbackService.createNewCostumerFeedback(feedbackDto);
         feedbackService.saveCostumerFeedback(feedback);
@@ -57,8 +57,6 @@ public class CostumerFeedbackController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
-
     public CollectionModel<EntityModel<CostumerFeedbackDto>> getAll(){
         List<CostumerFeedback> feedbacks = feedbackService.findAllCostumerFeedbacks();
         List<EntityModel<CostumerFeedbackDto>> entityModels = getModels(feedbacks);

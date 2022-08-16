@@ -55,7 +55,7 @@ public class AvatarImageController {
     @GetMapping("/photographer-id/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional(readOnly=true)
-    @CrossOrigin(origins = {"http://localhost:3000/"})
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public EntityModel<AvatarImageDto> getAvatarImageByPhotographerId(@PathVariable("id") int id){
         AvatarImage avatarImage = avatarImageService.findByPhotographerId(id);
         return EntityModel.of(mapper.toDto(avatarImage), linkTo(methodOn(AvatarImageController.class).getAvatarImagePicture(id)).withSelfRel());

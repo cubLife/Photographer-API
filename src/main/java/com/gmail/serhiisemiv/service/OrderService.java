@@ -86,6 +86,15 @@ public class OrderService {
         }
     }
 
+    public void editOrder(OrderDto orderDto, int id) {
+        Order order = this.findOrderById(id);
+        info.info("Starting edit Order with id - {}", id);
+        edit(order, orderDto);
+        this.saveOrder(order);
+        info.info("Order with id edited - {}", order);
+
+    }
+
     public void deleteOrderById(int id) {
         info.info("Starting delete order with id - {}", id);
         try {
@@ -97,17 +106,17 @@ public class OrderService {
         }
     }
 
-    public Order createNewOrder(OrderDto orderDto){
+    public Order createNewOrder(OrderDto orderDto) {
         Order order = new Order();
         Costumer costumer;
         PhotoSession photoSession = photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId());
         PhotoSessionPackage photoSessionPackage = packageService.findPhotoSessionPackageById(orderDto.getPhotoSessionPackageId());
-        boolean isExist= costumerService.existsCostumerByEmail(orderDto.getCostumerEmail());
-        if(!isExist){
-            costumer= createNewCostumer(orderDto);
+        boolean isExist = costumerService.existsCostumerByEmail(orderDto.getCostumerEmail());
+        if (!isExist) {
+            costumer = createNewCostumer(orderDto);
             costumerService.saveCostumer(costumer);
-        }else {
-            costumer=costumerService.findCostumerByEmail(orderDto.getCostumerEmail());
+        } else {
+            costumer = costumerService.findCostumerByEmail(orderDto.getCostumerEmail());
         }
         order.setCostumer(costumer);
         order.setPhotoSession(photoSession);
@@ -118,12 +127,27 @@ public class OrderService {
         return order;
     }
 
-    private Costumer createNewCostumer(OrderDto orderDto){
+    private Costumer createNewCostumer(OrderDto orderDto) {
         Costumer costumer = new Costumer();
         costumer.setFirstName(orderDto.getCostumerFirstName());
         costumer.setLastName(orderDto.getCostumerLastName());
         costumer.setEmail(orderDto.getCostumerEmail());
         costumer.setPhone(orderDto.getCostumerPhone());
         return costumer;
+    }
+
+    private void edit(Order order, OrderDto orderDto) {
+        if (orderDto.getOrderStatus() != null && !orderDto.getOrderStatus().isEmpty()) {
+            order.setOrderStatus(OrderStatus.valueOf(orderDto.getOrderStatus()));
+        }
+        if (orderDto.getPhotoSessionDate() > 0) {
+            order.setPhotoSessionDate(orderDto.getPhotoSessionDate());
+        }
+        if (orderDto.getPhotoSessionId() > 0) {
+            order.setPhotoSession(photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId()));
+        }
+        if (orderDto.getPhotoSessionPackageId() > 0) {
+            order.setPhotoSessionPackage(packageService.findPhotoSessionPackageById(orderDto.getPhotoSessionPackageId()));
+        }
     }
 }
