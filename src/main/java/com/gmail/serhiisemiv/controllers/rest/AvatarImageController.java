@@ -3,7 +3,6 @@ package com.gmail.serhiisemiv.controllers.rest;
 import com.gmail.serhiisemiv.dto.AvatarImageDto;
 import com.gmail.serhiisemiv.dto.mappers.AvatarImageMapper;
 import com.gmail.serhiisemiv.modeles.AvatarImage;
-import com.gmail.serhiisemiv.modeles.Photo;
 import com.gmail.serhiisemiv.modeles.Photographer;
 import com.gmail.serhiisemiv.service.AvatarImageService;
 import com.gmail.serhiisemiv.service.PhotographerService;

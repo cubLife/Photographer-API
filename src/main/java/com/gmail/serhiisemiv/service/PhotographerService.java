@@ -62,6 +62,39 @@ public class PhotographerService {
         }
     }
 
+    public void updateAboutMyself(String aboutMyself, int id){
+        debug.debug("Start to updating about myself in photographer with id={}",id);
+        try{
+            photographerRepository.updateAboutMySelf(aboutMyself, id);
+            debug.debug("About myself in photographer updated id={}", id);
+        }catch (NoSuchElementException e){
+            error.error("Cant update photographer about myself with id - " + id, e);
+            throw new ServiceException("Cant find and update photographer with id - " + id, e);
+        }
+    }
+
+    public void updateEmail(String email, int id){
+        debug.debug("Start to updating email in photographer with id={}",id);
+        try{
+            photographerRepository.updateEmail(email, id);
+            debug.debug("Email in photographer updated id={}", id);
+        }catch (NoSuchElementException e){
+            error.error("Cant update photographer email with id - " + id, e);
+            throw new ServiceException("Cant find and update photographer email with id - " + id, e);
+        }
+    }
+
+    public void updatePhone(String phone, int id){
+        debug.debug("Start to updating phone in photographer with id={}",id);
+        try{
+            photographerRepository.updatePhone(phone, id);
+            debug.debug("Phone in photographer updated id={}", id);
+        }catch (NoSuchElementException e){
+            error.error("Cant update photographer phone with id - " + id, e);
+            throw new ServiceException("Cant find and update photographer phone with id - " + id, e);
+        }
+    }
+
     public void deletePhotographerById(int id) {
         info.info("Starting delete photographer with id - {}", id);
         try {

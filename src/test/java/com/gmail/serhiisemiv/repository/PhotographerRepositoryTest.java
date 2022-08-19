@@ -17,6 +17,7 @@ class PhotographerRepositoryTest {
     @Autowired
     private SocialNetworkRepository socialNetworkRepository;
     private static final String TEST = "test";
+    private static final String PHONE = "+1234567890";
 
     @Test
     public void shouldSavePhotographer() {
@@ -36,7 +37,7 @@ class PhotographerRepositoryTest {
     }
 
     @Test
-    public void shouldGetAllPhotographers(){
+    public void shouldGetAllPhotographers() {
         generateTestData();
         int actual = photographerRepository.findAll().size();
         int expected = 5;
@@ -44,17 +45,26 @@ class PhotographerRepositoryTest {
     }
 
     @Test
-    public void shouldDeletePhotographerById(){
+    public void shouldDeletePhotographerById() {
         generateTestData();
         photographerRepository.deleteById(1);
         int actual = photographerRepository.findAll().size();
         int expected = 4;
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldUpdateAboutMySelf() {
+        generateTestData();
+        photographerRepository.updateAboutMySelf("Hi", 1);
+        String actual = photographerRepository.findById(1).get().getAboutMyself();
+        String expected = "Hi";
+        assertEquals(expected, actual);
     }
 
     private void generateTestData() {
         for (int i = 0; i < 5; i++) {
-            Photographer photographer = Photographer.builder().login(TEST).password(TEST).firstName(TEST).lastName(TEST).email(TEST).aboutMyself(TEST).build();
+            Photographer photographer = Photographer.builder().login(TEST).password(TEST).firstName(TEST).lastName(TEST).email(TEST).phone(PHONE).aboutMyself(TEST).build();
             photographerRepository.save(photographer);
         }
     }

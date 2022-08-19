@@ -20,5 +20,5 @@ public class UserDto {
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private int phone;
+    private String phone;
 }

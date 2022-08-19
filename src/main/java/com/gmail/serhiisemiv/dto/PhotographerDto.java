@@ -14,7 +14,7 @@ public class PhotographerDto {
     private String firstName;
     private String lastName;
     private String email;
-    private long phone;
+    private String phone;
     private String aboutMyself;
 //    private int avatarImageId;
 }
