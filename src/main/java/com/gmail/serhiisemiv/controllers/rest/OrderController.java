@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.controllers.rest;
 
+import com.gmail.serhiisemiv.OrderStatus;
 import com.gmail.serhiisemiv.dto.OrderDto;
 import com.gmail.serhiisemiv.dto.mappers.OrderMapper;
 import com.gmail.serhiisemiv.modelAsemblers.OrderModelAssembler;
@@ -61,6 +62,15 @@ public class OrderController {
         return CollectionModel.of(orderDtoModels, linkTo(methodOn(OrderController.class).getAllOrders()).withSelfRel());
     }
 
+    @GetMapping("/order-status/{status}/list")
+    @ResponseStatus(HttpStatus.OK)
+    public CollectionModel<EntityModel<OrderDto>> getByOrderStatus(@PathVariable(value = "status") String status) {
+        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
+        List<Order> orders = orderService.findByOrderStatus(orderStatus);
+        List<EntityModel<OrderDto>> orderDtoModels = getEntityModels(orders);
+        return CollectionModel.of(orderDtoModels, linkTo(methodOn(OrderController.class).getByOrderStatus(status)).withSelfRel());
+    }
+
     private List<EntityModel<OrderDto>> getEntityModels(List<Order> orders) {
         return orders.stream().map(mapper::toDto).map(modelAssembler::toModel).collect(Collectors.toList());
     }
@@ -75,7 +85,9 @@ public class OrderController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void editOrder(@RequestBody OrderDto orderDto, @PathVariable int id) {
+        System.out.println(orderDto);
         orderService.editOrder(orderDto, id);
+
     }
 
 

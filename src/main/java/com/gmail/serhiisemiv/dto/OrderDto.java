@@ -25,7 +25,8 @@ public class OrderDto {
     private String costumerPhone;
     private long creationDate;
     private String orderStatus;
-    private long photoSessionDate;
+    private long startTime;
+    private long endTime;
     private int photoSessionId;
     private String photoSessionName;
     private int costumerId;

@@ -16,9 +16,12 @@ public class Order {
     private int id;
     @Column(nullable = false)
     private long creationDate;
+    @Column(nullable = true)
+    private long startTime;
+    @Column(nullable = true)
+    private long endTime;
     @Column(nullable = false)
-    private long photoSessionDate;
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_session_id", referencedColumnName = "id")
@@ -33,9 +36,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long creationDate, Long photoSessionDate, OrderStatus orderStatus, PhotoSession photoSession, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
+    public Order(Long creationDate, Long startTime, Long endTime, OrderStatus orderStatus, PhotoSession photoSession, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
         this.creationDate = creationDate;
-        this.photoSessionDate=photoSessionDate;
+        this.startTime=startTime;
+        this.endTime=endTime;
         this.orderStatus = orderStatus;
         this.photoSession = photoSession;
         this.costumer = costumer;
@@ -58,14 +62,21 @@ public class Order {
         this.creationDate = creationDate;
     }
 
-    public long getPhotoSessionDate() {
-        return photoSessionDate;
+    public long getStartTime() {
+        return startTime;
     }
 
-    public void setPhotoSessionDate(long photoSessionDate) {
-        this.photoSessionDate = photoSessionDate;
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
 
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
@@ -121,9 +132,10 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", creationDate=" + creationDate +
-                ", photoSessionDate=" + photoSessionDate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", orderStatus=" + orderStatus +
                 ", photoSession=" + photoSession +
-                ", isComplete=" + orderStatus.toString() +
                 ", photoSessionPackage=" + photoSessionPackage +
                 ", costumer=" + costumer +
                 '}';

@@ -29,7 +29,7 @@ class OrderRepositoryTest {
         generateTestData();
         PhotoSessionPackage sessionPackage = new PhotoSessionPackage(1, TEST, 15, 400, 60, null);
         PhotoSession photoSession = PhotoSession.builder().id(1).name(TEST).build();
-        Order expected = Order.builder().id(1).creationDate(100L).photoSessionDate(200L).photoSession(photoSession).photoSessionPackage(sessionPackage).build();
+        Order expected = Order.builder().id(1).creationDate(100L).startTime(200L).endTime(300L).photoSession(photoSession).photoSessionPackage(sessionPackage).build();
         Order actual = orderRepository.findAll().get(0);
         System.out.println(actual);
         assertEquals(expected, actual);
@@ -68,6 +68,14 @@ class OrderRepositoryTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void findByOrder_Status() {
+        generateTestData();
+        int expected = 5;
+        int actual = orderRepository.findByOrderStatus(OrderStatus.APPROVED).size();
+        assertEquals(expected, actual);
+    }
+
     private void generateTestData() {
         Costumer firstCostumer = Costumer.builder().firstName(TEST).lastName(TEST).email(TEST).login(TEST).password(TEST).phone("0").build();
         Costumer secondCostumer = Costumer.builder().firstName(TEST).lastName(TEST).email(TEST).login(TEST).password(TEST).phone("1").build();
@@ -78,8 +86,8 @@ class OrderRepositoryTest {
         PhotoSessionPackage sessionPackage = new PhotoSessionPackage(TEST, 15, 400, 60);
         photoSessionPackageRepository.save(sessionPackage);
         for (int i = 0; i < 5; i++) {
-            orderRepository.save(new Order(100L, 200L, OrderStatus.NEW, photoSession, costumerRepository.findById(1).get(), photoSessionPackageRepository.findById(1).get()));
-            orderRepository.save(new Order(100L, 200L,OrderStatus.NEW, photoSession, costumerRepository.findById(2).get(), photoSessionPackageRepository.findById(1).get()));
+            orderRepository.save(new Order(100L, 200L,300L, OrderStatus.NEW, photoSession, costumerRepository.findById(1).get(), photoSessionPackageRepository.findById(1).get()));
+            orderRepository.save(new Order(100L, 200L,300L,OrderStatus.APPROVED, photoSession, costumerRepository.findById(2).get(), photoSessionPackageRepository.findById(1).get()));
         }
     }
 }

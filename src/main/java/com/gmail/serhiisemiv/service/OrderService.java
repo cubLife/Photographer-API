@@ -86,6 +86,18 @@ public class OrderService {
         }
     }
 
+    public List<Order> findByOrderStatus(OrderStatus status){
+        debug.debug("Start returning all orders by order status - {}", status.getStatus());
+        try {
+            List<Order> orders = orderRepository.findByOrderStatus(status);
+            debug.debug("All orders was returned order status was returned order status - {}", status.getStatus());
+            return orders;
+        } catch (NullPointerException e) {
+            error.error("Can't find any orders  with order status  {} ", status.getStatus());
+            throw new ServiceException("Can't find any orders  with order status", e);
+        }
+    }
+
     public void editOrder(OrderDto orderDto, int id) {
         Order order = this.findOrderById(id);
         info.info("Starting edit Order with id - {}", id);
@@ -123,7 +135,6 @@ public class OrderService {
         order.setPhotoSessionPackage(photoSessionPackage);
         order.setCreationDate(new Date().getTime());
         order.setOrderStatus(OrderStatus.NEW);
-        order.setPhotoSessionDate(orderDto.getPhotoSessionDate());
         return order;
     }
 
@@ -140,8 +151,11 @@ public class OrderService {
         if (orderDto.getOrderStatus() != null && !orderDto.getOrderStatus().isEmpty()) {
             order.setOrderStatus(OrderStatus.valueOf(orderDto.getOrderStatus()));
         }
-        if (orderDto.getPhotoSessionDate() > 0) {
-            order.setPhotoSessionDate(orderDto.getPhotoSessionDate());
+        if (orderDto.getStartTime() > 0) {
+            order.setStartTime(orderDto.getStartTime());
+        }
+        if (orderDto.getEndTime() > 0) {
+            order.setEndTime(orderDto.getEndTime());
         }
         if (orderDto.getPhotoSessionId() > 0) {
             order.setPhotoSession(photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId()));
