@@ -1,9 +1,7 @@
 package com.gmail.serhiisemiv.dto.mappers;
 
 import com.gmail.serhiisemiv.dto.AvatarImageDto;
-import com.gmail.serhiisemiv.dto.CostumerFeedbackDto;
 import com.gmail.serhiisemiv.modeles.AvatarImage;
-import com.gmail.serhiisemiv.modeles.CostumerFeedback;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;

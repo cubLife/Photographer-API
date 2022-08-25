@@ -16,5 +16,5 @@ public class PhotographerDto {
     private String email;
     private String phone;
     private String aboutMyself;
-//    private int avatarImageId;
+//   private int avatarImageId;
 }

@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 @RequestMapping(value = "api/orders")
+@Transactional
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper mapper;
@@ -55,6 +57,7 @@ public class OrderController {
     }
 
     @GetMapping("/list")
+    @Transactional
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<OrderDto>> getAllOrders() {
         List<Order> orders = orderService.findAllOrders();
@@ -63,6 +66,7 @@ public class OrderController {
     }
 
     @GetMapping("/order-status/{status}/list")
+
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<OrderDto>> getByOrderStatus(@PathVariable(value = "status") String status) {
         OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());

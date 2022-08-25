@@ -100,5 +100,6 @@ public class PhotographerController {
             errors.put("error", errorMessage);
         });
         return errors;
+
     }
 }

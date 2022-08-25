@@ -66,8 +66,8 @@ public class AvatarImageService {
             avatarImageRepository.deleteById(id);
             debug.debug("Avatar image was deleted id - {}", id);
         } catch (NoSuchElementException e) {
-            error.error("Can't delete carousel image with id - " + id, e);
-            throw new ServiceException("Can't delete carousel image with id - " + id);
+            error.error("Can't delete Avatar image with id - " + id, e);
+            throw new ServiceException("Can't delete Avatar image with id - " + id);
         }
     }
 }

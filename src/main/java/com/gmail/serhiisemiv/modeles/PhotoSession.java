@@ -23,14 +23,17 @@ public class PhotoSession {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photographer_id")
     private Photographer photographer;
+    @OneToOne(mappedBy = "photoSession", cascade = CascadeType.ALL)
+    private PhotoSessionIcon photoSessionIcon;
 
     public PhotoSession() {
     }
 
-    public PhotoSession(String name, List<Order> orders, Photographer photographer) {
+    public PhotoSession(String name, List<Order> orders, Photographer photographer, PhotoSessionIcon photoSessionIcon) {
         this.name = name;
         this.orders = orders;
         this.photographer = photographer;
+        this.photoSessionIcon= photoSessionIcon;
     }
 
     public int getId() {
@@ -59,6 +62,14 @@ public class PhotoSession {
 
     public Photographer getPhotographer() {
         return photographer;
+    }
+
+    public PhotoSessionIcon getPhotoSessionIcon() {
+        return photoSessionIcon;
+    }
+
+    public void setPhotoSessionIcon(PhotoSessionIcon photoSessionIcon) {
+        this.photoSessionIcon = photoSessionIcon;
     }
 
     public void setPhotographer(Photographer photographer) {
