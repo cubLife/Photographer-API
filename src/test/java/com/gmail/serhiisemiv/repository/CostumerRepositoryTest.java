@@ -1,7 +1,6 @@
 package com.gmail.serhiisemiv.repository;
 
 import com.gmail.serhiisemiv.modeles.Costumer;
-import com.gmail.serhiisemiv.modeles.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -9,7 +8,8 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

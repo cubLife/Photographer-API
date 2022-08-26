@@ -69,7 +69,7 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void findByOrder_Status() {
+    void shouldFindByOrderStatus() {
         generateTestData();
         int expected = 5;
         int actual = orderRepository.findByOrderStatus(OrderStatus.APPROVED).size();

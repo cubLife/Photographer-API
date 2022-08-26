@@ -8,7 +8,17 @@ public class AvatarImage extends Image{
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
 
-    public AvatarImage() {
+    public AvatarImage(){
+    }
+
+    public AvatarImage(byte[] picture, Photographer photographer) {
+        super(picture);
+        this.photographer = photographer;
+    }
+
+    public AvatarImage(int id, byte[] picture, Photographer photographer) {
+        super(id, picture);
+        this.photographer = photographer;
     }
 
     public Photographer getPhotographer() {

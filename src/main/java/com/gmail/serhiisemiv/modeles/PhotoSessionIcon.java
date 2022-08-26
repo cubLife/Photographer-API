@@ -14,6 +14,18 @@ public class PhotoSessionIcon extends Image{
     public PhotoSessionIcon() {
     }
 
+    public PhotoSessionIcon(int id, byte[] picture, PhotoSession photoSession) {
+        super(id, picture);
+        this.photoSession = photoSession;
+    }
+
+    public PhotoSessionIcon(byte[] picture, PhotoSession photoSession) {
+        super(picture);
+        this.photoSession = photoSession;
+
+
+    }
+
     public PhotoSession getPhotoSession() {
         return photoSession;
     }

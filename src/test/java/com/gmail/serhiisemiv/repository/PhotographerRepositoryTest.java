@@ -4,10 +4,9 @@ import com.gmail.serhiisemiv.modeles.Photographer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.security.access.method.P;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -18,6 +17,7 @@ class PhotographerRepositoryTest {
     private SocialNetworkRepository socialNetworkRepository;
     private static final String TEST = "test";
     private static final String PHONE = "+1234567890";
+    private static final String EMAIL = "test@gmail.com";
 
     @Test
     public void shouldSavePhotographer() {
@@ -59,6 +59,24 @@ class PhotographerRepositoryTest {
         photographerRepository.updateAboutMySelf("Hi", 1);
         String actual = photographerRepository.findById(1).get().getAboutMyself();
         String expected = "Hi";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldUpdateEmail() {
+        generateTestData();
+        photographerRepository.updateEmail("sample@gmail.com", 1);
+        String actual = photographerRepository.findById(1).get().getEmail();
+        String expected = "sample@gmail.com";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldUpdatePhone() {
+        generateTestData();
+        photographerRepository.updatePhone("000000000000", 1);
+        String actual = photographerRepository.findById(1).get().getPhone();
+        String expected = "000000000000";
         assertEquals(expected, actual);
     }
 

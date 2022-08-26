@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo,Integer> {
     List<Photo> findAllByPhotoAlbum_Id(int photoAlbumId);
+
     Photo findFirstByPhotoAlbum_Id(int photoAlbumId);
 }

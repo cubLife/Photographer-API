@@ -29,6 +29,15 @@ public class PhotoSession {
     public PhotoSession() {
     }
 
+    public PhotoSession(String name) {
+        this.name = name;
+    }
+
+    public PhotoSession(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public PhotoSession(String name, List<Order> orders, Photographer photographer, PhotoSessionIcon photoSessionIcon) {
         this.name = name;
         this.orders = orders;

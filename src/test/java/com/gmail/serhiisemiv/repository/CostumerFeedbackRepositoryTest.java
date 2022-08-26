@@ -2,8 +2,6 @@ package com.gmail.serhiisemiv.repository;
 
 import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.CostumerFeedback;
-import com.gmail.serhiisemiv.modeles.Grade;
-import com.gmail.serhiisemiv.modeles.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class CostumerFeedbackServiceTest {
+class CostumerFeedbackRepositoryTest {
     @Autowired
     private CostumerFeedbackRepository costumerFeedbackRepository;
     @Autowired
@@ -34,17 +32,17 @@ class CostumerFeedbackServiceTest {
     }
 
     @Test
-    void shouldFindCostumerFidbackById() {
+    void shouldFindCostumerFeedbackById() {
         generateTestData();
         CostumerFeedback expected = CostumerFeedback.builder().id(1).feedback(TEST)
                 .creationDate(100L)
                 .grade(5).isChanged(false).build();
-        CostumerFeedback acrual = costumerFeedbackRepository.getById(1);
-        assertEquals(expected, acrual);
+        CostumerFeedback actual = costumerFeedbackRepository.getById(1);
+        assertEquals(expected, actual);
     }
 
     @Test
-    void shouldFindAllCostumerFitbacks() {
+    void shouldFindAllCostumerFeedbacks() {
         generateTestData();
         int expected = 5;
         int actual = costumerFeedbackRepository.findAll().size();
@@ -52,11 +50,12 @@ class CostumerFeedbackServiceTest {
     }
 
     @Test
-    void shouldDeleteCostumerFitbackById() {
+    void shouldDeleteCostumerFeedbackById() {
         generateTestData();
         costumerFeedbackRepository.deleteById(3);
         int expected = 4;
         int actual = costumerFeedbackRepository.findAll().size();
+        assertEquals(expected, actual);
     }
 
     private void generateTestData() {

@@ -19,10 +19,15 @@ public abstract class Image {
     protected Image() {
     }
 
+    public Image(byte[] picture) {
+        this.picture = picture;
+    }
+
     protected Image(int id, byte[] picture) {
         this.id = id;
         this.picture = picture;
     }
+
 
     public int getId() {
         return id;
