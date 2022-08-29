@@ -17,14 +17,13 @@ public class PhotoSession {
     private int id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    @OneToMany(mappedBy = "photoSession", cascade = CascadeType.ALL)
-    private List<Order> orders;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photographer_id")
     private Photographer photographer;
     @OneToOne(mappedBy = "photoSession", cascade = CascadeType.ALL)
     private PhotoSessionIcon photoSessionIcon;
+    @OneToMany(mappedBy = "photoSession", cascade = CascadeType.ALL)
+    private List<PhotoAlbum> photoAlbums;
 
     public PhotoSession() {
     }
@@ -38,9 +37,8 @@ public class PhotoSession {
         this.name = name;
     }
 
-    public PhotoSession(String name, List<Order> orders, Photographer photographer, PhotoSessionIcon photoSessionIcon) {
+    public PhotoSession(String name, Photographer photographer, PhotoSessionIcon photoSessionIcon) {
         this.name = name;
-        this.orders = orders;
         this.photographer = photographer;
         this.photoSessionIcon= photoSessionIcon;
     }
@@ -61,12 +59,12 @@ public class PhotoSession {
         this.name = name;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<PhotoAlbum> getPhotoAlbums() {
+        return photoAlbums;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setPhotoAlbums(List<PhotoAlbum> photoAlbums) {
+        this.photoAlbums = photoAlbums;
     }
 
     public Photographer getPhotographer() {

@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.modelAsemblers;
 
+import com.gmail.serhiisemiv.controllers.rest.PhotoAlbumController;
 import com.gmail.serhiisemiv.controllers.rest.PhotoSessionController;
 import com.gmail.serhiisemiv.controllers.rest.PhotoSessionIconController;
 import com.gmail.serhiisemiv.dto.PhotoSessionDto;
@@ -18,6 +19,7 @@ public class PhotoSessionModelAssembler implements RepresentationModelAssembler<
         return EntityModel.of(photoSessionDto,
                 linkTo(methodOn(PhotoSessionController.class).getById(photoSessionDto.getId())).withSelfRel(),
                 linkTo(methodOn(PhotoSessionController.class).getAll()).withRel("photoSessions"),
-        linkTo(methodOn(PhotoSessionIconController.class).getPictureByPhotoSessionId(photoSessionDto.getId())).withRel("icon"));
+        linkTo(methodOn(PhotoSessionIconController.class).getPictureByPhotoSessionId(photoSessionDto.getId())).withRel("icon"),
+        linkTo(methodOn(PhotoAlbumController.class).findByPhotoSessionId(photoSessionDto.getId())).withRel("photoAlbums")) ;
     }
 }

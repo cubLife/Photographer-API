@@ -16,9 +16,7 @@ public class Order {
     private int id;
     @Column(nullable = false)
     private long creationDate;
-    @Column(nullable = true)
     private long startTime;
-    @Column(nullable = true)
     private long endTime;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

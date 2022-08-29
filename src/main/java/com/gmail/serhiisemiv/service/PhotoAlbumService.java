@@ -1,13 +1,15 @@
 package com.gmail.serhiisemiv.service;
 
+import com.gmail.serhiisemiv.dto.PhotoAlbumDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
+import com.gmail.serhiisemiv.modeles.Photo;
 import com.gmail.serhiisemiv.modeles.PhotoAlbum;
+import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.repository.PhotoAlbumRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,14 +18,16 @@ import java.util.Optional;
 @Service
 public class PhotoAlbumService {
     private final PhotoAlbumRepository photoAlbumRepository;
+    private final PhotoSessionService photoSessionService;
     private final Logger error = LoggerFactory.getLogger(this.getClass());
     private final Logger debug = LoggerFactory.getLogger(this.getClass());
     private final Logger info = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public PhotoAlbumService(PhotoAlbumRepository photoAlbumRepository) {
+    public PhotoAlbumService(PhotoAlbumRepository photoAlbumRepository, PhotoSessionService photoSessionService) {
         this.photoAlbumRepository = photoAlbumRepository;
 
+        this.photoSessionService = photoSessionService;
     }
 
     public void savePhotoAlbum(PhotoAlbum photoAlbum) {
@@ -64,6 +68,19 @@ public class PhotoAlbumService {
         }
     }
 
+    public List<PhotoAlbum> findByPhotoSessionId(int id){
+        info.info("Starting returning all photo albums by Photo Session id");
+        try {
+            List<PhotoAlbum> photoAlbums = photoAlbumRepository.findByPhotoSession_Id(id);
+            debug.debug("All photo albums by Photo Session id was returned");
+            return photoAlbums;
+        } catch (NullPointerException e) {
+            error.error("Can't find any photo albums by Photo Session id - " + e.getMessage(), e);
+            throw new ServiceException("Cant find any photo albums by Photo Session id");
+        }
+    }
+
+
     public void deletePhotoAlbumById(int id) {
         info.info("Starting delete photo album with id - {}", id);
         try {
@@ -73,5 +90,10 @@ public class PhotoAlbumService {
             error.error("Can't remove photo album with id - " + id, e);
             throw new ServiceException("Can't delete photo album with id");
         }
+    }
+
+    public PhotoAlbum createPhotoAlbum(PhotoAlbumDto photoAlbumDto){
+        PhotoSession photoSession = photoSessionService.findPhotoSessionById(photoAlbumDto.getPhotoSessionId());
+        return new PhotoAlbum(photoAlbumDto.getName(),photoSession);
     }
 }

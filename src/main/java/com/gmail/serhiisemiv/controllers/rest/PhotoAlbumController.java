@@ -47,8 +47,7 @@ public class PhotoAlbumController {
     @ResponseStatus(HttpStatus.CREATED)
     @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public PhotoAlbumDto savePhotoAlbum(@RequestBody @Valid PhotoAlbumDto photoAlbumDto) {
-        PhotoAlbum photoAlbum = new PhotoAlbum();
-        photoAlbum.setName(photoAlbumDto.getName());
+        PhotoAlbum photoAlbum = photoAlbumService.createPhotoAlbum(photoAlbumDto);
         photoAlbumService.savePhotoAlbum(photoAlbum);
         return mapper.toDto(photoAlbum);
     }
@@ -66,6 +65,15 @@ public class PhotoAlbumController {
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<PhotoAlbumDto>> findAll() {
         List<PhotoAlbumDto> photoAlbumDtoList = mapper.listToDto(photoAlbumService.findAllPhotoAlbums());
+        List<EntityModel<PhotoAlbumDto>> entityModels = getEntityModels(photoAlbumDtoList);
+        return CollectionModel.of(entityModels, linkTo(methodOn(PhotoAlbumController.class).findAll()).withSelfRel());
+    }
+
+    @GetMapping("/session-id/{id}/list" )
+    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @ResponseStatus(HttpStatus.OK)
+    public CollectionModel<EntityModel<PhotoAlbumDto>> findByPhotoSessionId(@PathVariable int id) {
+        List<PhotoAlbumDto> photoAlbumDtoList = mapper.listToDto(photoAlbumService.findByPhotoSessionId(id));
         List<EntityModel<PhotoAlbumDto>> entityModels = getEntityModels(photoAlbumDtoList);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoAlbumController.class).findAll()).withSelfRel());
     }
