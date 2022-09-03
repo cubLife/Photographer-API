@@ -79,16 +79,12 @@ public class CostumerFeedbackService {
     }
 
     public CostumerFeedback createNewCostumerFeedback(CostumerFeedbackDto feedbackDto){
-        boolean isExist = costumerService.existsCostumerByEmail(feedbackDto.getCostumerEmail());
-        if(!isExist){
-            throw new ServiceException("Costumer dose not exist");
-        }
-        Costumer costumer = costumerService.findCostumerByEmail(feedbackDto.getCostumerEmail());
         CostumerFeedback feedback = new CostumerFeedback();
-        feedback.setCostumer(costumer);
+        feedback.setFirstName(feedbackDto.getFirstName());
+        feedback.setLastName(feedbackDto.getLastName());
+        feedback.setEmail(feedbackDto.getEmail());
         feedback.setCreationDate(new Date().getTime());
         feedback.setFeedback(feedbackDto.getFeedback());
-        feedback.setIsChanged(feedbackDto.isChanged());
         feedback.setGrade(feedbackDto.getGrade());
         return feedback;
     }

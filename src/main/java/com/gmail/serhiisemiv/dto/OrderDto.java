@@ -25,6 +25,7 @@ public class OrderDto {
     private String costumerPhone;
     private long creationDate;
     @NotBlank(message = "Photo session name can't be empty")
+    @Size(min = 10, max = 50, message = "Size should be between 10-50 characters")
     private String photoSessionName;
     private String orderStatus;
     private long startTime;

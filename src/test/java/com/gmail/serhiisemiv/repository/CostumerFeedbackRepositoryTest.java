@@ -1,6 +1,5 @@
 package com.gmail.serhiisemiv.repository;
 
-import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.CostumerFeedback;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,9 @@ class CostumerFeedbackRepositoryTest {
     @Test
     void shouldSaveCostumerFeedback() {
         generateTestData();
-        CostumerFeedback expected = CostumerFeedback.builder().id(1).feedback(TEST)
+        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).feedback(TEST)
                 .creationDate(100L)
-                .grade(5).isChanged(false).build();
+                .grade(5).build();
         CostumerFeedback actual = costumerFeedbackRepository.findAll().get(0);
         assertEquals(expected, actual);
 
@@ -34,9 +33,9 @@ class CostumerFeedbackRepositoryTest {
     @Test
     void shouldFindCostumerFeedbackById() {
         generateTestData();
-        CostumerFeedback expected = CostumerFeedback.builder().id(1).feedback(TEST)
+        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).feedback(TEST)
                 .creationDate(100L)
-                .grade(5).isChanged(false).build();
+                .grade(5).build();
         CostumerFeedback actual = costumerFeedbackRepository.getById(1);
         assertEquals(expected, actual);
     }
@@ -59,13 +58,10 @@ class CostumerFeedbackRepositoryTest {
     }
 
     private void generateTestData() {
-        Costumer costumer = Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone("0").email(TEST).build();
-        costumerRepository.save(costumer);
         for (int i = 0; i < 5; i++) {
-            CostumerFeedback costumerFeedback = CostumerFeedback.builder().feedback(TEST)
+            CostumerFeedback costumerFeedback = CostumerFeedback.builder().firstName(TEST).lastName(TEST).feedback(TEST)
                     .creationDate(100L)
-                    .costumer(costumer).grade(5).isChanged(false).build();
+                    .grade(5).build();
             costumerFeedbackRepository.save(costumerFeedback);
         }
     }

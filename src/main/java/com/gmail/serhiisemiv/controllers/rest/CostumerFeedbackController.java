@@ -44,8 +44,7 @@ public class CostumerFeedbackController {
     public CostumerFeedbackDto saveCostumerFeedback(@RequestBody @Valid CostumerFeedbackDto feedbackDto){
         CostumerFeedback feedback = feedbackService.createNewCostumerFeedback(feedbackDto);
         feedbackService.saveCostumerFeedback(feedback);
-        CostumerFeedbackDto dto =mapper.toDto(feedback);
-        return dto;
+        return mapper.toDto(feedback);
     }
 
     @GetMapping("/{id}")

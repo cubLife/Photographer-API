@@ -21,6 +21,7 @@ public class Order {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @Column(nullable = false)
     private String photoSessionName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="photo_session_package_id", referencedColumnName = "id")

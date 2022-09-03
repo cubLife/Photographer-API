@@ -13,8 +13,6 @@ public class Costumer  extends User{
     private long birthDay;
     @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
     private List<Order> orders;
-    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
-    private List<CostumerFeedback> feedbacks;
 
     public Costumer() {
     }
@@ -23,7 +21,6 @@ public class Costumer  extends User{
         super(id, login, password, firstName, lastName, email, phone);
         this.birthDay=birthDay;
         this.orders = orders;
-        this.feedbacks = feedbacks;
     }
 
     public List<Order> getOrders() {
@@ -32,14 +29,6 @@ public class Costumer  extends User{
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
-    }
-
-    public List<CostumerFeedback> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(List<CostumerFeedback> feedbacks) {
-        this.feedbacks = feedbacks;
     }
 
     public long getBirthDay() {
