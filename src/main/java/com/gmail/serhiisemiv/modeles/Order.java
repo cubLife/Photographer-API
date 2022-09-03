@@ -21,9 +21,7 @@ public class Order {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "photo_session_id", referencedColumnName = "id")
-    private PhotoSession photoSession;
+    private String photoSessionName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="photo_session_package_id", referencedColumnName = "id")
     private PhotoSessionPackage photoSessionPackage;
@@ -34,12 +32,12 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long creationDate, Long startTime, Long endTime, OrderStatus orderStatus, PhotoSession photoSession, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
+    public Order(Long creationDate, Long startTime, Long endTime, OrderStatus orderStatus, String photoSessionMame, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
         this.creationDate = creationDate;
         this.startTime=startTime;
         this.endTime=endTime;
         this.orderStatus = orderStatus;
-        this.photoSession = photoSession;
+      this.photoSessionName=photoSessionMame;
         this.costumer = costumer;
         this.photoSessionPackage=photoSessionPackage;
     }
@@ -88,12 +86,12 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public PhotoSession getPhotoSession() {
-        return photoSession;
+    public String getPhotoSessionName() {
+        return photoSessionName;
     }
 
-    public void setPhotoSession(PhotoSession photoSession) {
-        this.photoSession = photoSession;
+    public void setPhotoSessionName(String photoSessionName) {
+        this.photoSessionName = photoSessionName;
     }
 
     public Costumer getCostumer() {
@@ -133,7 +131,7 @@ public class Order {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", orderStatus=" + orderStatus +
-                ", photoSession=" + photoSession +
+                ", photoSessionName=" + photoSessionName +
                 ", photoSessionPackage=" + photoSessionPackage +
                 ", costumer=" + costumer +
                 '}';

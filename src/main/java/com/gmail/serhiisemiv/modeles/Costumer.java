@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "costumers")
 public class Costumer  extends User{
+    private long birthDay;
     @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
     private List<Order> orders;
     @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL)
@@ -18,8 +19,9 @@ public class Costumer  extends User{
     public Costumer() {
     }
 
-    public Costumer(int id, String login, String password, String firstName, String lastName, String email, String phone, List<Order> orders, List<CostumerFeedback> feedbacks) {
+    public Costumer(int id, String login, String password, String firstName, String lastName, String email, String phone, long birthDay, List<Order> orders, List<CostumerFeedback> feedbacks) {
         super(id, login, password, firstName, lastName, email, phone);
+        this.birthDay=birthDay;
         this.orders = orders;
         this.feedbacks = feedbacks;
     }
@@ -38,6 +40,14 @@ public class Costumer  extends User{
 
     public void setFeedbacks(List<CostumerFeedback> feedbacks) {
         this.feedbacks = feedbacks;
+    }
+
+    public long getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(long birthDay) {
+        this.birthDay = birthDay;
     }
 
     @Override

@@ -22,17 +22,15 @@ import java.util.Optional;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final CostumerService costumerService;
-    private final PhotoSessionService photoSessionService;
     private final PhotoSessionPackageService packageService;
     private final Logger error = LoggerFactory.getLogger(this.getClass());
     private final Logger debug = LoggerFactory.getLogger(this.getClass());
     private final Logger info = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, CostumerService costumerService, PhotoSessionService photoSessionService, PhotoSessionPackageService packageService) {
+    public OrderService(OrderRepository orderRepository, CostumerService costumerService, PhotoSessionPackageService packageService) {
         this.orderRepository = orderRepository;
         this.costumerService = costumerService;
-        this.photoSessionService = photoSessionService;
         this.packageService = packageService;
     }
 
@@ -121,7 +119,6 @@ public class OrderService {
     public Order createNewOrder(OrderDto orderDto) {
         Order order = new Order();
         Costumer costumer;
-        PhotoSession photoSession = photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId());
         PhotoSessionPackage photoSessionPackage = packageService.findPhotoSessionPackageById(orderDto.getPhotoSessionPackageId());
         boolean isExist = costumerService.existsCostumerByEmail(orderDto.getCostumerEmail());
         if (!isExist) {
@@ -131,7 +128,7 @@ public class OrderService {
             costumer = costumerService.findCostumerByEmail(orderDto.getCostumerEmail());
         }
         order.setCostumer(costumer);
-        order.setPhotoSession(photoSession);
+        order.setPhotoSessionName(orderDto.getPhotoSessionName());
         order.setPhotoSessionPackage(photoSessionPackage);
         order.setCreationDate(new Date().getTime());
         order.setOrderStatus(OrderStatus.NEW);
@@ -157,8 +154,8 @@ public class OrderService {
         if (orderDto.getEndTime() > 0) {
             order.setEndTime(orderDto.getEndTime());
         }
-        if (orderDto.getPhotoSessionId() > 0) {
-            order.setPhotoSession(photoSessionService.findPhotoSessionById(orderDto.getPhotoSessionId()));
+        if (orderDto.getPhotoSessionName() != null && !orderDto.getPhotoSessionName().isEmpty() ) {
+            order.setPhotoSessionName(orderDto.getPhotoSessionName());
         }
         if (orderDto.getPhotoSessionPackageId() > 0) {
             order.setPhotoSessionPackage(packageService.findPhotoSessionPackageById(orderDto.getPhotoSessionPackageId()));

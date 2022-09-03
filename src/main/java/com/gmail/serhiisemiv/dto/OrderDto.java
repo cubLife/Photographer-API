@@ -24,13 +24,12 @@ public class OrderDto {
     @Pattern(regexp = "^\\+(?:[0-9]●?){10}[0-9]$", message = "Please type valid phone number. For example +48123456789")
     private String costumerPhone;
     private long creationDate;
+    @NotBlank(message = "Photo session name can't be empty")
+    private String photoSessionName;
     private String orderStatus;
     private long startTime;
     private long endTime;
-    private int photoSessionId;
-    private String photoSessionName;
     private int costumerId;
-    @Min(value = 1, message = "Choose photo session package")
     private int photoSessionPackageId;
     private String photoSessionPackageName;
 
