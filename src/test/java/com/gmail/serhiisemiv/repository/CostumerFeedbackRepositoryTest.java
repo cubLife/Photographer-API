@@ -22,7 +22,7 @@ class CostumerFeedbackRepositoryTest {
     @Test
     void shouldSaveCostumerFeedback() {
         generateTestData();
-        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).feedback(TEST)
+        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).email(TEST).feedback(TEST)
                 .creationDate(100L)
                 .grade(5).build();
         CostumerFeedback actual = costumerFeedbackRepository.findAll().get(0);
@@ -33,7 +33,7 @@ class CostumerFeedbackRepositoryTest {
     @Test
     void shouldFindCostumerFeedbackById() {
         generateTestData();
-        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).feedback(TEST)
+        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).email(TEST).feedback(TEST)
                 .creationDate(100L)
                 .grade(5).build();
         CostumerFeedback actual = costumerFeedbackRepository.getById(1);
@@ -59,7 +59,7 @@ class CostumerFeedbackRepositoryTest {
 
     private void generateTestData() {
         for (int i = 0; i < 5; i++) {
-            CostumerFeedback costumerFeedback = CostumerFeedback.builder().firstName(TEST).lastName(TEST).feedback(TEST)
+            CostumerFeedback costumerFeedback = CostumerFeedback.builder().firstName(TEST).lastName(TEST).email(TEST).feedback(TEST)
                     .creationDate(100L)
                     .grade(5).build();
             costumerFeedbackRepository.save(costumerFeedback);

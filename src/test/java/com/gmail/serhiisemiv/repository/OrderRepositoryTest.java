@@ -78,7 +78,6 @@ class OrderRepositoryTest {
         Costumer secondCostumer = Costumer.builder().firstName(TEST).lastName(TEST).email(TEST).login(TEST).password(TEST).phone("1").build();
         costumerRepository.save(firstCostumer);
         costumerRepository.save(secondCostumer);
-        PhotoSession photoSession = PhotoSession.builder().name(TEST).build();
 
         PhotoSessionPackage sessionPackage = new PhotoSessionPackage(TEST, 15, 400, 60);
         photoSessionPackageRepository.save(sessionPackage);

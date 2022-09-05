@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -22,6 +21,7 @@ class CostumerServiceTest {
     @InjectMocks
     private CostumerService costumerService;
     private AutoCloseable autoCloseable;
+    private static final String EMAIL = "jon_doe@gmail.com";
 
     @BeforeEach
     void setUp() {
@@ -87,5 +87,14 @@ class CostumerServiceTest {
     void shouldThrowServiceExceptionWhenDeleteByIdMethodCall() {
         doThrow(ServiceException.class).when(mockCostumerService).deleteCostumerById(anyInt());
         assertThrows(ServiceException.class, () -> mockCostumerService.deleteCostumerById(anyInt()));
+    }
+
+    @Test
+    void existsCostumerByEmail() {
+        when(mockCostumerService.existsCostumerByEmail(EMAIL)).thenReturn(true);
+        boolean expected = true;
+        boolean actual = mockCostumerService.existsCostumerByEmail(EMAIL);
+        assertEquals(expected,actual);
+
     }
 }

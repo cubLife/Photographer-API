@@ -1,19 +1,24 @@
 package com.gmail.serhiisemiv.service;
 
+import com.gmail.serhiisemiv.OrderStatus;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
+import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.Order;
+import com.gmail.serhiisemiv.modeles.PhotoSessionPackage;
 import com.gmail.serhiisemiv.repository.OrderRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
-
 class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
@@ -21,7 +26,12 @@ class OrderServiceTest {
     private OrderService mockOrderService;
     @InjectMocks
     private OrderService orderService;
+    @Autowired
+    private CostumerService costumerService;
+    @Autowired
+    private PhotoSessionPackageService packageService;
     private AutoCloseable autoCloseable;
+    private static String TEST = "Test";
 
     @BeforeEach
     void setUp() {
