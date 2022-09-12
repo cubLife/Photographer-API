@@ -1,11 +1,9 @@
 package com.gmail.serhiisemiv.controllers.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.serhiisemiv.dto.PhotoSessionPackageDto;
 import com.gmail.serhiisemiv.dto.mappers.PhotoSessionPackageMapper;
-import com.gmail.serhiisemiv.modelAsemblers.PhotoSessionPackageModelAssembler;
-import com.gmail.serhiisemiv.modeles.PhotoSessionPackage;
+import com.gmail.serhiisemiv.modelAsemblers.PhotoSessionPackageDtoModelAssembler;
 import com.gmail.serhiisemiv.service.PhotoSessionPackageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +29,7 @@ class PhotoSessionPackageControllerTest {
     @MockBean
     private PhotoSessionPackageService packageService;
     @MockBean
-    private PhotoSessionPackageModelAssembler modelAssembler;
+    private PhotoSessionPackageDtoModelAssembler modelAssembler;
     @MockBean
     private PhotoSessionPackageMapper mapper;
     private static final String ROOT_URL = "/api/photo-session-packages";

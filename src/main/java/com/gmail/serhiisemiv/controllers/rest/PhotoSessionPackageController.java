@@ -2,7 +2,7 @@ package com.gmail.serhiisemiv.controllers.rest;
 
 import com.gmail.serhiisemiv.dto.PhotoSessionPackageDto;
 import com.gmail.serhiisemiv.dto.mappers.PhotoSessionPackageMapper;
-import com.gmail.serhiisemiv.modelAsemblers.PhotoSessionPackageModelAssembler;
+import com.gmail.serhiisemiv.modelAsemblers.PhotoSessionPackageDtoModelAssembler;
 import com.gmail.serhiisemiv.modeles.PhotoSessionPackage;
 import com.gmail.serhiisemiv.service.PhotoSessionPackageService;
 import org.jetbrains.annotations.NotNull;
@@ -27,11 +27,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("api/photo-session-packages")
 public class PhotoSessionPackageController {
     private final PhotoSessionPackageService packageService;
-    private final PhotoSessionPackageModelAssembler modelAssembler;
+    private final PhotoSessionPackageDtoModelAssembler modelAssembler;
     private final PhotoSessionPackageMapper mapper;
 
 
-    public PhotoSessionPackageController(PhotoSessionPackageService packageService, PhotoSessionPackageModelAssembler modelAssembler, PhotoSessionPackageMapper mapper) {
+    public PhotoSessionPackageController(PhotoSessionPackageService packageService, PhotoSessionPackageDtoModelAssembler modelAssembler, PhotoSessionPackageMapper mapper) {
         this.packageService = packageService;
         this.modelAssembler = modelAssembler;
         this.mapper = mapper;

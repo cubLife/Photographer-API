@@ -3,7 +3,7 @@ package com.gmail.serhiisemiv.controllers.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.serhiisemiv.dto.PhotographerDto;
 import com.gmail.serhiisemiv.dto.mappers.PhotographerMapper;
-import com.gmail.serhiisemiv.modelAsemblers.PhotographerModelAssembler;
+import com.gmail.serhiisemiv.modelAsemblers.PhotographerDtoModelAssembler;
 import com.gmail.serhiisemiv.service.PhotographerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ class PhotographerControllerTest {
     @MockBean
     private  PhotographerService photographerService;
     @MockBean
-    private  PhotographerModelAssembler modelAssembler;
+    private PhotographerDtoModelAssembler modelAssembler;
     @MockBean
     private  PhotographerMapper mapper;
     private static final String API_PHOTOGRAPHERS_URL = "/api/photographers";

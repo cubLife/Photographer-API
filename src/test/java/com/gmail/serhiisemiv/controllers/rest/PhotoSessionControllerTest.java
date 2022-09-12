@@ -3,7 +3,7 @@ package com.gmail.serhiisemiv.controllers.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.serhiisemiv.dto.PhotoSessionDto;
 import com.gmail.serhiisemiv.dto.mappers.PhotoSessionMapper;
-import com.gmail.serhiisemiv.modelAsemblers.PhotoSessionModelAssembler;
+import com.gmail.serhiisemiv.modelAsemblers.PhotoSessionDtoModelAssembler;
 import com.gmail.serhiisemiv.service.PhotoSessionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ class PhotoSessionControllerTest {
     @MockBean
     private PhotoSessionMapper mapper;
     @MockBean
-    private PhotoSessionModelAssembler modelAssembler;
+    private PhotoSessionDtoModelAssembler modelAssembler;
     private static final String API_PHOTO_SESSIONS_URL = "/api/photo-sessions";
     private static final PhotoSessionDto PHOTO_SESSION = new PhotoSessionDto(1, "Test");
 

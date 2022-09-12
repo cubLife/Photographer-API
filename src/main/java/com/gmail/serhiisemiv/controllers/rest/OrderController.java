@@ -3,7 +3,7 @@ package com.gmail.serhiisemiv.controllers.rest;
 import com.gmail.serhiisemiv.OrderStatus;
 import com.gmail.serhiisemiv.dto.OrderDto;
 import com.gmail.serhiisemiv.dto.mappers.OrderMapper;
-import com.gmail.serhiisemiv.modelAsemblers.OrderModelAssembler;
+import com.gmail.serhiisemiv.modelAsemblers.OrderDtoModelAssembler;
 import com.gmail.serhiisemiv.modeles.Order;
 import com.gmail.serhiisemiv.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper mapper;
-    private final OrderModelAssembler modelAssembler;
+    private final OrderDtoModelAssembler modelAssembler;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderMapper mapper, OrderModelAssembler modelAssembler) {
+    public OrderController(OrderService orderService, OrderMapper mapper, OrderDtoModelAssembler modelAssembler) {
         this.orderService = orderService;
         this.mapper = mapper;
         this.modelAssembler = modelAssembler;

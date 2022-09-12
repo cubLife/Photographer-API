@@ -2,12 +2,8 @@ package com.gmail.serhiisemiv.controllers.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.serhiisemiv.dto.OrderDto;
-import com.gmail.serhiisemiv.dto.mappers.CostumerFeedbackMapper;
 import com.gmail.serhiisemiv.dto.mappers.OrderMapper;
-import com.gmail.serhiisemiv.modelAsemblers.CostumerFeedbackDtoModelAssembler;
-import com.gmail.serhiisemiv.modelAsemblers.OrderModelAssembler;
-import com.gmail.serhiisemiv.modeles.Order;
-import com.gmail.serhiisemiv.service.CostumerFeedbackService;
+import com.gmail.serhiisemiv.modelAsemblers.OrderDtoModelAssembler;
 import com.gmail.serhiisemiv.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,7 +31,7 @@ class OrderControllerTest {
     @MockBean
     private OrderMapper mapper;
     @MockBean
-    private OrderModelAssembler modelAssembler;
+    private OrderDtoModelAssembler modelAssembler;
     private static final String API_ORDERS_URL= "/api/orders";
     private static final OrderDto ORDER = OrderDto.builder().costumerFirstName("Jon").costumerLastName("Doe")
             .costumerPhone("+48123456789").costumerEmail("jon_doe@gmail.com").photoSessionName("My Photo session").build();
