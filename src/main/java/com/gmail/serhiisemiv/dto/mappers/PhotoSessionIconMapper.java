@@ -20,7 +20,7 @@ public class PhotoSessionIconMapper {
     }
 
     public PhotoSessionIconDto toDto(PhotoSessionIcon sessionIcon) {
-        return modelMapper.map(PhotoSessionIcon.class, PhotoSessionIconDto.class);
+        return modelMapper.map(sessionIcon, PhotoSessionIconDto.class);
     }
 
 }

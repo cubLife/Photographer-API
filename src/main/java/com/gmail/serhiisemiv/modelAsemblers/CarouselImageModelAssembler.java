@@ -1,8 +1,8 @@
 package com.gmail.serhiisemiv.modelAsemblers;
 
 import com.gmail.serhiisemiv.controllers.rest.CarouselImageController;
-import com.gmail.serhiisemiv.controllers.rest.PhotoController;
 import com.gmail.serhiisemiv.dto.CarouselImageDto;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class CarouselImageModelAssembler implements RepresentationModelAssembler
 
 
     @Override
-    public EntityModel<CarouselImageDto> toModel(CarouselImageDto carouselImageDto) {
+    public @NotNull EntityModel<CarouselImageDto> toModel(@NotNull CarouselImageDto carouselImageDto) {
         return EntityModel.of(carouselImageDto,
                 linkTo(methodOn(CarouselImageController.class).getImageById(carouselImageDto.getId())).withSelfRel()
         ,linkTo(methodOn(CarouselImageController.class).getBytesImageById(carouselImageDto.getId())).withRel("image"));

@@ -1,10 +1,7 @@
 package com.gmail.serhiisemiv.controllers.rest;
 
-import com.gmail.serhiisemiv.dto.AvatarImageDto;
 import com.gmail.serhiisemiv.dto.PhotoSessionIconDto;
 import com.gmail.serhiisemiv.dto.mappers.PhotoSessionIconMapper;
-import com.gmail.serhiisemiv.modeles.AvatarImage;
-import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.modeles.PhotoSessionIcon;
 import com.gmail.serhiisemiv.service.PhotoSessionIconService;
 import com.gmail.serhiisemiv.service.PhotoSessionService;

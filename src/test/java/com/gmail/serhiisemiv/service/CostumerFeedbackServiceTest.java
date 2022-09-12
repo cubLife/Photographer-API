@@ -106,7 +106,7 @@ class CostumerFeedbackServiceTest {
     void shouldCreateNewCostumerFeedback() {
         CostumerFeedbackDto feedbackDto = CostumerFeedbackDto.builder().firstName(FIRST_NAME).lastName(LAST_NAME).email(EMAIL)
                 .feedback(FEEDBACK).grade(GRADE).build();
-        CostumerFeedback expected = new CostumerFeedback(FIRST_NAME, LAST_NAME, new Date().getTime(), FEEDBACK, GRADE, EMAIL);
+        CostumerFeedback expected = new CostumerFeedback(FIRST_NAME, LAST_NAME,EMAIL, new Date().getTime(), FEEDBACK, GRADE);
         CostumerFeedback actual = costumerFeedbackService.createNewCostumerFeedback(feedbackDto);
         assertEquals(expected, actual);
     }

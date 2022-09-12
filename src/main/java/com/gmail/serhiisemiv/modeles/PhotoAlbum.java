@@ -37,6 +37,12 @@ public class PhotoAlbum {
         this.photoSession = photoSession;
     }
 
+    public PhotoAlbum(int id, String name, PhotoSession photoSession) {
+        this.id = id;
+        this.name = name;
+        this.photoSession = photoSession;
+    }
+
     public int getId() {
         return id;
     }

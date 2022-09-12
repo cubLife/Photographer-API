@@ -48,10 +48,7 @@ public class AvatarImageController {
         avatarImage.setPhotographer(photographer);
         avatarImage.setPicture(file.getBytes());
         avatarImageService.saveAvatarImage(avatarImage);
-        System.out.println(avatarImage);
-        AvatarImageDto avatarImageDto = mapper.toDto(avatarImage);
-        System.out.println(avatarImageDto);
-       return avatarImageDto;
+        return mapper.toDto(avatarImage);
     }
 
     @GetMapping("/photographer-id/{id}")

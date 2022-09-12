@@ -51,10 +51,10 @@ public class PhotographerController {
         return mapper.toDto(photographer);
     }
 
-    @GetMapping("/{photographer-id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
-    public EntityModel<PhotographerDto> findById(@PathVariable("photographer-id") int id) {
+    public EntityModel<PhotographerDto> findById(@PathVariable("id") int id) {
         Photographer photographer = photographerService.findPhotographerById(id);
         return modelAssembler.toModel(mapper.toDto(photographer));
     }
@@ -79,7 +79,7 @@ public class PhotographerController {
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
-    public void updatePhone(@RequestParam(value = "phone") @Pattern(regexp = "^\\+(?:[0-9]●?){11}[0-9]$", message = "Please type valid phone number. For example +48123456789") String phone, @PathVariable int id) {
+    public void updatePhone(@RequestParam(value = "phone") @Pattern(regexp = "^\\+(?:[0-9]●?){11}[0-9]$", message = "Please type valid phone number. For example +481234567890") String phone, @PathVariable int id) {
         photographerService.updatePhone(phone, id);
     }
 

@@ -19,10 +19,10 @@ public class CostumerFeedbackDto {
     @Email(message = "Email should be valid. For example - sample@gmail.com")
     String email;
     @NotBlank(message = "First name can't be empty")
-    @Size(min = 4, max = 20, message = "First name should be between 4-20 characters")
+    @Size(min = 3, max = 20, message = "First name should be between 3-20 characters")
     String firstName;
     @NotBlank(message = "Last name can't be empty")
-    @Size(min = 4, max = 20, message = "Last name should be between 4-20 characters")
+    @Size(min = 3, max = 20, message = "Last name should be between 3-20 characters")
     String lastName;
     private Long creationDate;
     @NotBlank(message = "Feedback can't be empty")

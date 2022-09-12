@@ -21,6 +21,6 @@ public class AvatarImageMapper {
     }
 
     public AvatarImageDto toDto(AvatarImage avatarImage) {
-        return modelMapper.map(AvatarImage.class, AvatarImageDto.class);
+        return modelMapper.map(avatarImage, AvatarImageDto.class);
     }
 }

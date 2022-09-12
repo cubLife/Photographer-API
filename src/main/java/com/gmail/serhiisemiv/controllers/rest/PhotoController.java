@@ -56,18 +56,17 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.CREATED)
     public PhotoDto savePhoto(@RequestParam MultipartFile file, @RequestParam int photoAlbumId) {
         info.info("Starting creating new photo");
-        Photo photo = photoService.createNewPhoto(file);
-        photo.setPhotoAlbum(photoAlbumService.findPhotoAlbumById(photoAlbumId));
+        Photo photo = photoService.createNewPhoto(file, photoAlbumId);
         info.info("New photo is created");
         photoService.savePhoto(photo);
         return mapper.toDto(photo);
     }
 
-    @PostMapping(value = "list", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/list", consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public List<PhotoDto> saveAllPhotos( @RequestParam MultipartFile[] files) {
+    public List<PhotoDto> saveListPhotos( @RequestParam MultipartFile[] files, @RequestParam int photoAlbumId ) {
         info.info("Starting creating new photos");
-        List<Photo> photos = Arrays.stream(files).map(photoService::createNewPhoto)
+        List<Photo> photos = Arrays.stream(files).map(file -> photoService.createNewPhoto(file,photoAlbumId))
                 .collect(Collectors.toList());
         info.info("New photos is created");
         photoService.saveAllPhotos(photos);

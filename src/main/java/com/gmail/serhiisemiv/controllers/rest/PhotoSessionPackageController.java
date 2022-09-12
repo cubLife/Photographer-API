@@ -70,7 +70,6 @@ public class PhotoSessionPackageController {
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public void editPhotoSessionPackageById(@RequestBody PhotoSessionPackageDto sessionPackageDto, @PathVariable int id){
-        System.out.println("Name - "+sessionPackageDto.getName());
         packageService.editPhotoSessionPackageById(id, sessionPackageDto);
     }
 
@@ -96,7 +95,7 @@ public class PhotoSessionPackageController {
     public Map<String, Object> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, Object> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);

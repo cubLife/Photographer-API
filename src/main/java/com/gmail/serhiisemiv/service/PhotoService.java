@@ -19,13 +19,15 @@ import java.util.Optional;
 @Service
 public class PhotoService {
     private final PhotoRepository photoRepository;
+    private final PhotoAlbumService albumService;
     private final Logger error = LoggerFactory.getLogger(this.getClass());
     private final Logger debug = LoggerFactory.getLogger(this.getClass());
     private final Logger info = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public PhotoService(PhotoRepository photoRepository) {
+    public PhotoService(PhotoRepository photoRepository, PhotoAlbumService albumService) {
         this.photoRepository = photoRepository;
+        this.albumService = albumService;
     }
 
     public void savePhoto(Photo photo) {
@@ -118,9 +120,10 @@ public class PhotoService {
         }
     }
 
-    public Photo createNewPhoto(MultipartFile file) {
+    public Photo createNewPhoto(MultipartFile file, int photoAlbumId) {
         Photo photo = new Photo();
         try {
+            photo.setPhotoAlbum(albumService.findPhotoAlbumById(photoAlbumId));
             photo.setName(file.getOriginalFilename());
             photo.setSize(file.getSize());
             photo.setPicture(file.getBytes());

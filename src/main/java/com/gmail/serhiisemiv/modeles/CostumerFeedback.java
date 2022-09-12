@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Objects;
 
-@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "feedbacks")
@@ -29,7 +28,7 @@ public class CostumerFeedback {
     public CostumerFeedback() {
     }
 
-    public CostumerFeedback(String firstName, String lastName, Long creationDate, String feedback, int grade, String email) {
+    public CostumerFeedback(String firstName, String lastName,String email , Long creationDate, String feedback, int grade) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.creationDate = creationDate;
@@ -38,7 +37,7 @@ public class CostumerFeedback {
         this.email=email;
     }
 
-    public CostumerFeedback(int id, String firstName, String lastName, Long creationDate, String feedback, int grade, String email) {
+    public CostumerFeedback(int id, String firstName, String lastName, String email, Long creationDate, String feedback, int grade) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

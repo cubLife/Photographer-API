@@ -1,9 +1,7 @@
 package com.gmail.serhiisemiv.dto.mappers;
 
 import com.gmail.serhiisemiv.dto.CarouselImageDto;
-import com.gmail.serhiisemiv.dto.PhotoDto;
 import com.gmail.serhiisemiv.modeles.CarouselImage;
-import com.gmail.serhiisemiv.modeles.Photo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

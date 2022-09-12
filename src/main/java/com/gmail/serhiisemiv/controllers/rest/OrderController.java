@@ -89,7 +89,6 @@ public class OrderController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void editOrder(@RequestBody OrderDto orderDto, @PathVariable int id) {
-        System.out.println(orderDto);
         orderService.editOrder(orderDto, id);
 
     }

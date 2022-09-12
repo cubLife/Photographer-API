@@ -50,12 +50,12 @@ public class CarouselImageController {
     @PostMapping(consumes = {"multipart/form-data"}, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/" })
-    public Resource saveCarouselImage(@RequestParam MultipartFile file) throws IOException {
+    public CarouselImageDto saveCarouselImage(@RequestParam MultipartFile file) throws IOException {
         info.info("Starting creating new carousel image");
         CarouselImage carouselImage = carouselImageService.createNewCarouselImage(file);
         info.info("New carousel image is created");
         carouselImageService.addCarouselImage(carouselImage);
-        return new ByteArrayResource(carouselImage.getPicture());
+        return mapper.toDto(carouselImage);
     }
 
     @GetMapping(value = "/{id}")

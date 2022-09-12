@@ -70,7 +70,7 @@ public class CostumerController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
-    public ResponseEntity<HttpStatus> deletePhotoById(@RequestParam("id") int id) {
+    public ResponseEntity<HttpStatus> deleteCostumerById(@PathVariable int id) {
         costumerService.deleteCostumerById(id);
         return ResponseEntity.noContent().build();
     }
