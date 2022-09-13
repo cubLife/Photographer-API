@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PhotographerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PhotographerApplication.class, args);
+		SpringApplication application =
+				new SpringApplication(PhotographerApplication.class);
+		application.setAdditionalProfiles("prod");
+		application.run(args);
 	}
 
 }

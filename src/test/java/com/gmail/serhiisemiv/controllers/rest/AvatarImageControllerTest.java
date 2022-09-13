@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WebMvcTest
 @ContextConfiguration(classes = {AvatarImageController.class})
+@ActiveProfiles(value = "test")
 class AvatarImageControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -39,7 +41,7 @@ class AvatarImageControllerTest {
     @MockBean
     private AvatarImageMapper mapper;
 
-    private MockMultipartFile FILE = new MockMultipartFile("file",
+    private static final MockMultipartFile FILE = new MockMultipartFile("file",
             "hello.jpeg",
             MediaType.IMAGE_JPEG_VALUE,
             new byte[10]);
