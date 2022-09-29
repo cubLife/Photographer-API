@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 @RequestMapping("api/feedbacks")
 public class CostumerFeedbackController {
     private final CostumerFeedbackService feedbackService;
@@ -41,7 +42,7 @@ public class CostumerFeedbackController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CostumerFeedbackDto saveCostumerFeedback(@RequestBody @Valid CostumerFeedbackDto feedbackDto){
+    public CostumerFeedbackDto saveCostumerFeedback(@RequestBody @Valid CostumerFeedbackDto feedbackDto) {
         CostumerFeedback feedback = feedbackService.createNewCostumerFeedback(feedbackDto);
         feedbackService.saveCostumerFeedback(feedback);
         return mapper.toDto(feedback);
@@ -49,37 +50,25 @@ public class CostumerFeedbackController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EntityModel<CostumerFeedbackDto> getById(@PathVariable("id") int id){
+    public EntityModel<CostumerFeedbackDto> getById(@PathVariable("id") int id) {
         CostumerFeedbackDto feedbackDto = mapper.toDto(feedbackService.findCostumerFeedbackById(id));
         return modelAssembler.toModel(feedbackDto);
     }
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<EntityModel<CostumerFeedbackDto>> getAll(){
+    public CollectionModel<EntityModel<CostumerFeedbackDto>> getAll() {
         List<CostumerFeedback> feedbacks = feedbackService.findAllCostumerFeedbacks();
         List<EntityModel<CostumerFeedbackDto>> entityModels = getModels(feedbacks);
         return CollectionModel.of(entityModels, linkTo(methodOn(CostumerFeedbackController.class).getAll()).withSelfRel());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/{id}")
-@ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id) {
         feedbackService.deleteCostumerFeedbackById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, Object> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, Object> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 
     private List<EntityModel<CostumerFeedbackDto>> getModels(List<CostumerFeedback> feedbacks) {

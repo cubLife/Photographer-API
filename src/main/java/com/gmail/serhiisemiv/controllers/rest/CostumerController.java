@@ -12,6 +12,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -50,41 +51,28 @@ public class CostumerController {
         return mapper.toDto(costumer);
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/{costumer-id}")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public EntityModel<CostumerDto> findById(@PathVariable("costumer-id") int costumerId){
        Costumer costumer = costumerService.findCostumerById(costumerId);
         return modelAssembler.toModel(mapper.toDto(costumer));
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public CollectionModel<EntityModel<CostumerDto>> findAll(){
         List<CostumerDto> dtoList = mapper.listToDto(costumerService.findAllCostumers());
         List<EntityModel<CostumerDto>> entityModels = dtoList.stream().map(modelAssembler::toModel).collect(Collectors.toList());
        return CollectionModel.of(entityModels, linkTo(methodOn(CostumerController.class).findAll()).withSelfRel());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     public ResponseEntity<HttpStatus> deleteCostumerById(@PathVariable int id) {
         costumerService.deleteCostumerById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 }

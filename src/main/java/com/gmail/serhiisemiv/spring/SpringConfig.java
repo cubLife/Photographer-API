@@ -1,4 +1,4 @@
-package com.gmail.serhiisemiv;
+package com.gmail.serhiisemiv.spring;
 
 
 import org.modelmapper.ModelMapper;

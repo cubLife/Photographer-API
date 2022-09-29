@@ -13,6 +13,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,7 @@ public class AvatarImageController {
         this.mapper = mapper;
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
     public AvatarImageDto addAvatarImage( @RequestParam MultipartFile file, @RequestParam int photographerId) throws IOException {
@@ -68,9 +70,9 @@ public class AvatarImageController {
         return new ByteArrayResource(avatarImage.getPicture());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PutMapping(value = "/{id}",  consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
     @Transactional
     public void changeAvatar(@RequestBody MultipartFile file, @PathVariable("id") int id){
         AvatarImage avatarImage = avatarImageService.findByPhotographerId(id);

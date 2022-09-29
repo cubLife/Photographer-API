@@ -17,6 +17,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +34,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "api/photos")
-//@CrossOrigin(origins = {"http://localhost:3000/"})
 public class PhotoController {
     private final PhotoService photoService;
     private final PhotoAlbumService photoAlbumService;
@@ -52,7 +52,7 @@ public class PhotoController {
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @PreAuthorize("hasRole('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public PhotoDto savePhoto(@RequestParam MultipartFile file, @RequestParam int photoAlbumId) {
         info.info("Starting creating new photo");
@@ -64,9 +64,10 @@ public class PhotoController {
 
     @PostMapping(value = "/list", consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public List<PhotoDto> saveListPhotos( @RequestParam MultipartFile[] files, @RequestParam int photoAlbumId ) {
+    @PreAuthorize("hasRole('admin')")
+    public List<PhotoDto> saveListPhotos(@RequestParam MultipartFile[] files, @RequestParam int photoAlbumId) {
         info.info("Starting creating new photos");
-        List<Photo> photos = Arrays.stream(files).map(file -> photoService.createNewPhoto(file,photoAlbumId))
+        List<Photo> photos = Arrays.stream(files).map(file -> photoService.createNewPhoto(file, photoAlbumId))
                 .collect(Collectors.toList());
         info.info("New photos is created");
         photoService.saveAllPhotos(photos);
@@ -102,7 +103,7 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = {"http://localhost:3000/"})
     public CollectionModel<EntityModel<PhotoDto>> findAllPhotos() {
-        List<Photo> photos= photoService.findAllPhotos();
+        List<Photo> photos = photoService.findAllPhotos();
         photos.sort(Comparator.comparingInt(Image::getId));
         List<PhotoDto> photosDto = mapper.listToDto(photos);
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);
@@ -111,28 +112,29 @@ public class PhotoController {
 
     @GetMapping("/photo-album/{photo-album-id}")
     @ResponseStatus(HttpStatus.OK)
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
-    public CollectionModel<EntityModel<PhotoDto>> findAllByPhotoAlbum(@PathVariable("photo-album-id") int albumId){
-        List<Photo> photos= photoService.findAllByAlbumId(albumId);
+    public CollectionModel<EntityModel<PhotoDto>> findAllByPhotoAlbum(@PathVariable("photo-album-id") int albumId) {
+        List<Photo> photos = photoService.findAllByAlbumId(albumId);
         photos.sort(Comparator.comparingInt(Image::getId));
         List<PhotoDto> photosDto = mapper.listToDto(photos);
         List<EntityModel<PhotoDto>> entityModels = getEntityModels(photosDto);
         return CollectionModel.of(entityModels, linkTo(methodOn(PhotoController.class).findAllByPhotoAlbum(albumId)).withSelfRel());
     }
+
     @GetMapping(value = "first-image/photo-album/{photo-album-id}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @CrossOrigin(origins = {"http://localhost:3000/"})
-    public Resource getFirstImageByAlbumId(@PathVariable("photo-album-id") int albumId){
+    public Resource getFirstImageByAlbumId(@PathVariable("photo-album-id") int albumId) {
         return photoService.findFirstByAlbumId(albumId);
     }
 
-    @PutMapping(value = "/{id}",  consumes = {"multipart/form-data"})
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
-    public void replacePhoto(@RequestBody MultipartFile file, @PathVariable("id") int id){
-       Photo photo= photoService.findPhotoById(id);
+    @PreAuthorize("hasRole('admin')")
+    public void replacePhoto(@RequestBody MultipartFile file, @PathVariable("id") int id) {
+        Photo photo = photoService.findPhotoById(id);
         try {
             photo.setName(file.getOriginalFilename());
             photo.setSize(file.getSize());
@@ -146,7 +148,7 @@ public class PhotoController {
     }
 
     @DeleteMapping("/{id}")
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @PreAuthorize("hasRole('admin')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<HttpStatus> deletePhotoById(@PathVariable("id") int id) {
         photoService.deletePhotoById(id);

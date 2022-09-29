@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +50,7 @@ public class OrderController {
         return mapper.toDto(order);
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/{order-id}")
     @ResponseStatus(HttpStatus.OK)
     public EntityModel<OrderDto> getOrderById(@PathVariable("order-id") int orderId) {
@@ -56,6 +58,7 @@ public class OrderController {
         return modelAssembler.toModel(mapper.toDto(order));
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/list")
     @Transactional
     @ResponseStatus(HttpStatus.OK)
@@ -65,8 +68,8 @@ public class OrderController {
         return CollectionModel.of(orderDtoModels, linkTo(methodOn(OrderController.class).getAllOrders()).withSelfRel());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/order-status/{status}/list")
-
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<OrderDto>> getByOrderStatus(@PathVariable(value = "status") String status) {
         OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
@@ -79,6 +82,7 @@ public class OrderController {
         return orders.stream().map(mapper::toDto).map(modelAssembler::toModel).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/{order-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<HttpStatus> deleteOrderById(@PathVariable("order-id") int id) {
@@ -86,24 +90,11 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void editOrder(@RequestBody OrderDto orderDto, @PathVariable int id) {
         orderService.editOrder(orderDto, id);
 
-    }
-
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, Object> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, Object> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 }

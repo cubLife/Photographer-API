@@ -11,6 +11,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 @RequestMapping(value = "api/photo-session-icons")
 public class PhotoSessionIconController {
     private final PhotoSessionIconService iconService;
@@ -39,40 +40,41 @@ public class PhotoSessionIconController {
 
     @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public PhotoSessionIconDto addAPhotoSessionIcon(@RequestParam MultipartFile file, @RequestParam int sessionId){
+    @PreAuthorize("hasRole('admin')")
+    public PhotoSessionIconDto addAPhotoSessionIcon(@RequestParam MultipartFile file, @RequestParam int sessionId) {
         PhotoSessionIcon sessionIcon = null;
         try {
-            sessionIcon= iconService.createNew(file,sessionId);
+            sessionIcon = iconService.createNew(file, sessionId);
         } catch (IOException e) {
             error.error("Can't create new Photo Session Icon - {}", e.getMessage());
         }
         iconService.save(sessionIcon);
-      return mapper.toDto(sessionIcon);
+        return mapper.toDto(sessionIcon);
     }
 
     @GetMapping("/session-id/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
-    public EntityModel<PhotoSessionIconDto> getByPhotoSessionId(@PathVariable("id") int id){
+    public EntityModel<PhotoSessionIconDto> getByPhotoSessionId(@PathVariable("id") int id) {
         PhotoSessionIcon sessionIcon = iconService.findByPhotoSessionId(id);
         return EntityModel.of(mapper.toDto(sessionIcon), linkTo(methodOn(PhotoSessionIconController.class).getPictureByPhotoSessionId(id)).withSelfRel());
     }
 
     @GetMapping("/session-id/{id}/icon")
     @ResponseStatus(HttpStatus.OK)
-    @Transactional(readOnly=true)
-    public Resource getPictureByPhotoSessionId(@PathVariable("id") int id){
-       PhotoSessionIcon sessionIcon = iconService.findByPhotoSessionId(id);
+    @Transactional(readOnly = true)
+    public Resource getPictureByPhotoSessionId(@PathVariable("id") int id) {
+        PhotoSessionIcon sessionIcon = iconService.findByPhotoSessionId(id);
         return new ByteArrayResource(sessionIcon.getPicture());
     }
 
-    @PutMapping( value = "/session-id/{id}/icon", consumes = {"multipart/form-data"})
+    @PutMapping(value = "/session-id/{id}/icon", consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @PreAuthorize("hasRole('admin')")
     @Transactional
-    public void changeIcon(@RequestBody MultipartFile file, @PathVariable("id") int id){
-        PhotoSessionIcon sessionIcon= iconService.findByPhotoSessionId(id);
+    public void changeIcon(@RequestBody MultipartFile file, @PathVariable("id") int id) {
+        PhotoSessionIcon sessionIcon = iconService.findByPhotoSessionId(id);
         try {
             sessionIcon.setPicture(file.getBytes());
         } catch (IOException e) {

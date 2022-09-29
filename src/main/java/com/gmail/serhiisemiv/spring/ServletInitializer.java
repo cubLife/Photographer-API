@@ -1,5 +1,6 @@
-package com.gmail.serhiisemiv;
+package com.gmail.serhiisemiv.spring;
 
+import com.gmail.serhiisemiv.PhotographerApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

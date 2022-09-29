@@ -13,6 +13,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class PhotoAlbumController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @PreAuthorize("hasRole('admin')")
     public PhotoAlbumDto savePhotoAlbum(@RequestBody @Valid PhotoAlbumDto photoAlbumDto) {
         PhotoAlbum photoAlbum = photoAlbumService.createPhotoAlbum(photoAlbumDto);
         photoAlbumService.savePhotoAlbum(photoAlbum);
@@ -79,7 +80,7 @@ public class PhotoAlbumController {
     }
 
     @DeleteMapping("/{id}")
-    @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/"})
+    @PreAuthorize("hasRole('admin')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<HttpStatus> deleteById(@PathVariable int id){
         photoAlbumService.deletePhotoAlbumById(id);
@@ -92,16 +93,4 @@ public class PhotoAlbumController {
                 .map(modelAssembler::toModel).collect(Collectors.toList());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, Object> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, Object> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class PhotographerController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('admin')")
     public PhotographerDto addPhotographer(@RequestBody PhotographerDto photographerDto) {
         info.info("Starting create new photographer {}", photographerDto);
         Photographer photographer = mapper.fromDto(photographerDto);
@@ -59,6 +61,7 @@ public class PhotographerController {
     @PutMapping("/{id}/edit-about")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
+    @PreAuthorize("hasRole('admin')")
     @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public void updateAboutMySelf(@RequestParam String aboutMyself, @PathVariable int id) {
         photographerService.updateAboutMyself(aboutMyself, id);
@@ -67,14 +70,16 @@ public class PhotographerController {
     @PutMapping("/{id}/edit-email")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
+    @PreAuthorize("hasRole('admin')")
     @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
-    public void updateEmail(@RequestParam  @Email(message = "Email should be valid. For example - sample@gmail.com") String email, @PathVariable int id) {
+    public void updateEmail(@RequestParam @Email(message = "Email should be valid. For example - sample@gmail.com") String email, @PathVariable int id) {
         photographerService.updateEmail(email, id);
     }
 
     @PutMapping("/{id}/edit-phone")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
+    @PreAuthorize("hasRole('admin')")
     @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public void updatePhone(@RequestParam(value = "phone") @Pattern(regexp = "^\\+(?:[0-9]●?){11}[0-9]$", message = "Please type valid phone number. For example +481234567890") String phone, @PathVariable int id) {
         photographerService.updatePhone(phone, id);
@@ -82,21 +87,9 @@ public class PhotographerController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<HttpStatus> deletePhotographerById(@PathVariable int id) {
         photographerService.deletePhotographerById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ConstraintViolationException.class)
-    public Map<String, Object> handleValidationExceptions(
-            ConstraintViolationException ex) {
-        Map<String, Object> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(error -> {
-            String errorMessage = error.getMessage();
-            errors.put("error", errorMessage);
-        });
-        return errors;
-
     }
 }
