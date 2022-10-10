@@ -20,9 +20,8 @@ import java.util.Optional;
 public class PhotoService {
     private final PhotoRepository photoRepository;
     private final PhotoAlbumService albumService;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public PhotoService(PhotoRepository photoRepository, PhotoAlbumService albumService) {
@@ -36,7 +35,7 @@ public class PhotoService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photo {}", photo.getName());
+            debug.debug("Start saving new photo {}", photo.getName());
             photoRepository.save(photo);
             debug.debug("Photo is saved{}", photo.getPicture());
         } catch (NumberFormatException e) {
@@ -51,7 +50,7 @@ public class PhotoService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photos");
+            debug.debug("Start saving new photos");
             photoRepository.saveAll(photos);
             debug.debug("Photos is saved");
         } catch (NumberFormatException e) {
@@ -61,7 +60,7 @@ public class PhotoService {
     }
 
     public Photo findPhotoById(int id) {
-        info.info("Start returned photo with id - {}", id);
+        debug.debug("Start returned photo with id - {}", id);
         Optional<Photo> photo = photoRepository.findById(id);
         if (photo.isEmpty()) {
             error.error("Photo is not present", new ServiceException("Can't find photo with id - " + id));
@@ -72,7 +71,7 @@ public class PhotoService {
     }
 
     public List<Photo> findAllPhotos() {
-        info.info("Starting returning all photos");
+        debug.debug("Starting returning all photos");
         try {
             List<Photo> photos = photoRepository.findAll();
             debug.debug("All photos was returned");
@@ -84,7 +83,7 @@ public class PhotoService {
     }
 
     public List<Photo> findAllByAlbumId(int albumId){
-        info.info("Starting returning all photos with album id {}",albumId);
+        debug.debug("Starting returning all photos with album id {}",albumId);
         try {
             List<Photo> photos = photoRepository.findAllByPhotoAlbum_Id(albumId);
             debug.debug("All photos with album id is returned id {}", albumId);
@@ -96,7 +95,7 @@ public class PhotoService {
     }
 
     public Resource findFirstByAlbumId(int albumId){
-        info.info("Starting returning first image with album id {}",albumId);
+        debug.debug("Starting returning first image with album id {}",albumId);
         try {
             Photo photo = photoRepository.findFirstByPhotoAlbum_Id(albumId);
             debug.debug("first image with album id is returned id {}", albumId);
@@ -109,7 +108,7 @@ public class PhotoService {
 
 
     public void deletePhotoById(int id) {
-        info.info("Starting delete photo with id - {}", id);
+        debug.debug("Starting delete photo with id - {}", id);
         try {
 
             photoRepository.deleteById(id);

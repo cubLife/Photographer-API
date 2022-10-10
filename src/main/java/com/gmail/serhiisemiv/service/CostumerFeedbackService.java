@@ -19,9 +19,8 @@ import java.util.Optional;
 public class CostumerFeedbackService {
     private final CostumerFeedbackRepository costumerFeedbackRepository;
     private final CostumerService costumerService;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public CostumerFeedbackService(CostumerFeedbackRepository costumerFeedbackRepository, CostumerService costumerService) {
@@ -35,7 +34,7 @@ public class CostumerFeedbackService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new costumer feedback - {}", costumerFeedback);
+            debug.debug("Start saving new costumer feedback - {}", costumerFeedback);
             costumerFeedbackRepository.save(costumerFeedback);
             debug.debug("Costumer feedback is saved{}", costumerFeedback);
         } catch (NumberFormatException e) {
@@ -45,7 +44,7 @@ public class CostumerFeedbackService {
     }
 
     public CostumerFeedback findCostumerFeedbackById(int id) {
-        info.info("Start returned costumer feedback with id - {}", id);
+        debug.debug("Start returned costumer feedback with id - {}", id);
         Optional<CostumerFeedback> costumerFeedback = costumerFeedbackRepository.findById(id);
         error.error("Costumer feedback is not present", new ServiceException("Can't find costumer feedback with id - " + id));
         if (costumerFeedback.isEmpty()) {
@@ -56,7 +55,7 @@ public class CostumerFeedbackService {
     }
 
     public List<CostumerFeedback> findAllCostumerFeedbacks() {
-        info.info("Starting returning all costumer feedbacks");
+        debug.debug("Starting returning all costumer feedbacks");
         try {
             List<CostumerFeedback> costumerFeedbacks = costumerFeedbackRepository.findAll();
             debug.debug("All costumer feedback was returned");
@@ -68,7 +67,7 @@ public class CostumerFeedbackService {
     }
 
     public void deleteCostumerFeedbackById(int id) throws ServiceException {
-        info.info("Starting delete costumer feedback with id - {}", id);
+        debug.debug("Starting delete costumer feedback with id - {}", id);
         try {
             costumerFeedbackRepository.deleteById(id);
             debug.debug("Costumer feedback was deleted id - {}", id);

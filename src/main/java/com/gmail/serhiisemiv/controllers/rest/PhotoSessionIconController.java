@@ -28,9 +28,8 @@ public class PhotoSessionIconController {
     private final PhotoSessionIconService iconService;
     private final PhotoSessionService sessionService;
     private final PhotoSessionIconMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     public PhotoSessionIconController(PhotoSessionIconService iconService, PhotoSessionService sessionService, PhotoSessionIconMapper mapper) {
         this.iconService = iconService;
@@ -82,6 +81,6 @@ public class PhotoSessionIconController {
         }
         debug.debug("Starting save replaced photo session icon");
         iconService.save(sessionIcon);
-        info.info("Photo session icon replaced");
+        debug.debug("Photo session icon replaced");
     }
 }

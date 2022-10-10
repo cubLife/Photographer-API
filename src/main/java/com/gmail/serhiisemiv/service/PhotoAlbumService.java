@@ -19,9 +19,8 @@ import java.util.Optional;
 public class PhotoAlbumService {
     private final PhotoAlbumRepository photoAlbumRepository;
     private final PhotoSessionService photoSessionService;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public PhotoAlbumService(PhotoAlbumRepository photoAlbumRepository, PhotoSessionService photoSessionService) {
@@ -36,7 +35,7 @@ public class PhotoAlbumService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photo album {}", photoAlbum);
+            debug.debug("Start saving new photo album {}", photoAlbum);
             photoAlbumRepository.save(photoAlbum);
             debug.debug("Photo album is saved{}", photoAlbum);
         } catch (NumberFormatException e) {
@@ -46,7 +45,7 @@ public class PhotoAlbumService {
     }
 
     public PhotoAlbum findPhotoAlbumById(int id) {
-        info.info("Start returned photo album with id - {}", id);
+        debug.debug("Start returned photo album with id - {}", id);
         Optional<PhotoAlbum> photoAlbum = photoAlbumRepository.findById(id);
         if (photoAlbum.isEmpty()) {
             error.error("Photo album is not present", new ServiceException("Can't find photo album with id - " + id));
@@ -57,7 +56,7 @@ public class PhotoAlbumService {
     }
 
     public List<PhotoAlbum> findAllPhotoAlbums() {
-        info.info("Starting returning all photo albums");
+        debug.debug("Starting returning all photo albums");
         try {
             List<PhotoAlbum> photoAlbums = photoAlbumRepository.findAll();
             debug.debug("All photo albums was returned");
@@ -69,7 +68,7 @@ public class PhotoAlbumService {
     }
 
     public List<PhotoAlbum> findByPhotoSessionId(int id){
-        info.info("Starting returning all photo albums by Photo Session id");
+        debug.debug("Starting returning all photo albums by Photo Session id");
         try {
             List<PhotoAlbum> photoAlbums = photoAlbumRepository.findByPhotoSession_Id(id);
             debug.debug("All photo albums by Photo Session id was returned");
@@ -82,7 +81,7 @@ public class PhotoAlbumService {
 
 
     public void deletePhotoAlbumById(int id) {
-        info.info("Starting delete photo album with id - {}", id);
+        debug.debug("Starting delete photo album with id - {}", id);
         try {
             photoAlbumRepository.deleteById(id);
             debug.debug("Photo album was deleted id - {}", id);

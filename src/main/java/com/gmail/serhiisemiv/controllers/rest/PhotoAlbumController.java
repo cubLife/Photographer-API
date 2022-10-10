@@ -34,8 +34,6 @@ public class PhotoAlbumController {
     private final PhotoAlbumService photoAlbumService;
     private final PhotoAlbumDtoModelAssembler modelAssembler;
     private final PhotoAlbumMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public PhotoAlbumController(PhotoAlbumService photoAlbumService, PhotoAlbumDtoModelAssembler modelAssembler, PhotoAlbumMapper mapper) {

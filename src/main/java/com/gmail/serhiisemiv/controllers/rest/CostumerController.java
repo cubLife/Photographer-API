@@ -32,7 +32,7 @@ public class CostumerController {
     private final CostumerService costumerService;
     private final CostumerDtoModelAssembler modelAssembler;
     private final CostumerMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public CostumerController(CostumerService costumerService, CostumerDtoModelAssembler modelAssembler, CostumerMapper mapper) {
@@ -44,9 +44,9 @@ public class CostumerController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public CostumerDto saveCostumer(@RequestBody @Valid CostumerDto costumerDto) {
-        info.info("Starting create new costumer {}", costumerDto);
+        debug.debug("Starting create new costumer {}", costumerDto);
         Costumer costumer = mapper.fromDto(costumerDto);
-        info.info("Costumer is created {}", costumer);
+        debug.debug("Costumer is created {}", costumer);
         costumerService.saveCostumer(costumer);
         return mapper.toDto(costumer);
     }

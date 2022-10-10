@@ -19,9 +19,8 @@ import java.util.Optional;
 public class PhotoSessionIconService {
     private final PhotoSessionIconRepository repository;
     private final PhotoSessionService sessionService;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     public PhotoSessionIconService(PhotoSessionIconRepository repository, PhotoSessionService sessionService) {
         this.repository = repository;
@@ -34,7 +33,7 @@ public class PhotoSessionIconService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new Photo session Icon");
+            debug.debug("Start saving new Photo session Icon");
             repository.save(sessionIcon);
             debug.debug("Photo session icon is saved");
         } catch (NumberFormatException e) {
@@ -44,7 +43,7 @@ public class PhotoSessionIconService {
     }
 
     public PhotoSessionIcon findByPhotoSessionId(int id){
-        info.info("Start to returning Photo Session Icon with Photo Session id {}", id);
+        debug.debug("Start to returning Photo Session Icon with Photo Session id {}", id);
         Optional<PhotoSessionIcon> sessionIcon = repository.findByPhotoSession_Id(id);
         if (sessionIcon.isEmpty()) {
             error.error("Photo Session Icon is not present", new ServiceException("Can't find Photo Session Icon with Photo Session Id - " + id));
@@ -55,7 +54,7 @@ public class PhotoSessionIconService {
     }
 
     public PhotoSessionIcon findById(int id) {
-        info.info("Start to returning Photo Session with id - {}", id);
+        debug.debug("Start to returning Photo Session with id - {}", id);
         Optional<PhotoSessionIcon> sessionIcon = repository.findById(id);
         if (sessionIcon.isEmpty()) {
             error.error("Photo Session Icon is not present", new ServiceException("Can't find Photo Session Icon with id - " + id));
@@ -66,7 +65,7 @@ public class PhotoSessionIconService {
     }
 
     public void deletePhotoSessionIconById(int id) throws ServiceException {
-        info.info("Start to delete Photo Session Icon with id - {}", id);
+        debug.debug("Start to delete Photo Session Icon with id - {}", id);
         try {
             repository.deleteById(id);
             debug.debug("Photo Session Icon was deleted id - {}", id);
@@ -77,7 +76,7 @@ public class PhotoSessionIconService {
     }
 
     public PhotoSessionIcon createNew( MultipartFile file, int sessionId) throws IOException {
-        info.info("Starting create new Photo Session Icon");
+        debug.debug("Starting create new Photo Session Icon");
         PhotoSession photoSession =sessionService.findPhotoSessionById(sessionId);
         PhotoSessionIcon sessionIcon = new PhotoSessionIcon();
         sessionIcon.setPhotoSession(photoSession);

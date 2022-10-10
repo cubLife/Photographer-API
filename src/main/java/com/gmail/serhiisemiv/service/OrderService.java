@@ -23,9 +23,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CostumerService costumerService;
     private final PhotoSessionPackageService packageService;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public OrderService(OrderRepository orderRepository, CostumerService costumerService, PhotoSessionPackageService packageService) {
@@ -40,7 +39,7 @@ public class OrderService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new order {}", order);
+            debug.debug("Start saving new order {}", order);
             orderRepository.save(order);
             debug.debug("Order is saved{}", order);
         } catch (NumberFormatException e) {
@@ -50,7 +49,7 @@ public class OrderService {
     }
 
     public Order findOrderById(int id) {
-        info.info("Start returned order with id - {}", id);
+        debug.debug("Start returned order with id - {}", id);
         Optional<Order> order = orderRepository.findById(id);
         if (order.isEmpty()) {
             error.error("Order is not present", new ServiceException("Can't find order with id - " + id));
@@ -61,7 +60,7 @@ public class OrderService {
     }
 
     public List<Order> findAllOrders() {
-        info.info("Starting returning all orders");
+        debug.debug("Starting returning all orders");
         try {
             List<Order> orders = orderRepository.findAll();
             debug.debug("All orders was returned");
@@ -73,7 +72,7 @@ public class OrderService {
     }
 
     public List<Order> findAllOrdersByCostumerId(int costumerId) {
-        info.info("Starting returning all orders by costumer id - {}", costumerId);
+        debug.debug("Starting returning all orders by costumer id - {}", costumerId);
         try {
             List<Order> orders = orderRepository.findByCostumer_Id(costumerId);
             debug.debug("All orders was returned by costumer id {} -  was returned", costumerId);
@@ -98,15 +97,15 @@ public class OrderService {
 
     public void editOrder(OrderDto orderDto, int id) {
         Order order = this.findOrderById(id);
-        info.info("Starting edit Order with id - {}", id);
+        debug.debug("Starting edit Order with id - {}", id);
         edit(order, orderDto);
         this.saveOrder(order);
-        info.info("Order with id edited - {}", order);
+        debug.debug("Order with id edited - {}", order);
 
     }
 
     public void deleteOrderById(int id) {
-        info.info("Starting delete order with id - {}", id);
+        debug.debug("Starting delete order with id - {}", id);
         try {
             orderRepository.deleteById(id);
             debug.debug("Order was deleted id - {}", id);

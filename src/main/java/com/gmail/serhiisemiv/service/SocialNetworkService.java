@@ -16,9 +16,8 @@ import java.util.Optional;
 @Service
 public class SocialNetworkService {
     private final SocialNetworkRepository socialNetworkRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public SocialNetworkService(SocialNetworkRepository socialNetworkRepository) {
@@ -31,7 +30,7 @@ public class SocialNetworkService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new social network{}", socialNetwork);
+            debug.debug("Start saving new social network{}", socialNetwork);
             socialNetworkRepository.save(socialNetwork);
             debug.debug("SocialNetwork is saved{}", socialNetwork);
         } catch (NumberFormatException e) {
@@ -41,7 +40,7 @@ public class SocialNetworkService {
     }
 
     public SocialNetwork findSocialNetworkById(int id) {
-        info.info("Start returned social network with id - {}", id);
+        debug.debug("Start returned social network with id - {}", id);
         Optional<SocialNetwork> socialNetwork = socialNetworkRepository.findById(id);
         if (socialNetwork.isEmpty()) {
             error.error("social network is not present", new ServiceException("Can't find social network with id - " + id));
@@ -52,7 +51,7 @@ public class SocialNetworkService {
     }
 
     public List<SocialNetwork> findAllSocialNetworks() {
-        info.info("Starting returning all social networks");
+        debug.debug("Starting returning all social networks");
         try {
             List<SocialNetwork> photographers = socialNetworkRepository.findAll();
             debug.debug("All social networks was returned");
@@ -64,7 +63,7 @@ public class SocialNetworkService {
     }
 
     public void deleteSocialNetworkById(int id) {
-        info.info("Starting delete social network with id - {}", id);
+        debug.debug("Starting delete social network with id - {}", id);
         try {
             socialNetworkRepository.deleteById(id);
             debug.debug("Social network was deleted id - {}", id);

@@ -30,7 +30,7 @@ public class PhotographerController {
     private final PhotographerService photographerService;
     private final PhotographerDtoModelAssembler modelAssembler;
     private final PhotographerMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public PhotographerController(PhotographerService photographerService, PhotographerDtoModelAssembler modelAssembler, PhotographerMapper mapper) {
@@ -43,9 +43,9 @@ public class PhotographerController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('admin')")
     public PhotographerDto addPhotographer(@RequestBody PhotographerDto photographerDto) {
-        info.info("Starting create new photographer {}", photographerDto);
+        debug.debug("Starting create new photographer {}", photographerDto);
         Photographer photographer = mapper.fromDto(photographerDto);
-        info.info("Photographer is created {}", photographer);
+        debug.debug("Photographer is created {}", photographer);
         photographerService.savePhotographer(photographer);
         return mapper.toDto(photographer);
     }

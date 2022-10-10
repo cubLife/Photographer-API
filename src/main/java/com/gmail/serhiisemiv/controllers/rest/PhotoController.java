@@ -39,9 +39,8 @@ public class PhotoController {
     private final PhotoAlbumService photoAlbumService;
     private final PhotoDtoModelAssembler photoDtoModelAssembler;
     private final PhotoMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public PhotoController(PhotoService photoService, PhotoAlbumService photoAlbumService, PhotoDtoModelAssembler photoDtoModelAssembler, PhotoMapper mapper) {
@@ -55,9 +54,9 @@ public class PhotoController {
     @PreAuthorize("hasRole('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public PhotoDto savePhoto(@RequestParam MultipartFile file, @RequestParam int photoAlbumId) {
-        info.info("Starting creating new photo");
+        debug.debug("Starting creating new photo");
         Photo photo = photoService.createNewPhoto(file, photoAlbumId);
-        info.info("New photo is created");
+        debug.debug("New photo is created");
         photoService.savePhoto(photo);
         return mapper.toDto(photo);
     }
@@ -66,10 +65,10 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('admin')")
     public List<PhotoDto> saveListPhotos(@RequestParam MultipartFile[] files, @RequestParam int photoAlbumId) {
-        info.info("Starting creating new photos");
+        debug.debug("Starting creating new photos");
         List<Photo> photos = Arrays.stream(files).map(file -> photoService.createNewPhoto(file, photoAlbumId))
                 .collect(Collectors.toList());
-        info.info("New photos is created");
+        debug.debug("New photos is created");
         photoService.saveAllPhotos(photos);
         return mapper.listToDto(photos);
     }
@@ -144,7 +143,7 @@ public class PhotoController {
         }
         debug.debug("Starting save replaced photo");
         photoService.savePhoto(photo);
-        info.info("Photo is saved");
+        debug.debug("Photo is saved");
     }
 
     @DeleteMapping("/{id}")

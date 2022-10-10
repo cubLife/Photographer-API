@@ -15,9 +15,8 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -30,7 +29,7 @@ public class UserService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new user {}", user);
+            debug.debug("Start saving new user {}", user);
             userRepository.save(user);
             debug.debug("User is saved{}", user);
         } catch (NumberFormatException e) {
@@ -40,7 +39,7 @@ public class UserService {
     }
 
     public User findUserById(int id) {
-        info.info("Start returned user with id - {}", id);
+        debug.debug("Start returned user with id - {}", id);
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             error.error("User is not present", new ServiceException("Can't find user with id - " + id));
@@ -51,7 +50,7 @@ public class UserService {
     }
 
     public List<User> findAllUsers() {
-        info.info("Starting returning all users");
+        debug.debug("Starting returning all users");
         try {
             List<User> users = userRepository.findAll();
             debug.debug("All users was returned");
@@ -63,7 +62,7 @@ public class UserService {
     }
 
     public void deleteUserById(int id) {
-        info.info("Starting delete user with id - {}", id);
+        debug.debug("Starting delete user with id - {}", id);
         try {
             userRepository.deleteById(id);
             debug.debug("User was deleted id - {}", id);

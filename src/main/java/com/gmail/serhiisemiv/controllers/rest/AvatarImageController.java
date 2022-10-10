@@ -29,9 +29,8 @@ public class AvatarImageController {
     private final AvatarImageService avatarImageService;
     private final PhotographerService photographerService;
     private final AvatarImageMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public AvatarImageController(AvatarImageService avatarImageService, PhotographerService photographerService, AvatarImageMapper mapper) {
@@ -44,7 +43,7 @@ public class AvatarImageController {
     @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
     public AvatarImageDto addAvatarImage( @RequestParam MultipartFile file, @RequestParam int photographerId) throws IOException {
-        info.info("Starting create new avatarImage");
+        debug.debug("Starting create new avatarImage");
         Photographer photographer =photographerService.findPhotographerById(photographerId);
         AvatarImage avatarImage = new AvatarImage();
         avatarImage.setPhotographer(photographer);
@@ -83,6 +82,6 @@ public class AvatarImageController {
         }
         debug.debug("Starting save replaced photo");
         avatarImageService.saveAvatarImage(avatarImage);
-        info.info("Photo is saved");
+        debug.debug("Photo is saved");
     }
 }

@@ -36,9 +36,8 @@ public class CarouselImageController {
     private final CarouselImageService carouselImageService;
     private final CarouselImageModelAssembler modelAssembler;
     private final CarouselImageMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public CarouselImageController(CarouselImageService carouselImageService, CarouselImageModelAssembler modelAssembler, CarouselImageMapper carouselImageMapper) {
@@ -51,9 +50,9 @@ public class CarouselImageController {
     @ResponseStatus(HttpStatus.CREATED)
     @CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3001/" })
     public CarouselImageDto saveCarouselImage(@RequestParam MultipartFile file) throws IOException {
-        info.info("Starting creating new carousel image");
+        debug.debug("Starting creating new carousel image");
         CarouselImage carouselImage = carouselImageService.createNewCarouselImage(file);
-        info.info("New carousel image is created");
+        debug.debug("New carousel image is created");
         carouselImageService.addCarouselImage(carouselImage);
         return mapper.toDto(carouselImage);
     }
@@ -97,7 +96,7 @@ public class CarouselImageController {
         }
         debug.debug("Starting save replaced carousel image");
         carouselImageService.addCarouselImage(carouselImage);
-        info.info("Carousel image is saved");
+        debug.debug("Carousel image is saved");
     }
 
 

@@ -17,9 +17,8 @@ import java.util.Optional;
 @Service
 public class PhotoSessionPackageService {
     private final PhotoSessionPackageRepository packageRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
 
     public PhotoSessionPackageService(PhotoSessionPackageRepository packageRepository) {
@@ -32,7 +31,7 @@ public class PhotoSessionPackageService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photo session package{}", photoSessionPackage);
+            debug.debug("Start saving new photo session package{}", photoSessionPackage);
             packageRepository.save(photoSessionPackage);
             debug.debug("Photo session is saved{}", photoSessionPackage);
         } catch (NumberFormatException e) {
@@ -42,7 +41,7 @@ public class PhotoSessionPackageService {
     }
 
     public PhotoSessionPackage findPhotoSessionPackageById(int id) {
-        info.info("Start returned photo session package with id - {}", id);
+        debug.debug("Start returned photo session package with id - {}", id);
         Optional<PhotoSessionPackage> photoSessionPackage = packageRepository.findById(id);
         if (photoSessionPackage.isEmpty()) {
             error.error("Photo session package is not present", new ServiceException("Can't find photo session package with id - " + id));
@@ -53,7 +52,7 @@ public class PhotoSessionPackageService {
     }
 
     public List<PhotoSessionPackage> findAllPhotoSessionPackages() {
-        info.info("Starting returning all photo session packages");
+        debug.debug("Starting returning all photo session packages");
         try {
             List<PhotoSessionPackage> photoSessionPackages = packageRepository.findAll();
             debug.debug("All photo sessions packages was returned");
@@ -66,15 +65,15 @@ public class PhotoSessionPackageService {
 
     public void editPhotoSessionPackageById(int id, PhotoSessionPackageDto sessionPackageDto) {
         PhotoSessionPackage sessionPackage = this.findPhotoSessionPackageById(id);
-        info.info("Starting edit Photo session Package with id - {}", id);
+        debug.debug("Starting edit Photo session Package with id - {}", id);
         edit(sessionPackage, sessionPackageDto);
-        info.info("Photo Session package edited - {} ", id);
+        debug.debug("Photo Session package edited - {} ", id);
         this.savePhotoSessionPackage(sessionPackage);
 
     }
 
     public void deletePhotoSessionPackageById(int id) {
-        info.info("Starting delete photo session package with id - {}", id);
+        debug.debug("Starting delete photo session package with id - {}", id);
         try {
             packageRepository.deleteById(id);
             debug.debug("Photo session package was deleted with id - {}", id);

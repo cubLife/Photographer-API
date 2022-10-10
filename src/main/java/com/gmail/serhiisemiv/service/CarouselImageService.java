@@ -18,9 +18,8 @@ import java.util.Optional;
 @Service
 public class CarouselImageService {
     private final CarouselImageRepository carouselImageRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public CarouselImageService(CarouselImageRepository carouselImageRepository) {
@@ -33,9 +32,9 @@ public class CarouselImageService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new carousel image id - {}");
+            debug.debug("Start saving new carousel image");
             carouselImageRepository.save(carouselImage);
-            debug.debug("Carousel image is saved id - {}");
+            debug.debug("Carousel image is saved id - {}",carouselImage.getId());
         } catch (NumberFormatException e) {
             error.error("Cant save carousel image  - ", e);
             throw new ServiceException("Can't save carousel image");
@@ -43,7 +42,7 @@ public class CarouselImageService {
     }
 
     public CarouselImage findCarouselImageById(int id) {
-        info.info("Start returned carousel image with id - {}", id);
+        debug.debug("Start returned carousel image with id - {}", id);
         Optional<CarouselImage> carouselImage = carouselImageRepository.findById(id);
         error.error("Carousel image is not present", new ServiceException("Can't find carousel image with id - " + id));
         if (carouselImage.isEmpty()) {
@@ -54,7 +53,7 @@ public class CarouselImageService {
     }
 
     public List<CarouselImage> findAllCarouselImages() throws ServiceException {
-        info.info("Starting returning all carousel images");
+        debug.debug("Starting returning all carousel images");
         try {
             List<CarouselImage> carouselImages = carouselImageRepository.findAll();
             debug.debug("All costumer feedback was returned");
@@ -66,7 +65,7 @@ public class CarouselImageService {
     }
 
     public void deleteCarouselImageById(int id) throws ServiceException {
-        info.info("Starting delete carousel image with id - {}", id);
+        debug.debug("Starting delete carousel image with id - {}", id);
         try {
             carouselImageRepository.deleteById(id);
             debug.debug("Carousel image was deleted id - {}", id);

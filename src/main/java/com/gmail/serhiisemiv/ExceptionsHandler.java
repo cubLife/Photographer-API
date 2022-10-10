@@ -19,10 +19,11 @@ public class ExceptionsHandler {
     public Map<String, Object> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, Object> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
+        ex.getBindingResult().getAllErrors().forEach(err -> {
+            String fieldName = ((FieldError) err).getField();
+            String errorMessage = err.getDefaultMessage();
             errors.put(fieldName, errorMessage);
+
         });
         return errors;
     }
@@ -32,8 +33,8 @@ public class ExceptionsHandler {
     public Map<String, Object> handleValidationExceptions(
             ConstraintViolationException ex) {
         Map<String, Object> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(error -> {
-            String errorMessage = error.getMessage();
+        ex.getConstraintViolations().forEach(err -> {
+            String errorMessage = err.getMessage();
             errors.put("error", errorMessage);
         });
         return errors;
