@@ -1,9 +1,7 @@
 package com.gmail.serhiisemiv.service;
 
-import com.gmail.serhiisemiv.dto.PhotoSessionDto;
 import com.gmail.serhiisemiv.dto.PhotoSessionPackageDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
-import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.modeles.PhotoSessionPackage;
 import com.gmail.serhiisemiv.repository.PhotoSessionPackageRepository;
 import org.slf4j.Logger;

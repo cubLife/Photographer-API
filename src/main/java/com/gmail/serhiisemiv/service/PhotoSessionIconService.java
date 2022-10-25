@@ -1,14 +1,12 @@
 package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.exceptions.ServiceException;
-import com.gmail.serhiisemiv.modeles.AvatarImage;
 import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.modeles.PhotoSessionIcon;
 import com.gmail.serhiisemiv.repository.PhotoSessionIconRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

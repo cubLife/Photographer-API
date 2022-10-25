@@ -2,7 +2,6 @@ package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.dto.PhotoAlbumDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
-import com.gmail.serhiisemiv.modeles.Photo;
 import com.gmail.serhiisemiv.modeles.PhotoAlbum;
 import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.repository.PhotoAlbumRepository;

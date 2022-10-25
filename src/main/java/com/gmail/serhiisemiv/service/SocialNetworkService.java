@@ -1,7 +1,6 @@
 package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.exceptions.ServiceException;
-import com.gmail.serhiisemiv.modeles.Photographer;
 import com.gmail.serhiisemiv.modeles.SocialNetwork;
 import com.gmail.serhiisemiv.repository.SocialNetworkRepository;
 import org.slf4j.Logger;

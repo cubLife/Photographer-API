@@ -2,7 +2,6 @@ package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.dto.CostumerFeedbackDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
-import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.CostumerFeedback;
 import com.gmail.serhiisemiv.repository.CostumerFeedbackRepository;
 import org.slf4j.Logger;

@@ -2,7 +2,6 @@ package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modeles.CarouselImage;
-import com.gmail.serhiisemiv.modeles.CostumerFeedback;
 import com.gmail.serhiisemiv.repository.CarouselImageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
