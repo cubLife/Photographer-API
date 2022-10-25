@@ -1,13 +1,10 @@
 package com.gmail.serhiisemiv.controllers.rest;
 
 import com.gmail.serhiisemiv.dto.CarouselImageDto;
-import com.gmail.serhiisemiv.dto.PhotoDto;
 import com.gmail.serhiisemiv.dto.mappers.CarouselImageMapper;
 import com.gmail.serhiisemiv.modelAsemblers.CarouselImageModelAssembler;
 import com.gmail.serhiisemiv.modeles.CarouselImage;
-import com.gmail.serhiisemiv.modeles.Photo;
 import com.gmail.serhiisemiv.service.CarouselImageService;
-import javassist.bytecode.ByteArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,7 +94,6 @@ public class CarouselImageController {
         carouselImageService.addCarouselImage(carouselImage);
         debug.debug("Carousel image is saved");
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
