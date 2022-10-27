@@ -17,7 +17,7 @@ build_image:
   stage: build
   image: docker
   services:
-    - docker:22.06-rc-dind
+    - docker:dind
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   before_script:
