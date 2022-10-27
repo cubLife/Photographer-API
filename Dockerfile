@@ -5,5 +5,5 @@ RUN gradle build
 
 FROM openjdk:11.0.2
 RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/*.jar  /app/photographer-api.jar
-CMD ["java","-jar","/app/photographer-api.jar"]
+COPY --from=build /home/gradle/src/build/libs/*.jar  app/spring-boot-application.jar
+CMD ["java","-jar","/app/spring-boot-application.jar"]
