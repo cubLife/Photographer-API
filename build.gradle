@@ -15,6 +15,7 @@ configurations {
 	}
 }
 
+
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
@@ -28,11 +29,15 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.7.3'
+	// https://mvnrepository.com/artifact/org.keycloak/keycloak-spring-boot-2-starter
+	implementation group: 'org.keycloak', name: 'keycloak-spring-boot-2-starter', version: '4.0.0.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter'
-    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.jetbrains:annotations:23.0.0'
     compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -40,18 +45,32 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.2.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.6.2'
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.2'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
-	implementation group: 'io.springfox', name: 'springfox-bean-validators', version: '3.0.0'
-// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
-// https://mvnrepository.com/artifact/org.postgresql/postgresql
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.6.6'
+ //https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	//implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.0'
+	//implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws-jdbc', version: '2.2.6.RELEASE'
+	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.17'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.7.1'
+//	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.7.2'
+//// https://mvnrepository.com/artifact/com.google.apis/google-api-services-calendar
+//	implementation group: 'com.google.apis', name: 'google-api-services-calendar', version: 'v3-rev411-1.25.0'
+// https://mvnrepository.com/artifact/ch.qos.logback/logback-core
+	implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.6'
+	// https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+	testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.6'
+	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+
+
+
 
 }
 

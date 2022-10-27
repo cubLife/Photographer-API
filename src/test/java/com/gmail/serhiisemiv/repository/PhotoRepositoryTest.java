@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles(value = "test")
 class PhotoRepositoryTest {
     @Autowired
     PhotoRepository photoRepository;
@@ -22,8 +24,8 @@ class PhotoRepositoryTest {
 
     @Test
     void shouldSavePhoto() {
-        photoRepository.save(new Photo(TEST, 1L, new byte[0]));
-        Photo expected = Photo.builder().id(1).name(TEST).size(1L).image(new byte[0]).build();
+        photoRepository.save(Photo.builder().name(TEST).size(1L).picture(new byte[0]).build());
+        Photo expected = Photo.builder().id(1).name(TEST).size(1L).picture(new byte[0]).build();
         Photo actual = photoRepository.getById(1);
         assertEquals(expected, actual);
 
@@ -31,9 +33,10 @@ class PhotoRepositoryTest {
 
     @Test
     void shouldSaveAllPhotos() {
-        photoRepository.saveAll(List.of(new Photo(TEST, 1L, new byte[0]), new Photo(TEST, 5L, new byte[2])));
-        Photo photoOne = Photo.builder().id(1).name(TEST).size(1L).image(new byte[0]).build();
-        Photo photoTwo = Photo.builder().id(2).name(TEST).size(5L).image(new byte[2]).build();
+        photoRepository.saveAll(List.of(Photo.builder().name(TEST).size(1L).picture(new byte[1]).build()
+                ,Photo.builder().name(TEST).size(5L).picture(new byte[2]).build()));
+        Photo photoOne = Photo.builder().id(1).name(TEST).size(1L).picture(new byte[0]).build();
+        Photo photoTwo = Photo.builder().id(2).name(TEST).size(5L).picture(new byte[2]).build();
         List<Photo> expected = List.of(photoOne, photoTwo);
         List<Photo> actual = photoRepository.findAll();
         assertEquals(expected, actual);
@@ -43,7 +46,7 @@ class PhotoRepositoryTest {
     @Test
     void shouldFindPhotoById() {
         generateTestDAta();
-        Photo expected = Photo.builder().id(3).name(TEST).size(1L).image(new byte[3]).build();
+        Photo expected = Photo.builder().id(3).name(TEST).size(1L).picture(new byte[3]).build();
         Photo actual = photoRepository.getById(3);
         assertEquals(expected, actual);
     }
@@ -73,12 +76,21 @@ class PhotoRepositoryTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void findFirstByPhotoAlbum_Id() {
+        generateTestDAta();
+        int expected = 1;
+        int actual = photoRepository.findFirstByPhotoAlbum_Id(1).getId();
+        assertEquals(expected, actual);
+    }
+
     private void generateTestDAta() {
         photoAlbumRepository.save(new PhotoAlbum());
-        photoRepository.save(Photo.builder().name(TEST).size(1L).image(new byte[3])
+        photoRepository.save(Photo.builder().name(TEST).size(1L).picture(new byte[3])
                 .photoAlbum(photoAlbumRepository.findById(1).get()).build());
         for (int i = 0; i < 5; i++) {
-            photoRepository.save(Photo.builder().name(TEST).size(1L).image(new byte[3]).build());
+            photoRepository.save(Photo.builder().name(TEST).size(1L).picture(new byte[3]).build());
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.modeles;
 
+import com.gmail.serhiisemiv.repository.PhotoSessionIconRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -18,13 +19,28 @@ public class PhotoAlbum {
     private String name;
     @OneToMany(mappedBy = "photoAlbum", cascade = CascadeType.ALL)
     private List<Photo> photos;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_album_id")
+    private PhotoSession photoSession;
 
     public PhotoAlbum() {
     }
 
-    public PhotoAlbum(String name, List<Photo> photos) {
+    public PhotoAlbum(String name, PhotoSession photoSession) {
+        this.name = name;
+        this.photoSession = photoSession;
+    }
+
+    public PhotoAlbum(String name, PhotoSession photoSession, List<Photo> photos) {
         this.name = name;
         this.photos = photos;
+        this.photoSession = photoSession;
+    }
+
+    public PhotoAlbum(int id, String name, PhotoSession photoSession) {
+        this.id = id;
+        this.name = name;
+        this.photoSession = photoSession;
     }
 
     public int getId() {
@@ -45,6 +61,14 @@ public class PhotoAlbum {
 
     public List<Photo> getPhotos() {
         return photos;
+    }
+
+    public PhotoSession getPhotoSession() {
+        return photoSession;
+    }
+
+    public void setPhotoSession(PhotoSession photoSession) {
+        this.photoSession = photoSession;
     }
 
     public void setPhotos(List<Photo> photos) {

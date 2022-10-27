@@ -1,7 +1,9 @@
 package com.gmail.serhiisemiv.service;
 
+import com.gmail.serhiisemiv.dto.PhotoAlbumDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modeles.PhotoAlbum;
+import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.repository.PhotoAlbumRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +17,15 @@ import java.util.Optional;
 @Service
 public class PhotoAlbumService {
     private final PhotoAlbumRepository photoAlbumRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final PhotoSessionService photoSessionService;
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
-    public PhotoAlbumService(PhotoAlbumRepository photoAlbumRepository) {
+    public PhotoAlbumService(PhotoAlbumRepository photoAlbumRepository, PhotoSessionService photoSessionService) {
         this.photoAlbumRepository = photoAlbumRepository;
+
+        this.photoSessionService = photoSessionService;
     }
 
     public void savePhotoAlbum(PhotoAlbum photoAlbum) {
@@ -30,7 +34,7 @@ public class PhotoAlbumService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photo album {}", photoAlbum);
+            debug.debug("Start saving new photo album {}", photoAlbum);
             photoAlbumRepository.save(photoAlbum);
             debug.debug("Photo album is saved{}", photoAlbum);
         } catch (NumberFormatException e) {
@@ -40,7 +44,7 @@ public class PhotoAlbumService {
     }
 
     public PhotoAlbum findPhotoAlbumById(int id) {
-        info.info("Start returned photo album with id - {}", id);
+        debug.debug("Start returned photo album with id - {}", id);
         Optional<PhotoAlbum> photoAlbum = photoAlbumRepository.findById(id);
         if (photoAlbum.isEmpty()) {
             error.error("Photo album is not present", new ServiceException("Can't find photo album with id - " + id));
@@ -51,7 +55,7 @@ public class PhotoAlbumService {
     }
 
     public List<PhotoAlbum> findAllPhotoAlbums() {
-        info.info("Starting returning all photo albums");
+        debug.debug("Starting returning all photo albums");
         try {
             List<PhotoAlbum> photoAlbums = photoAlbumRepository.findAll();
             debug.debug("All photo albums was returned");
@@ -62,8 +66,21 @@ public class PhotoAlbumService {
         }
     }
 
+    public List<PhotoAlbum> findByPhotoSessionId(int id){
+        debug.debug("Starting returning all photo albums by Photo Session id");
+        try {
+            List<PhotoAlbum> photoAlbums = photoAlbumRepository.findByPhotoSession_Id(id);
+            debug.debug("All photo albums by Photo Session id was returned");
+            return photoAlbums;
+        } catch (NullPointerException e) {
+            error.error("Can't find any photo albums by Photo Session id - " + e.getMessage(), e);
+            throw new ServiceException("Cant find any photo albums by Photo Session id");
+        }
+    }
+
+
     public void deletePhotoAlbumById(int id) {
-        info.info("Starting delete photo album with id - {}", id);
+        debug.debug("Starting delete photo album with id - {}", id);
         try {
             photoAlbumRepository.deleteById(id);
             debug.debug("Photo album was deleted id - {}", id);
@@ -71,5 +88,10 @@ public class PhotoAlbumService {
             error.error("Can't remove photo album with id - " + id, e);
             throw new ServiceException("Can't delete photo album with id");
         }
+    }
+
+    public PhotoAlbum createPhotoAlbum(PhotoAlbumDto photoAlbumDto){
+        PhotoSession photoSession = photoSessionService.findPhotoSessionById(photoAlbumDto.getPhotoSessionId());
+        return new PhotoAlbum(photoAlbumDto.getName(),photoSession);
     }
 }

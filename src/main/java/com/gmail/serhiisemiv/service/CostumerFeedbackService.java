@@ -2,7 +2,6 @@ package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.dto.CostumerFeedbackDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
-import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.CostumerFeedback;
 import com.gmail.serhiisemiv.repository.CostumerFeedbackRepository;
 import org.slf4j.Logger;
@@ -19,9 +18,8 @@ import java.util.Optional;
 public class CostumerFeedbackService {
     private final CostumerFeedbackRepository costumerFeedbackRepository;
     private final CostumerService costumerService;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public CostumerFeedbackService(CostumerFeedbackRepository costumerFeedbackRepository, CostumerService costumerService) {
@@ -35,7 +33,7 @@ public class CostumerFeedbackService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new costumer feedback - {}", costumerFeedback);
+            debug.debug("Start saving new costumer feedback - {}", costumerFeedback);
             costumerFeedbackRepository.save(costumerFeedback);
             debug.debug("Costumer feedback is saved{}", costumerFeedback);
         } catch (NumberFormatException e) {
@@ -45,7 +43,7 @@ public class CostumerFeedbackService {
     }
 
     public CostumerFeedback findCostumerFeedbackById(int id) {
-        info.info("Start returned costumer feedback with id - {}", id);
+        debug.debug("Start returned costumer feedback with id - {}", id);
         Optional<CostumerFeedback> costumerFeedback = costumerFeedbackRepository.findById(id);
         error.error("Costumer feedback is not present", new ServiceException("Can't find costumer feedback with id - " + id));
         if (costumerFeedback.isEmpty()) {
@@ -56,7 +54,7 @@ public class CostumerFeedbackService {
     }
 
     public List<CostumerFeedback> findAllCostumerFeedbacks() {
-        info.info("Starting returning all costumer feedbacks");
+        debug.debug("Starting returning all costumer feedbacks");
         try {
             List<CostumerFeedback> costumerFeedbacks = costumerFeedbackRepository.findAll();
             debug.debug("All costumer feedback was returned");
@@ -68,23 +66,23 @@ public class CostumerFeedbackService {
     }
 
     public void deleteCostumerFeedbackById(int id) throws ServiceException {
-        info.info("Starting delete costumer feedback with id - {}", id);
+        debug.debug("Starting delete costumer feedback with id - {}", id);
         try {
             costumerFeedbackRepository.deleteById(id);
             debug.debug("Costumer feedback was deleted id - {}", id);
         } catch (NoSuchElementException e) {
             error.error("Can't remove costumer with id - " + id, e);
-            throw new ServiceException("Can't delete costumer feedback with id");
+            throw new ServiceException("Can't delete costumer feedback with id - "+id);
         }
     }
 
     public CostumerFeedback createNewCostumerFeedback(CostumerFeedbackDto feedbackDto){
-        Costumer costumer = costumerService.findCostumerById(feedbackDto.getCostumerId());
         CostumerFeedback feedback = new CostumerFeedback();
-        feedback.setCostumer(costumer);
+        feedback.setFirstName(feedbackDto.getFirstName());
+        feedback.setLastName(feedbackDto.getLastName());
+        feedback.setEmail(feedbackDto.getEmail());
         feedback.setCreationDate(new Date().getTime());
         feedback.setFeedback(feedbackDto.getFeedback());
-        feedback.setIsChanged(feedbackDto.isChanged());
         feedback.setGrade(feedbackDto.getGrade());
         return feedback;
     }

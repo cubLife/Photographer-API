@@ -1,32 +1,31 @@
 package com.gmail.serhiisemiv.repository;
 
 import com.gmail.serhiisemiv.modeles.Costumer;
-import com.gmail.serhiisemiv.modeles.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles(value = "test")
 class CostumerRepositoryTest {
     @Autowired
     private CostumerRepository costumerRepository;
     @Autowired
     private UserRepository userRepository;
-    private static final String TEST = "test";
+    private static final String TEST = "test@dmail.com";
 
     @Test
     void shouldSavaCostumer(){
-        User user = new User(TEST,TEST);
-        userRepository.save(user);
         Costumer expected = Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone(0).email(TEST).build();
-        expected.setUser(user);
+                .phone("0").email(TEST).build();
         costumerRepository.save(expected);
         Costumer actual =costumerRepository.findAll().get(0);
         assertEquals(expected, actual);
@@ -51,6 +50,22 @@ class CostumerRepositoryTest {
     }
 
     @Test
+    void shouldReturnTrueExistCostumerByEmail() {
+        generateTestData();
+        boolean expected = true;
+        boolean actual = costumerRepository.existsCostumerByEmail(TEST);
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    void shouldReturnFalseExistCostumerByEmail() {
+        generateTestData();
+        boolean expected = false;
+        boolean actual = costumerRepository.existsCostumerByEmail("costumer@gmail.com");
+        assertEquals(expected,actual);
+    }
+
+    @Test
     void shouldDeleteCostumer(){
         generateTestData();
         costumerRepository.deleteById(3);
@@ -60,12 +75,9 @@ class CostumerRepositoryTest {
     }
 
     private void generateTestData(){
-        User user = new User(TEST,TEST);
-        userRepository.save(user);
         for (int i=0; i<5; i++) {
             Costumer costumer = Costumer.builder().firstName(TEST).lastName(TEST)
-                    .phone(0).email(TEST).build();
-            costumer.setUser(user);
+                    .phone("0").email(TEST).build();
             costumerRepository.save(costumer);
         }
     }

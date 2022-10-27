@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.modeles;
 
+import com.gmail.serhiisemiv.OrderStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,13 +12,20 @@ import java.util.Objects;
 @Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
     private long creationDate;
+    private long startTime;
+    private long endTime;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+    @Column(nullable = false)
+    private String photoSessionName;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "photo_session_id", referencedColumnName = "id")
-    private PhotoSession photoSession;
+    @JoinColumn(name="photo_session_package_id", referencedColumnName = "id")
+    private PhotoSessionPackage photoSessionPackage;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "costumer_id", referencedColumnName = "id")
     private Costumer costumer;
@@ -25,10 +33,14 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long creationDate, PhotoSession photoSession, Costumer costumer) {
+    public Order(Long creationDate, Long startTime, Long endTime, OrderStatus orderStatus, String photoSessionMame, Costumer costumer, PhotoSessionPackage photoSessionPackage) {
         this.creationDate = creationDate;
-        this.photoSession = photoSession;
+        this.startTime=startTime;
+        this.endTime=endTime;
+        this.orderStatus = orderStatus;
+      this.photoSessionName=photoSessionMame;
         this.costumer = costumer;
+        this.photoSessionPackage=photoSessionPackage;
     }
 
     public int getId() {
@@ -43,20 +55,56 @@ public class Order {
         return creationDate;
     }
 
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
     }
 
-    public PhotoSession getPhotoSession() {
-        return photoSession;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setPhotoSession(PhotoSession photoSession) {
-        this.photoSession = photoSession;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getPhotoSessionName() {
+        return photoSessionName;
+    }
+
+    public void setPhotoSessionName(String photoSessionName) {
+        this.photoSessionName = photoSessionName;
     }
 
     public Costumer getCostumer() {
         return costumer;
+    }
+
+    public PhotoSessionPackage getPhotoSessionPackage() {
+        return photoSessionPackage;
+    }
+
+    public void setPhotoSessionPackage(PhotoSessionPackage photoSessionPackage) {
+        this.photoSessionPackage = photoSessionPackage;
     }
 
     public void setCostumer(Costumer costumer) {
@@ -80,8 +128,12 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", dateTime=" + creationDate +
-                ", photoSession=" + photoSession +
+                ", creationDate=" + creationDate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", orderStatus=" + orderStatus +
+                ", photoSessionName=" + photoSessionName +
+                ", photoSessionPackage=" + photoSessionPackage +
                 ", costumer=" + costumer +
                 '}';
     }

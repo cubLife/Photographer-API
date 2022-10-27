@@ -12,9 +12,15 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -26,7 +32,7 @@ public class CostumerController {
     private final CostumerService costumerService;
     private final CostumerDtoModelAssembler modelAssembler;
     private final CostumerMapper mapper;
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public CostumerController(CostumerService costumerService, CostumerDtoModelAssembler modelAssembler, CostumerMapper mapper) {
@@ -37,14 +43,15 @@ public class CostumerController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CostumerDto saveCostumer(@RequestBody CostumerDto costumerDto) {
-        info.info("Starting create new costumer {}", costumerDto);
+    public CostumerDto saveCostumer(@RequestBody @Valid CostumerDto costumerDto) {
+        debug.debug("Starting create new costumer {}", costumerDto);
         Costumer costumer = mapper.fromDto(costumerDto);
-        info.info("Costumer is created {}", costumer);
+        debug.debug("Costumer is created {}", costumer);
         costumerService.saveCostumer(costumer);
         return mapper.toDto(costumer);
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/{costumer-id}")
     @ResponseStatus(HttpStatus.OK)
     public EntityModel<CostumerDto> findById(@PathVariable("costumer-id") int costumerId){
@@ -52,6 +59,7 @@ public class CostumerController {
         return modelAssembler.toModel(mapper.toDto(costumer));
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<CostumerDto>> findAll(){
@@ -60,9 +68,10 @@ public class CostumerController {
        return CollectionModel.of(entityModels, linkTo(methodOn(CostumerController.class).findAll()).withSelfRel());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<HttpStatus> deletePhotoById(@RequestParam("id") int id) {
+    public ResponseEntity<HttpStatus> deleteCostumerById(@PathVariable int id) {
         costumerService.deleteCostumerById(id);
         return ResponseEntity.noContent().build();
     }

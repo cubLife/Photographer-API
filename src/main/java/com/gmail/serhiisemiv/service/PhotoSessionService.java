@@ -16,9 +16,8 @@ import java.util.Optional;
 @Service
 public class PhotoSessionService {
     private final PhotoSessionRepository photoSessionRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public PhotoSessionService(PhotoSessionRepository photoSessionRepository) {
@@ -31,7 +30,7 @@ public class PhotoSessionService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photo session{}", photoSession);
+            debug.debug("Start saving photo session{}", photoSession);
             photoSessionRepository.save(photoSession);
             debug.debug("Photo session is saved{}", photoSession);
         } catch (NumberFormatException e) {
@@ -41,7 +40,7 @@ public class PhotoSessionService {
     }
 
     public PhotoSession findPhotoSessionById(int id) {
-        info.info("Start returned photo session with id - {}", id);
+        debug.debug("Start returned photo session with id - {}", id);
         Optional<PhotoSession> photoSession = photoSessionRepository.findById(id);
         if (photoSession.isEmpty()) {
             error.error("Photo session is not present", new ServiceException("Can't find photo session with id - " + id));
@@ -52,7 +51,7 @@ public class PhotoSessionService {
     }
 
     public List<PhotoSession> findAllPhotoSessions() {
-        info.info("Starting returning all photo sessions");
+        debug.debug("Starting returning all photo sessions");
         try {
             List<PhotoSession> photoSessions = photoSessionRepository.findAll();
             debug.debug("All photo sessions was returned");
@@ -63,8 +62,16 @@ public class PhotoSessionService {
         }
     }
 
+    public void editPhotoSession(int id, PhotoSessionDto photoSessionDto){
+        PhotoSession photoSession = this.findPhotoSessionById(id);
+        debug.debug("Starting edit Photo session with id - {}",id );
+        photoSession.setName(photoSessionDto.getName());
+        this.savePhotoSession(photoSession);
+        debug.debug("Photo Session edited - {} ",id );
+    }
+
     public void deletePhotoSessionById(int id) {
-        info.info("Starting delete photo session with id - {}", id);
+        debug.debug("Starting delete photo session with id - {}", id);
         try {
             photoSessionRepository.deleteById(id);
             debug.debug("Photo sessions was deleted id - {}", id);
@@ -77,9 +84,6 @@ public class PhotoSessionService {
     public PhotoSession createNewPhotoSession(PhotoSessionDto photoSessionDto){
         PhotoSession photoSession = new PhotoSession();
         photoSession.setName(photoSessionDto.getName());
-        photoSession.setPrice(photoSessionDto.getPrice());
-        photoSession.setType(photoSessionDto.getType());
-        photoSession.setDuration(photoSessionDto.getDuration());
         return photoSession;
     }
 }

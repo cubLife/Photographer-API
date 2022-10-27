@@ -15,9 +15,8 @@ import java.util.Optional;
 @Service
 public class CostumerService {
     private final CostumerRepository costumerRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
     public CostumerService(CostumerRepository costumerRepository) {
@@ -30,7 +29,7 @@ public class CostumerService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new costumer {}", costumer);
+            debug.debug("Start saving new costumer {}", costumer);
             costumerRepository.save(costumer);
             debug.debug("Costumer is saved{}", costumer);
         } catch (NumberFormatException e) {
@@ -40,18 +39,29 @@ public class CostumerService {
     }
 
     public Costumer findCostumerById(int id) {
-        info.info("Start returned costumer with id - {}", id);
+        debug.debug("Start returned costumer with id - {}", id);
         Optional<Costumer> costumer = costumerRepository.findById(id);
         if (costumer.isEmpty()) {
             error.error("Costumer is not present", new ServiceException("Can't find costumer with id - " + id));
-            throw new ServiceException("Can't find costumer with id");
+            throw new ServiceException("Can't find costumer with id - "+id);
+        }
+        debug.debug("Costumer was returned - {}", costumer.get());
+        return costumer.get();
+    }
+
+    public Costumer findCostumerByEmail(String email) {
+        debug.debug("Start returned costumer with email - {}", email);
+        Optional<Costumer> costumer = costumerRepository.findCostumerByEmail(email);
+        if (costumer.isEmpty()) {
+            error.error("Costumer is not present", new ServiceException("Can't find costumer with email - " + email));
+            throw new ServiceException("Can't find costumer with email - "+email);
         }
         debug.debug("Costumer was returned - {}", costumer.get());
         return costumer.get();
     }
 
     public List<Costumer> findAllCostumers() {
-        info.info("Starting returning all costumers");
+        debug.debug("Starting returning all costumers");
         try {
             List<Costumer> costumers = costumerRepository.findAll();
             debug.debug("All costumers was returned");
@@ -62,8 +72,13 @@ public class CostumerService {
         }
     }
 
+    public boolean existsCostumerByEmail(String email){
+        debug.debug("Checking if exists costumer by email");
+        return costumerRepository.existsCostumerByEmail(email);
+    }
+
     public void deleteCostumerById(int id) {
-        info.info("Starting delete costumer with id - {}", id);
+        debug.debug("Starting delete costumer with id - {}", id);
         try {
             costumerRepository.deleteById(id);
             debug.debug("Costumer was deleted id - {}", id);

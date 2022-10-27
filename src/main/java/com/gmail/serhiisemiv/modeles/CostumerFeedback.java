@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Objects;
 
-@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "feedbacks")
@@ -14,32 +13,38 @@ public class CostumerFeedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false)
+    private String email;
+    @Column(nullable = false)
     private Long creationDate;
     @Column(nullable = false)
     private String feedback;
     @Column(nullable = false)
-    private Grade grade;
-    private boolean isChanged;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "costumer_id", referencedColumnName = "id")
-    private Costumer costumer;
+    private int grade;
 
     public CostumerFeedback() {
     }
 
-    public CostumerFeedback(Long creationDate, String feedback, Grade grade, Costumer costumer) {
+    public CostumerFeedback(String firstName, String lastName,String email , Long creationDate, String feedback, int grade) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.creationDate = creationDate;
         this.feedback = feedback;
         this.grade = grade;
-        this.costumer = costumer;
+        this.email=email;
     }
 
-    public CostumerFeedback(int id, Long creationDate, String feedback, Grade grade, Costumer costumer) {
+    public CostumerFeedback(int id, String firstName, String lastName, String email, Long creationDate, String feedback, int grade) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email=email;
         this.creationDate = creationDate;
         this.feedback = feedback;
         this.grade = grade;
-        this.costumer = costumer;
     }
 
     public int getId() {
@@ -66,28 +71,36 @@ public class CostumerFeedback {
         this.feedback = feedback;
     }
 
-    public Grade getGrade() {
+    public int getGrade() {
         return grade;
     }
 
-    public void setGrade(Grade grade) {
+    public void setGrade(int grade) {
         this.grade = grade;
     }
 
-    public boolean isChanged() {
-        return isChanged;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIsChanged(boolean changed) {
-        isChanged = changed;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Costumer getCostumer() {
-        return costumer;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setCostumer(Costumer costumer) {
-        this.costumer = costumer;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -95,23 +108,24 @@ public class CostumerFeedback {
         if (this == o) return true;
         if (!(o instanceof CostumerFeedback)) return false;
         CostumerFeedback that = (CostumerFeedback) o;
-        return id == that.id && isChanged == that.isChanged && Objects.equals(creationDate, that.creationDate) && Objects.equals(feedback, that.feedback) && grade == that.grade;
+        return getId() == that.getId() && getGrade() == that.getGrade() && Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getCreationDate(), that.getCreationDate()) && Objects.equals(getFeedback(), that.getFeedback());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, creationDate, feedback, grade, isChanged);
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getCreationDate(), getFeedback(), getGrade());
     }
 
     @Override
     public String toString() {
         return "CostumerFeedback{" +
                 "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", creationDate=" + creationDate +
                 ", feedback='" + feedback + '\'' +
                 ", grade=" + grade +
-                ", isChanged=" + isChanged +
-                ", costumer=" + costumer +
+                ", email=" + email +
                 '}';
     }
 }

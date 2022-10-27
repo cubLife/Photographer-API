@@ -1,19 +1,18 @@
 package com.gmail.serhiisemiv.repository;
 
-import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.CostumerFeedback;
-import com.gmail.serhiisemiv.modeles.Grade;
-import com.gmail.serhiisemiv.modeles.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class CostumerFeedbackServiceTest {
+@ActiveProfiles(value = "test")
+class CostumerFeedbackRepositoryTest {
     @Autowired
     private CostumerFeedbackRepository costumerFeedbackRepository;
     @Autowired
@@ -25,26 +24,26 @@ class CostumerFeedbackServiceTest {
     @Test
     void shouldSaveCostumerFeedback() {
         generateTestData();
-        CostumerFeedback expected = CostumerFeedback.builder().id(1).feedback(TEST)
+        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).email(TEST).feedback(TEST)
                 .creationDate(100L)
-                .grade(Grade.POSITIVE).isChanged(false).build();
+                .grade(5).build();
         CostumerFeedback actual = costumerFeedbackRepository.findAll().get(0);
         assertEquals(expected, actual);
 
     }
 
     @Test
-    void shouldFindCostumerFidbackById() {
+    void shouldFindCostumerFeedbackById() {
         generateTestData();
-        CostumerFeedback expected = CostumerFeedback.builder().id(1).feedback(TEST)
+        CostumerFeedback expected = CostumerFeedback.builder().id(1).firstName(TEST).lastName(TEST).email(TEST).feedback(TEST)
                 .creationDate(100L)
-                .grade(Grade.POSITIVE).isChanged(false).build();
-        CostumerFeedback acrual = costumerFeedbackRepository.getById(1);
-        assertEquals(expected, acrual);
+                .grade(5).build();
+        CostumerFeedback actual = costumerFeedbackRepository.getById(1);
+        assertEquals(expected, actual);
     }
 
     @Test
-    void shouldFindAllCostumerFitbacks() {
+    void shouldFindAllCostumerFeedbacks() {
         generateTestData();
         int expected = 5;
         int actual = costumerFeedbackRepository.findAll().size();
@@ -52,24 +51,19 @@ class CostumerFeedbackServiceTest {
     }
 
     @Test
-    void shouldDeleteCostumerFitbackById() {
+    void shouldDeleteCostumerFeedbackById() {
         generateTestData();
         costumerFeedbackRepository.deleteById(3);
         int expected = 4;
         int actual = costumerFeedbackRepository.findAll().size();
+        assertEquals(expected, actual);
     }
 
     private void generateTestData() {
-        User user = new User(TEST, TEST);
-        userRepository.save(user);
-        Costumer costumer = Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone(0).email(TEST).build();
-        costumer.setUser(user);
-        costumerRepository.save(costumer);
         for (int i = 0; i < 5; i++) {
-            CostumerFeedback costumerFeedback = CostumerFeedback.builder().feedback(TEST)
+            CostumerFeedback costumerFeedback = CostumerFeedback.builder().firstName(TEST).lastName(TEST).email(TEST).feedback(TEST)
                     .creationDate(100L)
-                    .costumer(costumer).grade(Grade.POSITIVE).isChanged(false).build();
+                    .grade(5).build();
             costumerFeedbackRepository.save(costumerFeedback);
         }
     }

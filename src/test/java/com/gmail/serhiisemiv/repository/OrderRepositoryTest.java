@@ -1,18 +1,18 @@
 package com.gmail.serhiisemiv.repository;
 
-import com.gmail.serhiisemiv.modeles.Costumer;
-import com.gmail.serhiisemiv.modeles.Order;
-import com.gmail.serhiisemiv.modeles.PhotoSession;
-import com.gmail.serhiisemiv.modeles.User;
+import com.gmail.serhiisemiv.OrderStatus;
+import com.gmail.serhiisemiv.modeles.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles(value = "test")
 class OrderRepositoryTest {
     @Autowired
     private OrderRepository orderRepository;
@@ -21,13 +21,14 @@ class OrderRepositoryTest {
     @Autowired
     private CostumerRepository costumerRepository;
     @Autowired
-    private PhotoSessionRepository photoSessionRepository;
+    private PhotoSessionPackageRepository photoSessionPackageRepository;
     private static final String TEST = "test";
 
     @Test
     void shouldSaveOrder() {
         generateTestData();
-        Order expected = Order.builder().id(1).creationDate(100L).build();
+        PhotoSessionPackage sessionPackage = new PhotoSessionPackage(1, TEST, 15, 400, 60, null);
+        Order expected = Order.builder().id(1).creationDate(100L).startTime(200L).endTime(300L).photoSessionName(TEST).photoSessionPackage(sessionPackage).build();
         Order actual = orderRepository.findAll().get(0);
         System.out.println(actual);
         assertEquals(expected, actual);
@@ -50,11 +51,11 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void shouldFindAllOrdersByCostumerId(){
+    void shouldFindAllOrdersByCostumerId() {
         generateTestData();
         int expected = 5;
         int actual = orderRepository.findByCostumer_Id(2).size();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -66,18 +67,25 @@ class OrderRepositoryTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void shouldFindByOrderStatus() {
+        generateTestData();
+        int expected = 5;
+        int actual = orderRepository.findByOrderStatus(OrderStatus.APPROVED).size();
+        assertEquals(expected, actual);
+    }
+
     private void generateTestData() {
-        User user = new User(TEST, TEST);
-        userRepository.save(user);
-        costumerRepository.save( Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone(0).email(TEST).user(user).build());
-        costumerRepository.save( Costumer.builder().firstName(TEST).lastName(TEST)
-                .phone(0).email(TEST).user(user).build());
-        PhotoSession photoSession = PhotoSession.builder().duration(60).name(TEST).price(0).type(TEST).build();
-        photoSessionRepository.save(photoSession);
+        Costumer firstCostumer = Costumer.builder().firstName(TEST).lastName(TEST).email(TEST).login(TEST).password(TEST).phone("0").build();
+        Costumer secondCostumer = Costumer.builder().firstName(TEST).lastName(TEST).email(TEST).login(TEST).password(TEST).phone("1").build();
+        costumerRepository.save(firstCostumer);
+        costumerRepository.save(secondCostumer);
+
+        PhotoSessionPackage sessionPackage = new PhotoSessionPackage(TEST, 15, 400, 60);
+        photoSessionPackageRepository.save(sessionPackage);
         for (int i = 0; i < 5; i++) {
-            orderRepository.save(new Order(100L, photoSession, costumerRepository.findById(1).get()));
-            orderRepository.save(new Order(100L, photoSession, costumerRepository.findById(2).get()));
+            orderRepository.save(new Order(100L, 200L,300L, OrderStatus.NEW, TEST, costumerRepository.findById(1).get(), photoSessionPackageRepository.findById(1).get()));
+            orderRepository.save(new Order(100L, 200L,300L,OrderStatus.APPROVED, TEST, costumerRepository.findById(2).get(), photoSessionPackageRepository.findById(1).get()));
         }
     }
 }

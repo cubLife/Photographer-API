@@ -2,6 +2,7 @@ package com.gmail.serhiisemiv.controllers.rest;
 
 import com.gmail.serhiisemiv.dto.CostumerFeedbackDto;
 import com.gmail.serhiisemiv.dto.mappers.CostumerFeedbackMapper;
+import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modelAsemblers.CostumerFeedbackDtoModelAssembler;
 import com.gmail.serhiisemiv.modeles.CostumerFeedback;
 import com.gmail.serhiisemiv.service.CostumerFeedbackService;
@@ -10,15 +11,22 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 @RequestMapping("api/feedbacks")
 public class CostumerFeedbackController {
     private final CostumerFeedbackService feedbackService;
@@ -34,31 +42,31 @@ public class CostumerFeedbackController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CostumerFeedbackDto saveCostumerFeedback(@RequestBody CostumerFeedbackDto feedbackDto){
+    public CostumerFeedbackDto saveCostumerFeedback(@RequestBody @Valid CostumerFeedbackDto feedbackDto) {
         CostumerFeedback feedback = feedbackService.createNewCostumerFeedback(feedbackDto);
         feedbackService.saveCostumerFeedback(feedback);
-        CostumerFeedbackDto dto =mapper.toDto(feedback);
-        return dto;
+        return mapper.toDto(feedback);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EntityModel<CostumerFeedbackDto> getById(@PathVariable("id") int id){
+    public EntityModel<CostumerFeedbackDto> getById(@PathVariable("id") int id) {
         CostumerFeedbackDto feedbackDto = mapper.toDto(feedbackService.findCostumerFeedbackById(id));
         return modelAssembler.toModel(feedbackDto);
     }
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<EntityModel<CostumerFeedbackDto>> getAll(){
+    public CollectionModel<EntityModel<CostumerFeedbackDto>> getAll() {
         List<CostumerFeedback> feedbacks = feedbackService.findAllCostumerFeedbacks();
         List<EntityModel<CostumerFeedbackDto>> entityModels = getModels(feedbacks);
         return CollectionModel.of(entityModels, linkTo(methodOn(CostumerFeedbackController.class).getAll()).withSelfRel());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/{id}")
-@ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id) {
         feedbackService.deleteCostumerFeedbackById(id);
         return ResponseEntity.noContent().build();
     }
@@ -66,4 +74,5 @@ public class CostumerFeedbackController {
     private List<EntityModel<CostumerFeedbackDto>> getModels(List<CostumerFeedback> feedbacks) {
         return feedbacks.stream().map(mapper::toDto).map(modelAssembler::toModel).collect(Collectors.toList());
     }
+
 }

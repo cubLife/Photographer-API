@@ -17,24 +17,30 @@ public class PhotoSession {
     private int id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private String type;
-    @Column(nullable = false)
-    private int price;
-    @Column(nullable = false)
-    private int duration;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photographer_id")
+    private Photographer photographer;
+    @OneToOne(mappedBy = "photoSession", cascade = CascadeType.ALL)
+    private PhotoSessionIcon photoSessionIcon;
     @OneToMany(mappedBy = "photoSession", cascade = CascadeType.ALL)
-    private List<Order> orders;
+    private List<PhotoAlbum> photoAlbums;
 
     public PhotoSession() {
     }
 
-    public PhotoSession(String name, String type, int price, int duration, List<Order> orders) {
+    public PhotoSession(String name) {
         this.name = name;
-        this.type = type;
-        this.price = price;
-        this.duration = duration;
-        this.orders = orders;
+    }
+
+    public PhotoSession(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public PhotoSession(String name, Photographer photographer, PhotoSessionIcon photoSessionIcon) {
+        this.name = name;
+        this.photographer = photographer;
+        this.photoSessionIcon= photoSessionIcon;
     }
 
     public int getId() {
@@ -53,36 +59,28 @@ public class PhotoSession {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public List<PhotoAlbum> getPhotoAlbums() {
+        return photoAlbums;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPhotoAlbums(List<PhotoAlbum> photoAlbums) {
+        this.photoAlbums = photoAlbums;
     }
 
-    public int getPrice() {
-        return price;
+    public Photographer getPhotographer() {
+        return photographer;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public PhotoSessionIcon getPhotoSessionIcon() {
+        return photoSessionIcon;
     }
 
-    public int getDuration() {
-        return duration;
+    public void setPhotoSessionIcon(PhotoSessionIcon photoSessionIcon) {
+        this.photoSessionIcon = photoSessionIcon;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setPhotographer(Photographer photographer) {
+        this.photographer = photographer;
     }
 
     @Override
@@ -90,12 +88,12 @@ public class PhotoSession {
         if (this == o) return true;
         if (!(o instanceof PhotoSession)) return false;
         PhotoSession that = (PhotoSession) o;
-        return id == that.id && price == that.price && duration == that.duration && Objects.equals(name, that.name) && Objects.equals(type, that.type);
+        return getId() == that.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, price, duration);
+        return Objects.hash(getId());
     }
 
     @Override
@@ -103,9 +101,6 @@ public class PhotoSession {
         return "PhotoSession{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", price=" + price +
-                ", duration=" + duration +
                 '}';
     }
 }

@@ -6,6 +6,8 @@ import com.gmail.serhiisemiv.repository.PhotoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,13 +19,14 @@ import java.util.Optional;
 @Service
 public class PhotoService {
     private final PhotoRepository photoRepository;
-    private final Logger error = LoggerFactory.getLogger(this.getClass());
-    private final Logger debug = LoggerFactory.getLogger(this.getClass());
-    private final Logger info = LoggerFactory.getLogger(this.getClass());
+    private final PhotoAlbumService albumService;
+    private final Logger error = LoggerFactory.getLogger("com.gmail.serhiisemiv.error");
+    private final Logger debug = LoggerFactory.getLogger("com.gmail.serhiisemiv.debug");
 
     @Autowired
-    public PhotoService(PhotoRepository photoRepository) {
+    public PhotoService(PhotoRepository photoRepository, PhotoAlbumService albumService) {
         this.photoRepository = photoRepository;
+        this.albumService = albumService;
     }
 
     public void savePhoto(Photo photo) {
@@ -32,9 +35,9 @@ public class PhotoService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photo {}", photo.getName());
+            debug.debug("Start saving new photo {}", photo.getName());
             photoRepository.save(photo);
-            debug.debug("Photo is saved{}", photo.getImage());
+            debug.debug("Photo is saved{}", photo.getPicture());
         } catch (NumberFormatException e) {
             error.error("Cant save photo  - " + photo.getName(), e);
             throw new ServiceException("Cant save  photo");
@@ -47,7 +50,7 @@ public class PhotoService {
             throw new IllegalArgumentException("Input parameter can't be null");
         }
         try {
-            info.info("Start saving new photos");
+            debug.debug("Start saving new photos");
             photoRepository.saveAll(photos);
             debug.debug("Photos is saved");
         } catch (NumberFormatException e) {
@@ -57,7 +60,7 @@ public class PhotoService {
     }
 
     public Photo findPhotoById(int id) {
-        info.info("Start returned photo with id - {}", id);
+        debug.debug("Start returned photo with id - {}", id);
         Optional<Photo> photo = photoRepository.findById(id);
         if (photo.isEmpty()) {
             error.error("Photo is not present", new ServiceException("Can't find photo with id - " + id));
@@ -68,7 +71,7 @@ public class PhotoService {
     }
 
     public List<Photo> findAllPhotos() {
-        info.info("Starting returning all photos");
+        debug.debug("Starting returning all photos");
         try {
             List<Photo> photos = photoRepository.findAll();
             debug.debug("All photos was returned");
@@ -80,7 +83,7 @@ public class PhotoService {
     }
 
     public List<Photo> findAllByAlbumId(int albumId){
-        info.info("Starting returning all photos with album id {}",albumId);
+        debug.debug("Starting returning all photos with album id {}",albumId);
         try {
             List<Photo> photos = photoRepository.findAllByPhotoAlbum_Id(albumId);
             debug.debug("All photos with album id is returned id {}", albumId);
@@ -91,9 +94,23 @@ public class PhotoService {
         }
     }
 
-    public void deletePhotoById(int id) {
-        info.info("Starting delete photo with id - {}", id);
+    public Resource findFirstByAlbumId(int albumId){
+        debug.debug("Starting returning first image with album id {}",albumId);
         try {
+            Photo photo = photoRepository.findFirstByPhotoAlbum_Id(albumId);
+            debug.debug("first image with album id is returned id {}", albumId);
+            return new ByteArrayResource(photo.getPicture());
+        }catch (NullPointerException e){
+            error.error("Can't find any images with photo album id - "+albumId + e.getMessage(), e);
+            throw new ServiceException("Can't find any images");
+        }
+    }
+
+
+    public void deletePhotoById(int id) {
+        debug.debug("Starting delete photo with id - {}", id);
+        try {
+
             photoRepository.deleteById(id);
             debug.debug("Photo was deleted id - {}", id);
         } catch (NoSuchElementException e) {
@@ -102,12 +119,13 @@ public class PhotoService {
         }
     }
 
-    public Photo createNewPhoto(MultipartFile file) {
+    public Photo createNewPhoto(MultipartFile file, int photoAlbumId) {
         Photo photo = new Photo();
         try {
+            photo.setPhotoAlbum(albumService.findPhotoAlbumById(photoAlbumId));
             photo.setName(file.getOriginalFilename());
             photo.setSize(file.getSize());
-            photo.setImage(file.getBytes());
+            photo.setPicture(file.getBytes());
         } catch (IOException e) {
             error.error("Can't create photo. " + e.getMessage(), e);
         }

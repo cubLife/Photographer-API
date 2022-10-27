@@ -16,10 +16,11 @@ public class CostumerFeedbackMapper {
         this.modelMapper = modelMapper;
         TypeMap<CostumerFeedback, CostumerFeedbackDto> propertyMapperToDto = modelMapper.createTypeMap(CostumerFeedback.class, CostumerFeedbackDto.class);
 
-        propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getId, CostumerFeedbackDto::setId));
-        propertyMapperToDto.addMappings(mapper -> mapper.map(feedback -> feedback.getCostumer().getId(),CostumerFeedbackDto::setCostumerId));
+        propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getId,CostumerFeedbackDto::setId));
+        propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getEmail,CostumerFeedbackDto::setEmail));
+        propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getFirstName,CostumerFeedbackDto::setFirstName));
+        propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getLastName,CostumerFeedbackDto::setLastName));
         propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getCreationDate, CostumerFeedbackDto::setCreationDate));
-        propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::isChanged, CostumerFeedbackDto::setChanged));
         propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getGrade, CostumerFeedbackDto::setGrade));
         propertyMapperToDto.addMappings(mapper -> mapper.map(CostumerFeedback::getFeedback, CostumerFeedbackDto::setFeedback));
     }

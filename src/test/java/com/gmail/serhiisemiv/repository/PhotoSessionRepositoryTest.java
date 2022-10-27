@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles(value = "test")
 class PhotoSessionRepositoryTest {
     private static final String TEST = "test";
     @Autowired
@@ -20,7 +22,7 @@ class PhotoSessionRepositoryTest {
     @Test
     void shouldSavePhotoSession() {
         generateTestData();
-        PhotoSession expected = PhotoSession.builder().id(1).duration(60).name(TEST).price(0).type(TEST).build();
+        PhotoSession expected = PhotoSession.builder().id(1).name(TEST).build();
         PhotoSession actual = photoSessionRepository.findAll().get(0);
         assertEquals(expected, actual);
     }
@@ -54,7 +56,7 @@ class PhotoSessionRepositoryTest {
 
     private void generateTestData() {
         for (int i = 0; i < 5; i++) {
-            PhotoSession photoSession = PhotoSession.builder().duration(60).name(TEST).price(0).type(TEST).build();
+            PhotoSession photoSession = PhotoSession.builder().name(TEST).build();
             photoSessionRepository.save(photoSession);
         }
     }
