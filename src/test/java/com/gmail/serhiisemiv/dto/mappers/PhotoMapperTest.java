@@ -33,6 +33,5 @@ class PhotoMapperTest {
         for(int i=0;i<expected.size();i++){
             assertEquals(expected.get(i),actual.get(i));
         }
-
     }
 }

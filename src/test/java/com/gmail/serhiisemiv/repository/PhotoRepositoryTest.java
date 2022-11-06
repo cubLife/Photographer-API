@@ -28,7 +28,6 @@ class PhotoRepositoryTest {
         Photo expected = Photo.builder().id(1).name(TEST).size(1L).picture(new byte[0]).build();
         Photo actual = photoRepository.getById(1);
         assertEquals(expected, actual);
-
     }
 
     @Test
@@ -92,5 +91,4 @@ class PhotoRepositoryTest {
             photoRepository.save(Photo.builder().name(TEST).size(1L).picture(new byte[3]).build());
         }
     }
-
 }

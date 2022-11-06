@@ -1,13 +1,7 @@
 package com.gmail.serhiisemiv.modeles;
 
-import lombok.Builder;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
-import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Objects;
 
 @SuperBuilder
 @Entity
@@ -28,8 +22,6 @@ public class Photo extends Image {
         this.size = size;
         this.photoAlbum = photoAlbum;
     }
-
-
 
     public String getName() {
         return name;

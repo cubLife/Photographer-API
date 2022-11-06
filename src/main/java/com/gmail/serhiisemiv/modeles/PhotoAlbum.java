@@ -1,6 +1,5 @@
 package com.gmail.serhiisemiv.modeles;
 
-import com.gmail.serhiisemiv.repository.PhotoSessionIconRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 

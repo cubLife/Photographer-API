@@ -23,9 +23,7 @@ class PhotoSessionIconServiceTest {
     private PhotoSessionIconService mockIconService;
     @InjectMocks
     private PhotoSessionIconService iconService;
-
     private AutoCloseable autoCloseable;
-
 
     @BeforeEach
     void setUp() {
@@ -40,25 +38,25 @@ class PhotoSessionIconServiceTest {
     @Test
     void shouldInvokeSaveMethod() {
         iconService.save(new PhotoSessionIcon());
-        verify(mockIconRepository,times(1)).save(new PhotoSessionIcon());
+        verify(mockIconRepository, times(1)).save(new PhotoSessionIcon());
     }
 
     @Test
     void shouldInvokeFindByPhotoSessionId() {
         mockIconService.findByPhotoSessionId(anyInt());
-        verify(mockIconService,times(1)).findByPhotoSessionId(anyInt());
+        verify(mockIconService, times(1)).findByPhotoSessionId(anyInt());
     }
 
     @Test
     void shouldInvokeFindById() {
         mockIconService.findById(anyInt());
-        verify(mockIconService,times(1)).findById(anyInt());
+        verify(mockIconService, times(1)).findById(anyInt());
     }
 
     @Test
     void shouldInvokeDeletePhotoSessionIconById() {
         mockIconService.deletePhotoSessionIconById(anyInt());
-        verify(mockIconService,times(1)).deletePhotoSessionIconById(anyInt());
+        verify(mockIconService, times(1)).deletePhotoSessionIconById(anyInt());
     }
 
     @Test
@@ -71,9 +69,9 @@ class PhotoSessionIconServiceTest {
     }
 
     @Test
-    void shouldThrowServiceExceptionWhenSaveMethodCall(){
+    void shouldThrowServiceExceptionWhenSaveMethodCall() {
         doThrow(ServiceException.class).when(mockIconService).save(new PhotoSessionIcon());
-        assertThrows(ServiceException.class, ()-> mockIconService.save(new PhotoSessionIcon()));
+        assertThrows(ServiceException.class, () -> mockIconService.save(new PhotoSessionIcon()));
     }
 
     @Test
@@ -89,5 +87,4 @@ class PhotoSessionIconServiceTest {
         assertThrows(ServiceException.class, () ->
                 mockIconService.deletePhotoSessionIconById(anyInt()));
     }
-
 }

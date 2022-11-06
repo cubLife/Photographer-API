@@ -19,7 +19,7 @@ public abstract class Image {
     protected Image() {
     }
 
-    public Image(byte[] picture) {
+   protected Image(byte[] picture) {
         this.picture = picture;
     }
 

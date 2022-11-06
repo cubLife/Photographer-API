@@ -2,7 +2,6 @@ package com.gmail.serhiisemiv.controllers.rest;
 
 import com.gmail.serhiisemiv.dto.CostumerFeedbackDto;
 import com.gmail.serhiisemiv.dto.mappers.CostumerFeedbackMapper;
-import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modelAsemblers.CostumerFeedbackDtoModelAssembler;
 import com.gmail.serhiisemiv.modeles.CostumerFeedback;
 import com.gmail.serhiisemiv.service.CostumerFeedbackService;
@@ -12,14 +11,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -74,5 +69,4 @@ public class CostumerFeedbackController {
     private List<EntityModel<CostumerFeedbackDto>> getModels(List<CostumerFeedback> feedbacks) {
         return feedbacks.stream().map(mapper::toDto).map(modelAssembler::toModel).collect(Collectors.toList());
     }
-
 }

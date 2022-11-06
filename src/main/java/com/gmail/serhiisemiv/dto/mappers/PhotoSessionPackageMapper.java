@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 public class PhotoSessionPackageMapper {
     private final ModelMapper mapper;
 
-
     public PhotoSessionPackageMapper(ModelMapper mapper) {
         this.mapper = mapper;
     }

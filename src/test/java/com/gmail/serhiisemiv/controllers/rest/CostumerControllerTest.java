@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest
 @ContextConfiguration(classes = {CostumerController.class})
@@ -40,7 +39,6 @@ class CostumerControllerTest {
     private ObjectMapper objectMapper;
     private static final String API_COSTUMERS_URL = "/api/costumers";
     private static final Costumer COSTUMER = Costumer.builder().firstName("Jon").lastName("Doe").email("gon_doe@gmail.com").build();
-
 
     @Test
     void saveCostumer() throws Exception {

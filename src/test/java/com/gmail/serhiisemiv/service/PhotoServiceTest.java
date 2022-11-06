@@ -56,9 +56,9 @@ class PhotoServiceTest {
     }
 
     @Test
-    void shouldInvokeFindAllPhotosByPhotoAlbumId(){
+    void shouldInvokeFindAllPhotosByPhotoAlbumId() {
         mockPhotoService.findAllByAlbumId(anyInt());
-        verify(mockPhotoService,times(1)).findAllByAlbumId(anyInt());
+        verify(mockPhotoService, times(1)).findAllByAlbumId(anyInt());
     }
 
     @Test

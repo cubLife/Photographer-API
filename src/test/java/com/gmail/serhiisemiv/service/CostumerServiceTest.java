@@ -97,6 +97,5 @@ class CostumerServiceTest {
         boolean expected = true;
         boolean actual = mockCostumerService.existsCostumerByEmail(EMAIL);
         assertEquals(expected,actual);
-
     }
 }

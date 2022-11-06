@@ -79,5 +79,4 @@ public class CarouselImageService {
         carouselImage.setPicture(file.getBytes());
         return carouselImage;
     }
-
 }

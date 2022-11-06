@@ -50,7 +50,6 @@ class CarouselImageRepositoryTest {
         assertEquals(expected, actual);
     }
 
-
     private void createTestData() {
         for (int i = 0; i < 5; i++) {
             repository.save(new CarouselImage(new byte[5]));

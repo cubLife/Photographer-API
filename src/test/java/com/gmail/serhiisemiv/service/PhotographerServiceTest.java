@@ -2,9 +2,7 @@ package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modeles.Photographer;
-import com.gmail.serhiisemiv.modeles.SocialNetwork;
 import com.gmail.serhiisemiv.repository.PhotographerRepository;
-import com.gmail.serhiisemiv.repository.SocialNetworkRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

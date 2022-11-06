@@ -1,13 +1,10 @@
 package com.gmail.serhiisemiv.repository;
 
-import com.gmail.serhiisemiv.modeles.AvatarImage;
 import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.modeles.PhotoSessionIcon;
-import com.gmail.serhiisemiv.modeles.Photographer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.security.access.method.P;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -18,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles(value = "test")
 class PhotoSessionIconRepositoryTest {
     @Autowired
-   private PhotoSessionIconRepository repository;
+    private PhotoSessionIconRepository repository;
     @Autowired
     private PhotoSessionRepository photoSessionRepository;
-    private static final byte[] PICTURE= new byte[5];
-   private static final String TEST= "test";
+    private static final byte[] PICTURE = new byte[5];
+    private static final String TEST = "test";
 
     @Test
     void shouldSavePhotoSessionIcon() {
         createTestData();
-        PhotoSessionIcon expected = new PhotoSessionIcon(1,PICTURE,new PhotoSession(1,TEST));
+        PhotoSessionIcon expected = new PhotoSessionIcon(1, PICTURE, new PhotoSession(1, TEST));
         PhotoSessionIcon actual = repository.getById(1);
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -60,7 +57,7 @@ class PhotoSessionIconRepositoryTest {
     @Test
     void findByPhotoSession_Id() {
         createTestData();
-        PhotoSessionIcon expected = new PhotoSessionIcon(1,PICTURE, new PhotoSession(TEST));
+        PhotoSessionIcon expected = new PhotoSessionIcon(1, PICTURE, new PhotoSession(TEST));
         PhotoSessionIcon actual = repository.findByPhotoSession_Id(1).get();
         assertEquals(expected, actual);
     }
@@ -72,7 +69,7 @@ class PhotoSessionIconRepositoryTest {
         photoSessionRepository.save(sessionTwo);
         repository.save(new PhotoSessionIcon(PICTURE, sessionOne));
         for (int i = 0; i < 5; i++) {
-            repository.save(new PhotoSessionIcon(PICTURE,sessionTwo));
+            repository.save(new PhotoSessionIcon(PICTURE, sessionTwo));
         }
     }
 }
