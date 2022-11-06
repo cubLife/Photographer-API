@@ -23,7 +23,6 @@ class PhotoSessionPackageServiceTest {
     private PhotoSessionPackageService mockPackageService;
     @InjectMocks
     private PhotoSessionPackageService packageService;
-
     private AutoCloseable autoCloseable;
 
     @BeforeEach

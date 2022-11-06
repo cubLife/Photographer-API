@@ -22,7 +22,7 @@ class PhotographerRepositoryTest {
     private static final String EMAIL = "test@gmail.com";
 
     @Test
-    public void shouldSavePhotographer() {
+    void shouldSavePhotographer() {
         generateTestData();
         Photographer actual = photographerRepository.getById(1);
         Photographer expected = Photographer.builder().id(1).login(TEST).password(TEST).firstName(TEST).lastName(TEST).email(TEST).aboutMyself(TEST).build();
@@ -30,7 +30,7 @@ class PhotographerRepositoryTest {
     }
 
     @Test
-    public void shouldGetPhotographerById() {
+    void shouldGetPhotographerById() {
         generateTestData();
         int actual = photographerRepository.getById(1).getId();
         int expected = 1;
@@ -39,7 +39,7 @@ class PhotographerRepositoryTest {
     }
 
     @Test
-    public void shouldGetAllPhotographers() {
+    void shouldGetAllPhotographers() {
         generateTestData();
         int actual = photographerRepository.findAll().size();
         int expected = 5;
@@ -47,7 +47,7 @@ class PhotographerRepositoryTest {
     }
 
     @Test
-    public void shouldDeletePhotographerById() {
+    void shouldDeletePhotographerById() {
         generateTestData();
         photographerRepository.deleteById(1);
         int actual = photographerRepository.findAll().size();

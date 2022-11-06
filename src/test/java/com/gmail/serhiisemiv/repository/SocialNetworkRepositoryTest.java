@@ -18,31 +18,31 @@ class SocialNetworkRepositoryTest {
     private static final String TEST = "test";
 
     @Test
-    public void shouldAddNewSocialNetwork(){
+    void shouldAddNewSocialNetwork() {
         generateTeatData();
-        SocialNetwork actual  = socialNetworkRepository.getById(1);
-        SocialNetwork expected = new SocialNetwork(1,TEST,TEST,null);
-        assertEquals(expected,actual);
+        SocialNetwork actual = socialNetworkRepository.getById(1);
+        SocialNetwork expected = new SocialNetwork(1, TEST, TEST, null);
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void shouldFidSocialNetworkById(){
+    void shouldFidSocialNetworkById() {
         generateTeatData();
-        int actual=socialNetworkRepository.getById(3).getId();
-        int expected =3;
-        assertEquals(actual,expected);
+        int actual = socialNetworkRepository.getById(3).getId();
+        int expected = 3;
+        assertEquals(actual, expected);
     }
 
     @Test
-    public void shouldFondAllSocialNetworks(){
+    void shouldFondAllSocialNetworks() {
         generateTeatData();
         int actual = socialNetworkRepository.findAll().size();
-        int expected= 5;
-        assertEquals(actual,expected);
+        int expected = 5;
+        assertEquals(actual, expected);
     }
 
     @Test
-    public void shouldDeleteSocialNetworkById(){
+    void shouldDeleteSocialNetworkById() {
         generateTeatData();
         socialNetworkRepository.deleteById(1);
         int actual = socialNetworkRepository.findAll().size();
@@ -50,9 +50,9 @@ class SocialNetworkRepositoryTest {
         assertEquals(actual, expected);
     }
 
-    private void generateTeatData(){
-        for(int i = 0; i<5; i++){
-            SocialNetwork socialNetwork = new SocialNetwork(TEST,TEST,null);
+    private void generateTeatData() {
+        for (int i = 0; i < 5; i++) {
+            SocialNetwork socialNetwork = new SocialNetwork(TEST, TEST, null);
             socialNetworkRepository.save(socialNetwork);
         }
     }

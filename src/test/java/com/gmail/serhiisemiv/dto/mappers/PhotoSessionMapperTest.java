@@ -18,5 +18,6 @@ class PhotoSessionMapperTest {
     void shouldReturnPhotoSessionDto() {
         PhotoSessionDto expected = new PhotoSessionDto(1,"Test");
         PhotoSessionDto actual = mapper.toDto(PHOTO_SESSION);
+        assertEquals(expected,actual);
     }
 }

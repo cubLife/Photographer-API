@@ -19,45 +19,44 @@ class PhotoSessionPackageRepositoryTest {
     private static final String NAME = "test";
     private static final int NUMBER_PHOTOS = 30;
     private static final int PRICE = 100;
-    private static final int DURATION= 60;
+    private static final int DURATION = 60;
 
     @Test
-    void shouldSavePhotoSessionPackage(){
+    void shouldSavePhotoSessionPackage() {
         createTestData();
-        PhotoSessionPackage expected = new PhotoSessionPackage(ID,NAME,NUMBER_PHOTOS,PRICE,DURATION);
+        PhotoSessionPackage expected = new PhotoSessionPackage(ID, NAME, NUMBER_PHOTOS, PRICE, DURATION);
         PhotoSessionPackage actual = repository.getById(1);
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    void shouldFindById(){
+    void shouldFindById() {
         createTestData();
-        PhotoSessionPackage expected = new PhotoSessionPackage(ID,NAME,NUMBER_PHOTOS,PRICE,DURATION);
+        PhotoSessionPackage expected = new PhotoSessionPackage(ID, NAME, NUMBER_PHOTOS, PRICE, DURATION);
         PhotoSessionPackage actual = repository.findById(1).get();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    void shouldFindAll(){
+    void shouldFindAll() {
         createTestData();
         int expected = 5;
         int actual = repository.findAll().size();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    void shouldDeleteById(){
+    void shouldDeleteById() {
         createTestData();
         repository.deleteById(1);
         int expected = 4;
         int actual = repository.findAll().size();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
-    private void createTestData(){
-                for(int i=0;i<5;i++){
-                    repository.save(new PhotoSessionPackage(NAME,NUMBER_PHOTOS,PRICE,DURATION));
-                }
+    private void createTestData() {
+        for (int i = 0; i < 5; i++) {
+            repository.save(new PhotoSessionPackage(NAME, NUMBER_PHOTOS, PRICE, DURATION));
+        }
     }
-
 }

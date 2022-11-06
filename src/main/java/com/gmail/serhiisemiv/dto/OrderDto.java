@@ -1,13 +1,11 @@
 package com.gmail.serhiisemiv.dto;
 
-import com.gmail.serhiisemiv.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
-import java.util.Date;
 
 @Data
 @Builder

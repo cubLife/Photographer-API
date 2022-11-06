@@ -69,7 +69,6 @@ class PhotoControllerTest {
 
     @Test
     void getImageById() {
-
     }
 
     @Test

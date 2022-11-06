@@ -2,13 +2,10 @@ package com.gmail.serhiisemiv.service;
 
 import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modeles.AvatarImage;
-import com.gmail.serhiisemiv.modeles.CostumerFeedback;
-import com.gmail.serhiisemiv.modeles.Photographer;
 import com.gmail.serhiisemiv.repository.AvatarImageRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;

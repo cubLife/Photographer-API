@@ -5,7 +5,6 @@ import com.gmail.serhiisemiv.dto.OrderDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modeles.Costumer;
 import com.gmail.serhiisemiv.modeles.Order;
-import com.gmail.serhiisemiv.modeles.PhotoSession;
 import com.gmail.serhiisemiv.modeles.PhotoSessionPackage;
 import com.gmail.serhiisemiv.repository.OrderRepository;
 import org.slf4j.Logger;

@@ -13,7 +13,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class CarouselImageModelAssembler implements RepresentationModelAssembler<CarouselImageDto, EntityModel<CarouselImageDto>> {
 
-
     @Override
     public @NotNull EntityModel<CarouselImageDto> toModel(@NotNull CarouselImageDto carouselImageDto) {
         return EntityModel.of(carouselImageDto,

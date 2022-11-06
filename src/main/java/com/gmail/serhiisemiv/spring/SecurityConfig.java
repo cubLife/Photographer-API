@@ -1,5 +1,6 @@
 package com.gmail.serhiisemiv.spring;
 
+import org.jetbrains.annotations.NotNull;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -36,7 +37,7 @@ public class SecurityConfig  extends KeycloakWebSecurityConfigurerAdapter  {
     // keycloakConfigResolver defines that we want to use the Spring Boot properties
     // file support instead of the default keycloak.json.
     @Bean
-    public KeycloakSpringBootConfigResolver KeycloakConfigResolver() {
+    public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
 
@@ -46,7 +47,7 @@ public class SecurityConfig  extends KeycloakWebSecurityConfigurerAdapter  {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
-    // we are permitting all here but we are gonna have method level authorization.
+    // we are permitting all here, but we are going to have method level authorization.
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
@@ -56,10 +57,10 @@ public class SecurityConfig  extends KeycloakWebSecurityConfigurerAdapter  {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public WebMvcConfigurer crossConfigure() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@NotNull CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("*");
             }
