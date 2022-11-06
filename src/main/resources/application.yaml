@@ -57,8 +57,8 @@ keycloak:
   realm: ${KEYCLOAK_REALM}
   resource: ${KEYCLOAK_RESOURCE}
   realm-key: ${KEYCLOAK_REALM_KEY}
-  public-client: ${KEYCLOAK_PUBLIC_CLIENT}
-  bearer-only: ${KEYCLOAK-BARBER-ONLY}
+  public-client: true
+  bearer-only: true
 
 ---
 spring:
