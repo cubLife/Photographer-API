@@ -2,7 +2,7 @@ spring:
   servlet.multipart.max-file-size: 500MB
   servlet.multipart.max-request-size: 500MB
   profiles:
-    active: "dev"
+    active: "prod"
   main:
     allow-bean-definition-overriding: true
 springfox:
@@ -64,7 +64,7 @@ keycloak:
 spring:
   profiles: test
   datasource:
-    driverClassName: org.h2.Driver
+    driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:mydb
     username: sa
     password: password
