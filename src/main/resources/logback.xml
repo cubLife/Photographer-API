@@ -35,7 +35,7 @@
         <appender-ref ref="ERROR" />
     </logger>
 
-    <root level="debug">
-        <appender-ref ref="DEBUG" />
-    </root>
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="ERROR" />-->
+<!--    </root>-->
 </configuration>

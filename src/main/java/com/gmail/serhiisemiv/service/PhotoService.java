@@ -37,7 +37,7 @@ public class PhotoService {
         try {
             debug.debug("Start saving new photo {}", photo.getName());
             photoRepository.save(photo);
-            debug.debug("Photo is saved{}", photo.getPicture());
+            debug.debug("Photo is saved{}", photo.getId());
         } catch (NumberFormatException e) {
             error.error("Cant save photo  - " + photo.getName(), e);
             throw new ServiceException("Cant save  photo");
