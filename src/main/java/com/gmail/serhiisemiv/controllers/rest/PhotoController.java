@@ -34,6 +34,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "api/photos")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 public class PhotoController {
     private final PhotoService photoService;
     private final PhotoAlbumService photoAlbumService;
@@ -131,6 +132,7 @@ public class PhotoController {
 
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     @PreAuthorize("hasRole('admin')")
     public void replacePhoto(@RequestBody MultipartFile file, @PathVariable("id") int id) {
         Photo photo = photoService.findPhotoById(id);

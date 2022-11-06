@@ -25,6 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("api/photographers")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 @Validated
 public class PhotographerController {
     private final PhotographerService photographerService;

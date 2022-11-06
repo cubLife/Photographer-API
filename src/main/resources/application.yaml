@@ -1,5 +1,77 @@
 spring:
-  servlet.multipart.max-file-size: 10GB
-  servlet.multipart.max-request-size: 10GB
+  servlet.multipart.max-file-size: 500MB
+  servlet.multipart.max-request-size: 500MB
+  profiles:
+    active: "prod"
+  main:
+    allow-bean-definition-overriding: true
+springfox:
+  documentation:
+    swagger-ui:
+      base-url: photographer-api
+defaultAutoCommit: false
+origins:
+  allowed: "*"
 server:
   port: 8081
+
+---
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost/Photographer
+    username: postgres
+    password: cub66901251
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+keycloak:
+  auth-server-url: http://localhost:8080/
+  realm: photographer
+  resource: photographer-api
+  public-client: true
+  bearer-only: true
+
+---
+spring:
+  profiles: prod
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+keycloak:
+  auth-server-url: ${KEYCLOAK_AUTH-SERVER_URL}
+  realm: ${KEYCLOAK_REALM}
+  resource: ${KEYCLOAK_RESOURCE}
+  realm-key: ${KEYCLOAK_REALM_KEY}
+  public-client: true
+  bearer-only: true
+
+---
+spring:
+  profiles: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
