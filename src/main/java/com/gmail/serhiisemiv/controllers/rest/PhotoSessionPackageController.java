@@ -22,7 +22,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("api/photo-session-packages")
-@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 public class PhotoSessionPackageController {
     private final PhotoSessionPackageService packageService;
     private final PhotoSessionPackageDtoModelAssembler modelAssembler;
