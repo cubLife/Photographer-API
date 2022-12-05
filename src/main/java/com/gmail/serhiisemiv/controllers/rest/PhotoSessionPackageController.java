@@ -51,7 +51,6 @@ public class PhotoSessionPackageController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public CollectionModel<EntityModel<PhotoSessionPackageDto>> getAll() {
         List<PhotoSessionPackage> photoSessionPackages = packageService.findAllPhotoSessionPackages();
         List<EntityModel<PhotoSessionPackageDto>> entityModels = getEntityModels(photoSessionPackages);
