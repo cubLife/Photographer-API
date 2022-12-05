@@ -28,7 +28,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("api/carousel-images")
-@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 public class CarouselImageController {
     private final CarouselImageService carouselImageService;
     private final CarouselImageModelAssembler modelAssembler;

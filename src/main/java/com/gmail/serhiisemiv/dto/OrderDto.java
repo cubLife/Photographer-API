@@ -21,7 +21,7 @@ public class OrderDto {
     @Email(message = "Email should be valid. For example - sample@gmail.com")
     private String costumerEmail;
     @NotBlank(message = "Phone number can't be empty")
-    @Pattern(regexp = "^\\+(?:[0-9]●?){10}[0-9]$", message = "Please type valid phone number. For example +48123456789")
+    @Pattern(regexp = "^\\+(?:[0-9]●?){11}[0-9]$", message = "Please type valid phone number. For example +481234567890")
     private String costumerPhone;
     private long creationDate;
     @NotBlank(message = "Photo session name can't be empty")

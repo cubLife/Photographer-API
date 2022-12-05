@@ -2,7 +2,7 @@ spring:
   servlet.multipart.max-file-size: 500MB
   servlet.multipart.max-request-size: 500MB
   profiles:
-    active: "prod"
+    active: "dev"
   main:
     allow-bean-definition-overriding: true
 springfox:
