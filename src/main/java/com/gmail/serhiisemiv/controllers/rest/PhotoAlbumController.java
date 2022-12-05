@@ -23,7 +23,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController()
 @RequestMapping(value = "api/photo-albums")
-@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 public class PhotoAlbumController {
     private final PhotoAlbumService photoAlbumService;
     private final PhotoAlbumDtoModelAssembler modelAssembler;

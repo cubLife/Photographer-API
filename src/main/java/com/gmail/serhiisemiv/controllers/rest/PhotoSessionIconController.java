@@ -22,7 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
+
 @RequestMapping(value = "api/photo-session-icons")
 public class PhotoSessionIconController {
     private final PhotoSessionIconService iconService;
@@ -54,7 +54,6 @@ public class PhotoSessionIconController {
     @GetMapping("/session-id/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional(readOnly = true)
-    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public EntityModel<PhotoSessionIconDto> getByPhotoSessionId(@PathVariable("id") int id) {
         PhotoSessionIcon sessionIcon = iconService.findByPhotoSessionId(id);
         return EntityModel.of(mapper.toDto(sessionIcon), linkTo(methodOn(PhotoSessionIconController.class).getPictureByPhotoSessionId(id)).withSelfRel());

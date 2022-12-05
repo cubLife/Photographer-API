@@ -21,7 +21,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 @RequestMapping("api/feedbacks")
 public class CostumerFeedbackController {
     private final CostumerFeedbackService feedbackService;

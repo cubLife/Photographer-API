@@ -64,7 +64,6 @@ public class PhotoSessionController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('admin')")
-    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id) {
         photoSessionService.deletePhotoSessionById(id);
         return ResponseEntity.noContent().build();
