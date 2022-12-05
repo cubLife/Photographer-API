@@ -23,6 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("api/photo-sessions")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
 public class PhotoSessionController {
     private final PhotoSessionService photoSessionService;
     private final PhotoSessionMapper mapper;
@@ -53,6 +54,7 @@ public class PhotoSessionController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public CollectionModel<EntityModel<PhotoSessionDto>> getAll() {
         List<PhotoSession> photoSessions = photoSessionService.findAllPhotoSessions();
         List<EntityModel<PhotoSessionDto>> entityModels = getEntityModels(photoSessions);
@@ -62,6 +64,7 @@ public class PhotoSessionController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('admin')")
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") int id) {
         photoSessionService.deletePhotoSessionById(id);
         return ResponseEntity.noContent().build();
@@ -70,6 +73,7 @@ public class PhotoSessionController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('admin')")
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
     public void editPhotoSession(@RequestBody PhotoSessionDto photoSessionDto, @PathVariable int id) {
         photoSessionService.editPhotoSession(id, photoSessionDto);
     }
