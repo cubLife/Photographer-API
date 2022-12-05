@@ -36,7 +36,7 @@ class OrderControllerTest {
     private OrderDtoModelAssembler modelAssembler;
     private static final String API_ORDERS_URL= "/api/orders";
     private static final OrderDto ORDER = OrderDto.builder().costumerFirstName("Jon").costumerLastName("Doe")
-            .costumerPhone("+48123456789").costumerEmail("jon_doe@gmail.com").photoSessionName("My Photo session").build();
+            .costumerPhone("+481234567890").costumerEmail("jon_doe@gmail.com").photoSessionName("My Photo session").build();
 
     @Test
     void saveOrder() throws Exception {
