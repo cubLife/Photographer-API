@@ -64,6 +64,7 @@ public class PhotoSessionPackageController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('admin')")
+    @CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/", "https://na-photo.pl/", "https://admin.na-photo.pl/"})
     public void editPhotoSessionPackageById(@RequestBody PhotoSessionPackageDto sessionPackageDto, @PathVariable int id) {
         packageService.editPhotoSessionPackageById(id, sessionPackageDto);
     }
