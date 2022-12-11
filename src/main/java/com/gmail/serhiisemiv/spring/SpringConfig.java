@@ -29,7 +29,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000/", "http://localhost:3001/"
-                        , "https://na-photo.pl/", "https://api.na-photo.pl/");
+                        , "https://na-photo.pl/", "https://admin.na-photo.pl/");
     }
 
     @Bean
