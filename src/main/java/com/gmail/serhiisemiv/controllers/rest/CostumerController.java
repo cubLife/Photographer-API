@@ -24,6 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("api/costumers")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/", "https://na-photo.pl/", "https://admin.na-photo.pl/"})
 public class CostumerController {
     private final CostumerService costumerService;
     private final CostumerDtoModelAssembler modelAssembler;

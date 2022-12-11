@@ -23,7 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("api/photo-sessions")
-@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/", "https://na-photo.pl/", "https://admin.na-photo.pl/"})
 public class PhotoSessionController {
     private final PhotoSessionService photoSessionService;
     private final PhotoSessionMapper mapper;

@@ -24,6 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 
 @RequestMapping(value = "api/photo-session-icons")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/", "https://na-photo.pl/", "https://admin.na-photo.pl/"})
 public class PhotoSessionIconController {
     private final PhotoSessionIconService iconService;
     private final PhotoSessionService sessionService;
