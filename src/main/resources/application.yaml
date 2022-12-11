@@ -11,7 +11,7 @@ springfox:
       base-url: photographer-api
 defaultAutoCommit: false
 origins:
-  allowed: "*"
+  allowed: "/**"
 server:
   port: 8081
 
