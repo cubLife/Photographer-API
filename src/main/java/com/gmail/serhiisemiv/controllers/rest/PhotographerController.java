@@ -22,6 +22,7 @@ import javax.validation.constraints.Pattern;
 
 @RestController
 @RequestMapping("api/photographers")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:3001/", "https://na-photo.pl/", "https://admin.na-photo.pl/"})
 @Validated
 public class PhotographerController {
     private final PhotographerService photographerService;
