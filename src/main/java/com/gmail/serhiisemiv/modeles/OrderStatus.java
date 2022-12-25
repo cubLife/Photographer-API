@@ -1,4 +1,4 @@
-package com.gmail.serhiisemiv;
+package com.gmail.serhiisemiv.modeles;
 
 public enum OrderStatus {
     NEW("New"), APPROVED("Approved"), COMPLETE("Complete");
