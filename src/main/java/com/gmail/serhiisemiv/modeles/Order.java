@@ -1,6 +1,5 @@
 package com.gmail.serhiisemiv.modeles;
 
-import com.gmail.serhiisemiv.OrderStatus;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,6 +1,6 @@
 package com.gmail.serhiisemiv.repository;
 
-import com.gmail.serhiisemiv.OrderStatus;
+import com.gmail.serhiisemiv.modeles.OrderStatus;
 import com.gmail.serhiisemiv.modeles.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

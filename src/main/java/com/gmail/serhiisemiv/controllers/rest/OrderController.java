@@ -1,6 +1,6 @@
 package com.gmail.serhiisemiv.controllers.rest;
 
-import com.gmail.serhiisemiv.OrderStatus;
+import com.gmail.serhiisemiv.modeles.OrderStatus;
 import com.gmail.serhiisemiv.dto.OrderDto;
 import com.gmail.serhiisemiv.dto.mappers.OrderMapper;
 import com.gmail.serhiisemiv.modelAsemblers.OrderDtoModelAssembler;
@@ -68,7 +68,7 @@ public class OrderController {
     @GetMapping("/order-status/{status}/list")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<EntityModel<OrderDto>> getByOrderStatus(@PathVariable(value = "status") String status) {
-        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
+       OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
         List<Order> orders = orderService.findByOrderStatus(orderStatus);
         List<EntityModel<OrderDto>> orderDtoModels = getEntityModels(orders);
         return CollectionModel.of(orderDtoModels, linkTo(methodOn(OrderController.class).getByOrderStatus(status)).withSelfRel());

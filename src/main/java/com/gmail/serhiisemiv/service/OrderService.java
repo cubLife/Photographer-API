@@ -1,6 +1,6 @@
 package com.gmail.serhiisemiv.service;
 
-import com.gmail.serhiisemiv.OrderStatus;
+import com.gmail.serhiisemiv.modeles.OrderStatus;
 import com.gmail.serhiisemiv.dto.OrderDto;
 import com.gmail.serhiisemiv.exceptions.ServiceException;
 import com.gmail.serhiisemiv.modeles.Costumer;
