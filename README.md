@@ -6,7 +6,7 @@ one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference
 
 ## Project diagram
 
-![project-diagram](Photographer application diagram.png)
+![project-diagram](https://github.com/cubLife/Photographer-API/blob/main/Photographer%20application%20diagram.png)
 
 ## UML Class diagram
 
