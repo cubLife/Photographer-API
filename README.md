@@ -1,93 +1,86 @@
 # Photographer
+The `photographer-app` is designed to promote your brand and conduct business.
+The application includes the following modules:
+one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `photographer-api`, another is a [ReactJS](https://reactjs.org/) applications called `photographer-client-ui` and 
+`photographer-admin-ui`. The application secured by [Keycloak](https://www.keycloak.org/).
 
+## Project diagram
 
+![project-diagram](Photographer application diagram.png)
 
-## Getting started
+## UML Class diagram
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+![class-diagram](UML Class diagram.png)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Applications
 
-## Add your files
+- ### photographer-api
+`Spring Boot` Web Java backend application that exposes a REST API to manage **content**. Its secured endpoints can just be accessed if an access token (JWT) issued by `Keycloak` is provided.
 
-- [ ] [Create](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+`photographer-api` stores its data in a [`Postgresql`](https://www.postgresql.org/) database.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/sergick6690/photographer.git
-git branch -M main
-git push -uf origin main
-```
+- ### photographer-admin-ui
 
-## Integrate with your tools
+  `ReactJS` frontend application where `admin` can manage content. In order to access the application, `admin` must login using his/her username and password. These credential are handled by `Keycloak`. All the requests coming from [`photographer-admin-ui`](https://github.com/cubLife/Photographer-admin-ui)
+to secured endpoints in `photographer-api` have an access token (JWT) that is generated when `admin` log in.
 
-- [ ] [Set up project integrations](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://gitlab.com/sergick6690/photographer/-/settings/integrations)
+- ### photographer-client-ui
 
-## Collaborate with your team
+  `ReactJS` frontend application where `users` can see offers, contact 
+information, portfolio of photographer. Also, users can make an order of photo session,
+  add a feedback about the photographer, write a message directly to email.
+  [`photographer-client-ui`](https://github.com/cubLife/Photographer-client-ui) have no accesses to secured endpoints of photographer-api
 
-- [ ] [Invite team members and collaborators](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Prerequisites
 
-## Test and Deploy
+- installed Java JDK 11
+- installed Gradle
+- installed Node.js
+- downloaded Keycloak
+- git (optional, to clone from repository)
+- some text editor for editing configuration files (optional)
 
-Use the built-in continuous integration in GitLab.
+## How to run application locally
 
-- [ ] [Get started with GitLab CI/CD](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://gitlab.com/-/experiment/new_project_readme_content:c93492dbe02191c3bf8021158e507eae?https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+1. Setup and configure Keycloak server first. For more informatation [see a section below](#configure-keycloak-server-identity-and-access-management).
+2. Clone photographer-api repository `https://github.com/cubLife/Photographer-API`.
+3. Clone photographer-client-ui repository `https://github.com/cubLife/Photographer-client-ui`.
+4. Clone photographer-client-ui repository `https://github.com/cubLife/Photographer-admin-ui`.
+5. Run Keycloak in dev mode.
+6. Run `photographer-api` with command `gradle bootrun`.
+7. Run `photographer-admin-ui` with command `yarn start`.
+8. Run `photographer-client-ui` with command `yarn start`.
+9. Open [http://localhost:3000](http://localhost:3000) and [http://localhost:3001](http://localhost:3001) in a browser
 
-***
+### Configure Keycloak server (Identity and Access Management)
 
-# Editing this README
+1. Download _Keycloak server_ from https://www.keycloak.org/downloads and run `bin/standalone.bat` or `bin/standalone.sh` script to start Keycloak application. Default Keycloak server port will be `8080`.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com) for this template.
+2. <p>
+     <details>
+     <summary>Setup Keycloak server at <i>localhost</i></summary>
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+   The steps to setup Keycloak specified below may be replaced with import of the Keycloak configuration file. To import the configuration file: go to Import on sidebar menu and upload previously exported configuration file.
 
-## Name
-Choose a self-explaining name for your project.
+3. Open the _Keycloak Admin Console_ (in our case at http://localhost:8080/auth/admin) and create admin user.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+4. Add a new _realm_ for our isolated groups of applications and users (i.e. `photographer`). _Note: Default `master` realm should not be used as it is dedicated to manage Keycloak._
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+5. Create a user (any name). Give the user some temparary password (_Credentials_ tab) to maintain security (temporary password will be updated by the user at first login). Sign In to the user account console to verify the user is configured correctly at http://localhost:8080/auth/realms/photographer/account (remember, `8080` is the port where our Keycloak is situated and `photographer` is the name of our realm).
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+6. At the moment in order to use our application, each user should have mapped role `ADMIN` to it's user account. Go to _Keycloak Admin Console -> Roles -> Realm Roles -> Add Role_ and add `ADMIN` role. After that go to _Users_ and map `ADMIN` role for each user to be used in chat-service application (_Role Mappings ->_ move `ADMIN` role from _Available Roles_ to _Assigned Roles_) to map it.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+7. Create a clients for Keycloak. Go to _Keycloak Admin Console -> Clients_ and create a client (name it `photographer-api`, and `photographer-admin`). Set _Valid Redirect URIs_ property of our client to `http://localhost:8081/*` and `http://localhost:3000/*` (where browser will be redirected after seccessfull login or logout, i.e. where our application is located) and _Web Origins_ property to `+`.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Start in container
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+- In a terminal and inside `photographer-api` root folder run
+  ```
+  docker-compose up -d
+  ```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
-
+- Wait for all Docker containers to be up and running. To check it, run
+  ```
+  docker-compose ps
+  ```
+  
