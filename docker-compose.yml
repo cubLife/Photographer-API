@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+  api:
+    image: erhiisemiv/photographer-api
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+     - PostgreSQL
+     - keycloak
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/Photographer
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=*****
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+
+      - KEYCLOAK_AUTH-SERVER_URL=http://localhost:8080/
+      - KEYCLOAK_REALM=photographer
+      - KEYCLOAK_RESOURCE=photographer-api
+      - KEYCLOAK_PUBLIC_CLIENT=true
+      - KEYCLOAK_REALM_KEY=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArig1auWueQpOSABUbnfh9teUzYfXIMuDthdx5QUXqrJ73xrmCKm3CGRcv6W9ASqUOiREHT9IQX9SoRXhlFzVv7YCyLK6VGl5f+OV1zI0PZ6OVuevZNVG+W4dHiqhHVE1dzGoVCBrNYuBI5PxuU1v+p7XKd95A6zoqg9QvHs79MIU8TSYnqgsGLmWmkXmIHFrJaq+wTGcVQo8ce/h+gPiQveHaA5xi9zi6cX/AeUHrA0C43QM00FvMMwC2cr/aAR0Pg4sStJxnFdZSFdi7FdGmX+8q90wDJspKYCVNswTYPz/wzGY/r/5IWm6kLqmupgKRxWcYhB+zOcuzYfODETAXwIDAQAB
+      - KEYCLOAK-BARBER-ONLY=true
+    networks:
+        - photographer-network
+  PostgreSQL:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=cub66901251
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=Photographer
+    networks:
+      - photographer-network
+  admin-ui:
+    image: erhiisemiv/photographer-admin-ui
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - photographer-network
+    environment:
+      - REACT_APP_BASE_URL = http://photo.pl.mooo.com:8081/api
+  client-ui:
+    image: erhiisemiv/photographer-cient-ui
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_BASE_URL = http://photo.pl.mooo.com:8081/api
+  postgres:
+      image: postgres
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: password
+      networks:
+        - photographer-network
+  keycloak:
+      image: quay.io/keycloak/keycloak:19.0.3
+      hostname: keycloak
+      environment:
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_SCHEMA: public
+        DB_PASSWORD: password
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+      entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+      ports:
+        - 8080:8080
+      depends_on:
+        - postgres
+      networks:
+        - photographer-network
+
+networks:
+  photographer-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+      driver: local
