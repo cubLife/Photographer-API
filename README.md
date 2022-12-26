@@ -10,7 +10,7 @@ one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference
 
 ## UML Class diagram
 
-![class-diagram](UML Class diagram.png)
+![class-diagram]([UML Class diagram.png](https://github.com/cubLife/Photographer-API/blob/main/UML%20Class%20diagram.png))
 
 ## Applications
 
