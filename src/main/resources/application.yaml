@@ -22,7 +22,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost/Photographer
     username: postgres
-    password: cub66901251
+    password: *****
   jpa:
     hibernate:
       ddl-auto: validate
